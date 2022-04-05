@@ -7,7 +7,7 @@
  <div align="center"><a title="" href="https://github.com/ZJCV/ZCls2"><img align="center" src="./imgs/ZCls2.png"></a></div>
 
 <p align="center">
-  «ZCls»是一款更快速的分类模型训练框架
+  «ZCls2»是一款更快速的分类模型训练框架
 <br>
 <br>
   <a href="https://github.com/RichardLitt/standard-readme"><img src="https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square"></a>
