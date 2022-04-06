@@ -33,12 +33,12 @@ except ImportError:
 
 
 def main():
-    global best_prec1, args
-
+    global best_prec1, best_prec5, args
+    best_prec1 = 0
+    best_prec5 = 0
     args = parse()
 
     cudnn.benchmark = True
-    best_prec1 = 0
     if args.deterministic:
         cudnn.benchmark = False
         cudnn.deterministic = True
@@ -120,7 +120,9 @@ def main():
                 checkpoint = torch.load(args.resume, map_location=lambda storage, loc: storage.cuda(args.gpu))
                 args.start_epoch = checkpoint['epoch']
                 global best_prec1
+                global best_prec5
                 best_prec1 = checkpoint['best_prec1']
+                best_prec5 = checkpoint['best_prec5']
                 model.load_state_dict(checkpoint['state_dict'])
                 optimizer.load_state_dict(checkpoint['optimizer'])
                 lr_scheduler.load_state_dict(checkpoint['lr_scheduler'])
@@ -154,18 +156,24 @@ def main():
             lr_scheduler.step()
 
         # evaluate on validation set
-        prec1 = validate(args, val_loader, model, criterion)
+        prec1, prec5 = validate(args, val_loader, model, criterion)
         torch.cuda.empty_cache()
+
+        is_best = prec1 > best_prec1
+        if is_best:
+            best_prec1 = prec1
+            best_prec5 = prec5
+        logger.info(' * Best_prec@1 {top1:.3f} Best_prec@5 {top5:.3f}'
+                    .format(top1=best_prec1, top5=best_prec5))
 
         # remember best prec@1 and save checkpoint
         if args.local_rank == 0:
-            is_best = prec1 > best_prec1
-            best_prec1 = max(prec1, best_prec1)
             save_checkpoint({
                 'epoch': epoch + 1,
                 'arch': args.arch,
                 'state_dict': model.state_dict(),
                 'best_prec1': best_prec1,
+                'best_prec5': best_prec5,
                 'optimizer': optimizer.state_dict(),
                 'lr_scheduler': lr_scheduler.state_dict(),
             }, is_best, output_dir=args.output_dir, filename=f'checkpoint_{epoch}.pth.tar')
