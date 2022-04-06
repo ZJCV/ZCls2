@@ -10,6 +10,11 @@
 from .multi_step_lr import build_multistep_lr
 from .cosine_annealing_lr import build_cosine_annearling_lr
 
+__supported_lr_scheduler__ = [
+    'MultiStepLR',
+    'CosineAnnealingLR'
+]
+
 
 def adjust_learning_rate(args, optimizer, epoch, step, len_epoch):
     """LR schedule that should yield 76% converged accuracy with batch size 256"""
@@ -33,9 +38,11 @@ def adjust_learning_rate(args, optimizer, epoch, step, len_epoch):
 
 
 def build_lr_scheduler(args, optimizer):
+    assert args.lr_scheduler in __supported_lr_scheduler__
+
     if args.lr_scheduler == 'MultiStepLR':
         return build_multistep_lr(args, optimizer)
     elif args.lr_scheduler == 'CosineAnnealingLR':
         return build_cosine_annearling_lr(args, optimizer)
     else:
-        raise ValueError(f'{args.lr_scheduler} do not support')
+        raise ValueError(f"{args.lr_scheduler} does not support")

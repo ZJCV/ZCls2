@@ -11,8 +11,13 @@ import torch.nn as nn
 
 from .sgd import build_sgd
 
+__supported__ = [
+    'sgd'
+]
+
 
 def build_optimizer(args, model):
+    assert args.optimizer in __supported__
     assert isinstance(model, nn.Module)
     groups = filter_weight(model)
 
@@ -22,7 +27,7 @@ def build_optimizer(args, model):
                          momentum=args.momentum,
                          weight_decay=args.weight_decay)
     else:
-        raise ValueError(f"{args.optimizer} doesn't support")
+        raise ValueError(f"{args.optimizer} does not support")
 
 
 def filter_weight(module):

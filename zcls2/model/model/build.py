@@ -17,7 +17,7 @@ __supported_model__ = resnet.__supported_model__ + ghostnet.__supported_model__
 
 
 def build_model(args, memory_format):
-    assert args.arch in __supported_model__, f"{args.arch} do not in model list"
+    assert args.arch in __supported_model__
 
     # create model
     if args.pretrained:
