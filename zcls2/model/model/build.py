@@ -7,17 +7,13 @@
 @description: 
 """
 
-from .resnet import get_resnet
-from .ghostnet import get_ghostnet
+from . import resnet, ghostnet
 
 from zcls2.util import logging
 
 logger = logging.get_logger(__name__)
 
-__supported_model__ = [
-    'resnet18',
-    'ghostnet_130',
-]
+__supported_model__ = resnet.__supported_model__ + ghostnet.__supported_model__
 
 
 def build_model(args, memory_format):
@@ -29,10 +25,10 @@ def build_model(args, memory_format):
     else:
         logger.info("=> creating model '{}'".format(args.arch))
 
-    if 'ghostnet' in args.arch:
-        model = get_ghostnet(pretrained=args.pretrained, num_classes=args.num_classes, arch=args.arch)
-    elif 'resnet' in args.arch:
-        model = get_resnet(pretrained=args.pretrained, num_classes=args.num_classes, arch=args.arch)
+    if args.arch in ghostnet.__supported_model__:
+        model = ghostnet.get_ghostnet(pretrained=args.pretrained, num_classes=args.num_classes, arch=args.arch)
+    elif args.arch in resnet.__supported_model__:
+        model = resnet.get_resnet(pretrained=args.pretrained, num_classes=args.num_classes, arch=args.arch)
     else:
         raise ValueError(f"{args.arch} does not support")
 

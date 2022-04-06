@@ -12,14 +12,14 @@ import torchvision.models as models
 
 from .util import create_linear
 
-__dict__ = [
+__supported_model__ = [
     'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152',
     'resnext50_32x4d', 'resnext101_32x8d', 'wide_resnet50_2', 'wide_resnet101_2'
 ]
 
 
 def get_resnet(pretrained=False, num_classes=1000, arch='resnet18'):
-    assert arch in __dict__, f"{arch} not in {__dict__}"
+    assert arch in __supported_model__, f"{arch} not in {__supported_model__}"
 
     if pretrained == True:
         model = models.__dict__[arch](pretrained=True)

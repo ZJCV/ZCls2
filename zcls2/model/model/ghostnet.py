@@ -12,9 +12,11 @@ import timm.models as models
 
 from .util import create_linear
 
+__supported_model__ = ['ghostnet_050', 'ghostnet_100', 'ghostnet_130']
+
 
 def get_ghostnet(pretrained=False, num_classes=1000, arch='ghostnet_050'):
-    assert arch in ['ghostnet_050', 'ghostnet_100', 'ghostnet_130']
+    assert arch in __supported_model__, f"{arch} not in {__supported_model__}"
 
     if pretrained == True:
         model = models.__dict__[arch](pretrained=True, num_classes=1000)
