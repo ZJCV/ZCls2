@@ -19,8 +19,8 @@ from .sampler.build import build_sampler
 from .dataloader.collate import fast_collate
 
 
-def build_data(args, memory_format):
-    train_dataset, val_dataset = build_dataset(args)
+def build_data(args, cfg, memory_format):
+    train_dataset, val_dataset = build_dataset(args, cfg)
 
     if isinstance(train_dataset, IterableDataset):
         train_sampler, val_sampler = None, None

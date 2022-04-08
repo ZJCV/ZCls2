@@ -21,30 +21,37 @@ __supported_dataset__ = [
 ]
 
 
-def build_dataset(args):
-    assert args.dataset in __supported_dataset__, f"{args.dataset} do not support"
+def build_dataset(args, cfg):
+    dataset_name = cfg.DATASET.NAME
+    # assert args.dataset in __supported_dataset__, f"{args.dataset} do not support"
+    assert dataset_name in __supported_dataset__, f"{dataset_name} do not support"
     train_transform, val_transform = build_transform(args)
 
     # Data loading code
-    traindir = os.path.join(args.data, 'train')
+    # traindir = os.path.join(args.data, 'train')
     # valdir = os.path.join(args.data, 'val')
-    valdir = os.path.join(args.data, 'test')
+    # valdir = os.path.join(args.data, 'test')
+    traindir = cfg.DATASET.TRAIN_ROOT
+    valdir = cfg.DATASET.TEST_ROOT
 
-    if args.dataset == 'GeneralDataset':
+    # if args.dataset == 'GeneralDataset':
+    if dataset_name == 'GeneralDataset':
         train_dataset = GeneralDataset(
             traindir, transform=train_transform
         )
         val_dataset = GeneralDataset(
             valdir, transform=val_transform
         )
-    elif args.dataset == 'GeneralDatasetV2':
+    # elif args.dataset == 'GeneralDatasetV2':
+    elif dataset_name == 'GeneralDatasetV2':
         train_dataset = GeneralDatasetV2(
             traindir, transform=train_transform
         )
         val_dataset = GeneralDatasetV2(
             valdir, transform=val_transform
         )
-    elif args.dataset == 'MPDataset':
+    # elif args.dataset == 'MPDataset':
+    elif dataset_name == 'MPDataset':
         num_gpus = args.world_size
         rank_id = args.local_rank
         epoch = args.epoch
@@ -56,6 +63,7 @@ def build_dataset(args):
             valdir, transform=val_transform, shuffle=False, num_gpus=num_gpus, rank_id=rank_id, epoch=epoch
         )
     else:
-        raise ValueError(f"{args.dataset} do not support")
+        # raise ValueError(f"{args.dataset} do not support")
+        raise ValueError(f"{dataset_name} do not support")
 
     return train_dataset, val_dataset

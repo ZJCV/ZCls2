@@ -8,6 +8,7 @@ import torch.optim
 import torch.utils.data
 import torch.utils.data.distributed
 
+from zcls2.config import cfg
 from zcls2.data.build import build_data
 from zcls2.optim.optimizer.build import build_optimizer
 from zcls2.optim.lr_scheduler.build import build_lr_scheduler
@@ -68,6 +69,13 @@ def main():
 
     logging.setup_logging(local_rank=args.local_rank, output_dir=args.output_dir)
     logger.info(args)
+    logger.info("Loaded configuration file {}".format(args.config))
+    if args.config:
+        cfg.merge_from_file(args.config)
+        with open(args.config, "r") as cf:
+            config_str = "\n" + cf.read()
+            logger.info(config_str)
+    logger.info("Running with config:\n{}".format(cfg))
 
     logger.info("local_rank: {0}, master_addr: {1}, master_port: {2}".format(
         os.environ['LOCAL_RANK'], os.environ['MASTER_ADDR'], os.environ['MASTER_PORT']))
@@ -138,7 +146,7 @@ def main():
         resume()
 
     # # Data loading code
-    train_sampler, train_loader, val_loader = build_data(args, memory_format)
+    train_sampler, train_loader, val_loader = build_data(args, cfg, memory_format)
 
     if args.evaluate:
         validate(args, val_loader, model, criterion)
