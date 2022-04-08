@@ -16,12 +16,15 @@ __supported_criterion__ = [
 ]
 
 
-def build_criterion(args):
-    assert args.loss in __supported_criterion__
+def build_criterion(cfg):
+    loss_name = cfg.MODEL.CRITERION.NAME
+    reduction = cfg.MODEL.CRITERION.REDUCTION
 
-    if args.loss == 'CrossEntropyLoss':
-        return build_cross_entropy_loss()
-    elif args.loss == 'LargeMarginSoftmaxV1':
-        return build_large_margin_softmax_loss(args)
+    assert loss_name in __supported_criterion__
+
+    if loss_name == 'CrossEntropyLoss':
+        return build_cross_entropy_loss(reduction=reduction)
+    elif loss_name == 'LargeMarginSoftmaxV1':
+        return build_large_margin_softmax_loss(reduction=reduction)
     else:
-        raise ValueError(f"{args.loss} does not support")
+        raise ValueError(f"{loss_name} does not support")

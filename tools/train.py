@@ -120,7 +120,7 @@ def main():
         model = DDP(model, delay_allreduce=True)
 
     # define loss function (criterion) and optimizer
-    criterion = build_criterion(args).cuda()
+    criterion = build_criterion(cfg).cuda()
 
     args.epoch = 0
     # Optionally resume from a checkpoint

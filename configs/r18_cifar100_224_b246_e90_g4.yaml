@@ -15,8 +15,8 @@ DATALOADER:
   RANDOM_SAMPLE: True
 DATASET:
   NAME: 'GeneralDatasetV2'
-  TRAIN_ROOT: '/home/zj/data/cifar/zcls_cifar/train'
-  TEST_ROOT: '/home/zj/data/cifar/zcls_cifar/test'
+  TRAIN_ROOT: '/home/mk/repos/data/cifar/zcls_cifar/train'
+  TEST_ROOT: '/home/mk/repos/data/cifar/zcls_cifar/test'
 #TRANSFORM:
 #  NORMALIZE: ((0.485, 0.456, 0.406), (0.229, 0.224, 0.225), 255.0, 1.0)
 MODEL:
@@ -24,3 +24,6 @@ MODEL:
   PRETRAINED: True
   NUM_CLASSES: 100
   SYNC_BN: False
+  CRITERION:
+    NAME: 'CrossEntropyLoss'
+    REDUCTION: 'mean'

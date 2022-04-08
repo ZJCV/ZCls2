@@ -48,8 +48,8 @@ def parse():
     # parser.add_argument('-b', '--batch-size', default=256, type=int,
     #                     metavar='N', help='mini-batch size per process (default: 256)')
 
-    parser.add_argument('-l', '--loss', default="CrossEntropyLoss", type=str, metavar='LOSS',
-                        help='Loss type (default: CrossEntropyLoss)')
+    # parser.add_argument('-l', '--loss', default="CrossEntropyLoss", type=str, metavar='LOSS',
+    #                     help='Loss type (default: CrossEntropyLoss)')
 
     parser.add_argument('-optim', '--optimizer', default="sgd", type=str, metavar='OPTIM',
                         help='Optimizer type (default: sgd)')

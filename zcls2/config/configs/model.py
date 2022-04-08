@@ -23,3 +23,11 @@ def add_config(_C):
     _C.MODEL.NUM_CLASSES = 1000
     # enabling apex sync BN.
     _C.MODEL.SYNC_BN = False
+
+    # ---------------------------------------------------------------------------- #
+    # criterion
+    # ---------------------------------------------------------------------------- #
+    _C.MODEL.CRITERION = CN()
+    _C.MODEL.CRITERION.NAME = 'CrossEntropyLoss'
+    # mean or sum
+    _C.MODEL.CRITERION.REDUCTION = 'mean'
