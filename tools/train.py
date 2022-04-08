@@ -33,9 +33,10 @@ except ImportError:
 
 
 def main():
-    global best_prec1, best_prec5, args
+    global best_prec1, best_prec5, best_epoch, args
     best_prec1 = 0
     best_prec5 = 0
+    best_epoch = 0
     args = parse()
 
     cudnn.benchmark = True
@@ -121,8 +122,10 @@ def main():
                 args.start_epoch = checkpoint['epoch']
                 global best_prec1
                 global best_prec5
+                global best_epoch
                 best_prec1 = checkpoint['best_prec1']
                 best_prec5 = checkpoint['best_prec5']
+                best_epoch = checkpoint['epoch']
                 model.load_state_dict(checkpoint['state_dict'])
                 optimizer.load_state_dict(checkpoint['optimizer'])
                 lr_scheduler.load_state_dict(checkpoint['lr_scheduler'])
@@ -163,8 +166,9 @@ def main():
         if is_best:
             best_prec1 = prec1
             best_prec5 = prec5
-        logger.info(' * Best_prec@1 {top1:.3f} Best_prec@5 {top5:.3f}'
-                    .format(top1=best_prec1, top5=best_prec5))
+            best_epoch = epoch + 1
+        logger.info(' * Best_prec@1 {top1:.3f} Best_prec@5 {top5:.3f} Best_epoch {be}'
+                    .format(top1=best_prec1, top5=best_prec5, be=best_epoch))
 
         # remember best prec@1 and save checkpoint
         if args.local_rank == 0:
