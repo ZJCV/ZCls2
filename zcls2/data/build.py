@@ -24,7 +24,7 @@ def build_data(args, cfg, memory_format):
         train_sampler, val_sampler = build_sampler(args, train_dataset, val_dataset)
         shuffle = train_sampler is None
 
-    train_loader, val_loader = build_dataloader(args, cfg,
+    train_loader, val_loader = build_dataloader(cfg,
                                                 train_dataset, val_dataset, train_sampler, val_sampler,
                                                 shuffle, memory_format)
 

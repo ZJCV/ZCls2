@@ -30,7 +30,7 @@ from zcls2.util import logging
 logger = logging.get_logger(__name__)
 
 
-def train(args, train_loader, model, criterion, optimizer, epoch):
+def train(args, cfg, train_loader, model, criterion, optimizer, epoch):
     batch_time = AverageMeter()
     losses = AverageMeter()
     top1 = AverageMeter()
@@ -109,8 +109,10 @@ def train(args, train_loader, model, criterion, optimizer, epoch):
                             'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'
                             'Prec@5 {top5.val:.3f} ({top5.avg:.3f})'.format(
                     epoch, i, len(train_loader),
-                    args.world_size * args.batch_size / batch_time.val,
-                    args.world_size * args.batch_size / batch_time.avg,
+                    # args.world_size * args.batch_size / batch_time.val,
+                    # args.world_size * args.batch_size / batch_time.avg,
+                    args.world_size * cfg.DATALOADER.TRAIN_BATCH_SIZE / batch_time.val,
+                    args.world_size * cfg.DATALOADER.TRAIN_BATCH_SIZE / batch_time.avg,
                     batch_time=batch_time,
                     lr=optimizer.param_groups[0]['lr'],
                     loss=losses, top1=top1, top5=top5))

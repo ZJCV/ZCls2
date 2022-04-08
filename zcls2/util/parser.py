@@ -39,14 +39,14 @@ def parse():
     parser.add_argument('-n', '--num-classes', default=1000, type=int, metavar='NUM-CLASSES',
                         help='number of model output (default: 1000)')
 
-    parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
-                        help='number of data loading workers (default: 4)')
+    # parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
+    #                     help='number of data loading workers (default: 4)')
     parser.add_argument('--epochs', default=90, type=int, metavar='N',
                         help='number of total epochs to run')
     parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                         help='manual epoch number (useful on restarts)')
-    parser.add_argument('-b', '--batch-size', default=256, type=int,
-                        metavar='N', help='mini-batch size per process (default: 256)')
+    # parser.add_argument('-b', '--batch-size', default=256, type=int,
+    #                     metavar='N', help='mini-batch size per process (default: 256)')
 
     parser.add_argument('-l', '--loss', default="CrossEntropyLoss", type=str, metavar='LOSS',
                         help='Loss type (default: CrossEntropyLoss)')

@@ -8,11 +8,11 @@ OUTPUT_DIR: 'outputs/cifar_imagenet_224_b256_e90'
 #  EVAL_EPOCH: 5
 #  MAX_EPOCH: 200
 #  RESUME: False
-#DATALOADER:
-#  TRAIN_BATCH_SIZE: 256
-#  TEST_BATCH_SIZE: 256
-#  NUM_WORKERS: 4
-#  RANDOM_SAMPLE: True
+DATALOADER:
+  TRAIN_BATCH_SIZE: 256
+  TEST_BATCH_SIZE: 256
+  NUM_WORKERS: 4
+  RANDOM_SAMPLE: True
 DATASET:
   NAME: 'GeneralDatasetV2'
   TRAIN_ROOT: '/home/zj/data/cifar/zcls_cifar/train'

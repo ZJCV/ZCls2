@@ -21,7 +21,7 @@ from zcls2.util import logging
 logger = logging.get_logger(__name__)
 
 
-def validate(args, val_loader, model, criterion):
+def validate(args, cfg, val_loader, model, criterion):
     batch_time = AverageMeter()
     losses = AverageMeter()
     top1 = AverageMeter()
@@ -70,8 +70,10 @@ def validate(args, val_loader, model, criterion):
                         'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'
                         'Prec@5 {top5.val:.3f} ({top5.avg:.3f})'.format(
                 i, len(val_loader),
-                args.world_size * args.batch_size / batch_time.val,
-                args.world_size * args.batch_size / batch_time.avg,
+                # args.world_size * args.batch_size / batch_time.val,
+                # args.world_size * args.batch_size / batch_time.avg,
+                args.world_size * cfg.DATALOADER.TRAIN_BATCH_SIZE / batch_time.val,
+                args.world_size * cfg.DATALOADER.TRAIN_BATCH_SIZE / batch_time.avg,
                 batch_time=batch_time, loss=losses,
                 top1=top1, top5=top5))
 

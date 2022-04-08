@@ -95,7 +95,8 @@ def main():
     model = build_model(args, memory_format)
 
     # Scale learning rate based on global batch size
-    args.lr = args.lr * float(args.batch_size * args.world_size) / 256.
+    # args.lr = args.lr * float(args.batch_size * args.world_size) / 256.
+    args.lr = args.lr * float(cfg.DATALOADER.TRAIN_BATCH_SIZE * args.world_size) / 256.
     optimizer = build_optimizer(args, model)
 
     # Initialize Amp.  Amp accepts either values or strings for the optional override arguments,
@@ -161,7 +162,7 @@ def main():
             train_sampler.set_epoch(epoch)
 
         # train for one epoch
-        train(args, train_loader, model, criterion, optimizer, epoch)
+        train(args, cfg, train_loader, model, criterion, optimizer, epoch)
         torch.cuda.empty_cache()
         if args.warmup and epoch < args.warmup_epochs:
             pass
@@ -169,7 +170,7 @@ def main():
             lr_scheduler.step()
 
         # evaluate on validation set
-        prec1, prec5 = validate(args, val_loader, model, criterion)
+        prec1, prec5 = validate(args, cfg, val_loader, model, criterion)
         torch.cuda.empty_cache()
 
         is_best = prec1 > best_prec1
