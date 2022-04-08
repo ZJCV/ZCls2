@@ -15,9 +15,9 @@ from .general_dataset_v2 import GeneralDatasetV2
 from .mp_dataset import MPDataset
 
 __supported_dataset__ = [
-    'general',
-    'general_v2',
-    'mp'
+    'GeneralDataset',
+    'GeneralDatasetV2',
+    'MPDataset'
 ]
 
 
@@ -30,21 +30,21 @@ def build_dataset(args):
     # valdir = os.path.join(args.data, 'val')
     valdir = os.path.join(args.data, 'test')
 
-    if args.dataset == 'general':
+    if args.dataset == 'GeneralDataset':
         train_dataset = GeneralDataset(
             traindir, transform=train_transform
         )
         val_dataset = GeneralDataset(
             valdir, transform=val_transform
         )
-    elif args.dataset == 'general_v2':
+    elif args.dataset == 'GeneralDatasetV2':
         train_dataset = GeneralDatasetV2(
             traindir, transform=train_transform
         )
         val_dataset = GeneralDatasetV2(
             valdir, transform=val_transform
         )
-    elif args.dataset == 'mp':
+    elif args.dataset == 'MPDataset':
         num_gpus = args.world_size
         rank_id = args.local_rank
         epoch = args.epoch
