@@ -7,16 +7,11 @@
 @description: 
 """
 
-import torch
-import torch.nn.parallel
-import torch.optim
-import torch.utils.data
 from torch.utils.data import IterableDataset
-import torch.utils.data.distributed
 
 from .dataset.build import build_dataset
 from .sampler.build import build_sampler
-from .dataloader.collate import fast_collate
+from .dataloader.build import build_dataloader
 
 
 def build_data(args, cfg, memory_format):
@@ -29,17 +24,8 @@ def build_data(args, cfg, memory_format):
         train_sampler, val_sampler = build_sampler(args, train_dataset, val_dataset)
         shuffle = train_sampler is None
 
-    collate_fn = lambda b: fast_collate(b, memory_format)
-
-    train_loader = torch.utils.data.DataLoader(
-        train_dataset, batch_size=args.batch_size, shuffle=shuffle,
-        num_workers=args.workers, pin_memory=True, sampler=train_sampler, collate_fn=collate_fn)
-
-    val_loader = torch.utils.data.DataLoader(
-        val_dataset,
-        batch_size=args.batch_size, shuffle=False,
-        num_workers=args.workers, pin_memory=True,
-        sampler=val_sampler,
-        collate_fn=collate_fn)
+    train_loader, val_loader = build_dataloader(args, cfg,
+                                                train_dataset, val_dataset, train_sampler, val_sampler,
+                                                shuffle, memory_format)
 
     return train_sampler, train_loader, val_loader
