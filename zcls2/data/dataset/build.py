@@ -21,11 +21,10 @@ __supported_dataset__ = [
 ]
 
 
-def build_dataset(args, cfg):
+def build_dataset(args, cfg, train_transform, val_transform):
     dataset_name = cfg.DATASET.NAME
     # assert args.dataset in __supported_dataset__, f"{args.dataset} do not support"
     assert dataset_name in __supported_dataset__, f"{dataset_name} do not support"
-    train_transform, val_transform = build_transform(args)
 
     # Data loading code
     # traindir = os.path.join(args.data, 'train')

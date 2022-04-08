@@ -92,7 +92,7 @@ def main():
     else:
         memory_format = torch.contiguous_format
 
-    model = build_model(args, memory_format)
+    model = build_model(cfg, memory_format)
 
     # Scale learning rate based on global batch size
     # args.lr = args.lr * float(args.batch_size * args.world_size) / 256.
@@ -152,7 +152,7 @@ def main():
     train_sampler, train_loader, val_loader = build_data(args, cfg, memory_format)
 
     if args.evaluate:
-        validate(args, val_loader, model, criterion)
+        validate(args, cfg, val_loader, model, criterion)
         return
 
     for epoch in range(args.start_epoch, args.epochs):
@@ -185,7 +185,8 @@ def main():
         if args.local_rank == 0:
             save_checkpoint({
                 'epoch': epoch + 1,
-                'arch': args.arch,
+                # 'arch': args.arch,
+                'arch': cfg.MODEL.ARCH,
                 'state_dict': model.state_dict(),
                 'best_prec1': best_prec1,
                 'best_prec5': best_prec5,

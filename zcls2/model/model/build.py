@@ -16,23 +16,28 @@ logger = logging.get_logger(__name__)
 __supported_model__ = resnet.__supported_model__ + ghostnet.__supported_model__
 
 
-def build_model(args, memory_format):
-    assert args.arch in __supported_model__
+def build_model(cfg, memory_format):
+    model_arch = cfg.MODEL.ARCH
+    is_pretrained = cfg.MODEL.PRETRAINED
+    num_classes = cfg.MODEL.NUM_CLASSES
+    sync_bn = cfg.MODEL.SYNC_BN
+
+    assert model_arch in __supported_model__
 
     # create model
-    if args.pretrained:
-        logger.info("=> using pre-trained model '{}'".format(args.arch))
+    if is_pretrained:
+        logger.info("=> using pre-trained model '{}'".format(model_arch))
     else:
-        logger.info("=> creating model '{}'".format(args.arch))
+        logger.info("=> creating model '{}'".format(model_arch))
 
-    if args.arch in ghostnet.__supported_model__:
-        model = ghostnet.get_ghostnet(pretrained=args.pretrained, num_classes=args.num_classes, arch=args.arch)
-    elif args.arch in resnet.__supported_model__:
-        model = resnet.get_resnet(pretrained=args.pretrained, num_classes=args.num_classes, arch=args.arch)
+    if model_arch in ghostnet.__supported_model__:
+        model = ghostnet.get_ghostnet(pretrained=is_pretrained, num_classes=num_classes, arch=model_arch)
+    elif model_arch in resnet.__supported_model__:
+        model = resnet.get_resnet(pretrained=is_pretrained, num_classes=num_classes, arch=model_arch)
     else:
-        raise ValueError(f"{args.arch} does not support")
+        raise ValueError(f"{model_arch} does not support")
 
-    if args.sync_bn:
+    if sync_bn:
         import apex
         logger.info("using apex synced BN")
         model = apex.parallel.convert_syncbn_model(model)

@@ -19,3 +19,8 @@ DATASET:
   TEST_ROOT: '/home/zj/data/cifar/zcls_cifar/test'
 #TRANSFORM:
 #  NORMALIZE: ((0.485, 0.456, 0.406), (0.229, 0.224, 0.225), 255.0, 1.0)
+MODEL:
+  ARCH: 'resnet18'
+  PRETRAINED: True
+  NUM_CLASSES: 100
+  SYNC_BN: False

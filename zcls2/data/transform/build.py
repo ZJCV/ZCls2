@@ -10,8 +10,9 @@
 import torchvision.transforms as transforms
 
 
-def build_transform(args):
-    if (args.arch == "inception_v3"):
+def build_transform(cfg):
+    # if (args.arch == "inception_v3"):
+    if (cfg.MODEL.ARCH == "inception_v3"):
         raise RuntimeError("Currently, inception_v3 is not supported by this example.")
         # crop_size = 299
         # val_size = 320 # I chose this value arbitrarily, we can adjust.

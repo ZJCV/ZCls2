@@ -31,13 +31,13 @@ def parse():
     #                     help='dataset type: ' +
     #                          ' | '.join(dataset_names) +
     #                          ' (default: general)')
-    parser.add_argument('--arch', '-a', metavar='ARCH', default='resnet18',
-                        choices=model_names,
-                        help='model architecture: ' +
-                             ' | '.join(model_names) +
-                             ' (default: resnet18)')
-    parser.add_argument('-n', '--num-classes', default=1000, type=int, metavar='NUM-CLASSES',
-                        help='number of model output (default: 1000)')
+    # parser.add_argument('--arch', '-a', metavar='ARCH', default='resnet18',
+    #                     choices=model_names,
+    #                     help='model architecture: ' +
+    #                          ' | '.join(model_names) +
+    #                          ' (default: resnet18)')
+    # parser.add_argument('-n', '--num-classes', default=1000, type=int, metavar='NUM-CLASSES',
+    #                     help='number of model output (default: 1000)')
 
     # parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
     #                     help='number of data loading workers (default: 4)')
@@ -83,8 +83,8 @@ def parse():
     parser.add_argument('--deterministic', action='store_true')
 
     parser.add_argument("--local_rank", default=os.getenv('LOCAL_RANK', 0), type=int)
-    parser.add_argument('--sync_bn', action='store_true',
-                        help='enabling apex sync BN.')
+    # parser.add_argument('--sync_bn', action='store_true',
+    #                     help='enabling apex sync BN.')
 
     parser.add_argument('--opt-level', type=str)
     parser.add_argument('--keep-batchnorm-fp32', type=str, default=None)
