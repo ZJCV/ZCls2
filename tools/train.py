@@ -17,6 +17,7 @@ from zcls2.model.model.build import build_model
 from zcls2.engine.trainer import train
 from zcls2.engine.infer import validate
 from zcls2.util.parser import parse
+from zcls2.util.collect_env import collect_env_info
 from zcls2.util.checkpoint import save_checkpoint
 from zcls2.data.dataset.mp_dataset import MPDataset
 
@@ -68,6 +69,7 @@ def main():
         os.makedirs(args.output_dir)
 
     logging.setup_logging(local_rank=args.local_rank, output_dir=args.output_dir)
+    logger.info("Environment info:\n" + collect_env_info())
     logger.info(args)
     logger.info("Loaded configuration file {}".format(args.config))
     if args.config:
