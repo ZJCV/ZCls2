@@ -16,7 +16,7 @@ __supported_lr_scheduler__ = [
 ]
 
 
-def adjust_learning_rate(args, cfg, optimizer, epoch, step, len_epoch):
+def adjust_learning_rate(cfg, optimizer, epoch, step, len_epoch):
     """LR schedule that should yield 76% converged accuracy with batch size 256"""
     # factor = epoch // 30
     #
