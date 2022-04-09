@@ -43,7 +43,7 @@ def train(args, cfg, train_loader, model, criterion, optimizer, epoch):
     warmup = cfg.LR_SCHEDULER.IS_WARMUP
     warmup_epoch = cfg.LR_SCHEDULER.WARMUP_EPOCH
 
-    prefetcher = data_prefetcher(train_loader)
+    prefetcher = data_prefetcher(cfg, train_loader)
     input, target = prefetcher.next()
     i = 0
     while input is not None:

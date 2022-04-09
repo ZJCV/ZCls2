@@ -18,7 +18,7 @@ def add_config(_C):
     # model architecture (default: resnet18)
     _C.MODEL.ARCH = 'resnet18'
     # use pre-trained model
-    _C.MODEL.PRETRAINED = False
+    _C.MODEL.PRETRAINED = True
     # number of model output (default: 1000)
     _C.MODEL.NUM_CLASSES = 1000
     # enabling apex sync BN.

@@ -8,15 +8,14 @@
 """
 
 from zcls2.config.configs.defaults import _C
-from .configs import dataset, dataloader, model, lr_scheduler, optimizer, custom_config
+from .configs import dataset, dataloader, model, lr_scheduler, optimizer, custom_config, transform
 
 dataloader.add_config(_C)
 dataset.add_config(_C)
 lr_scheduler.add_config(_C)
 model.add_config(_C)
 optimizer.add_config(_C)
-
-# transform.add_config(_C)
+transform.add_config(_C)
 
 # Add custom config with default values.
 custom_config.add_custom_config(_C)

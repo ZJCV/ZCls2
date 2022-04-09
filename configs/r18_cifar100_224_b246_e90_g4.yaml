@@ -18,8 +18,9 @@ DATASET:
   NAME: 'GeneralDatasetV2'
   TRAIN_ROOT: '/home/zj/repos/ZCls2/data/cifar/zcls_cifar/train'
   TEST_ROOT: '/home/zj/repos/ZCls2/data/cifar/zcls_cifar/test'
-#TRANSFORM:
-#  NORMALIZE: ((0.485, 0.456, 0.406), (0.229, 0.224, 0.225), 255.0, 1.0)
+TRANSFORM:
+  MEAN: (0.485, 0.456, 0.406)
+  STD: (0.229, 0.224, 0.225)
 MODEL:
   ARCH: 'resnet18'
   PRETRAINED: True
@@ -30,7 +31,7 @@ MODEL:
     REDUCTION: 'mean'
 OPTIMIZER:
   NAME: 'SGD'
-  LR: 1e-3
+  LR: 1e-1
   MOMENTUM: 0.9
   WEIGHT_DECAY:
     DECAY: 1e-4

@@ -11,11 +11,25 @@ import torch
 
 
 class data_prefetcher():
-    def __init__(self, loader):
+    def __init__(self, cfg, loader):
         self.loader = iter(loader)
         self.stream = torch.cuda.Stream()
-        self.mean = torch.tensor([0.485 * 255, 0.456 * 255, 0.406 * 255]).cuda().view(1, 3, 1, 1)
-        self.std = torch.tensor([0.229 * 255, 0.224 * 255, 0.225 * 255]).cuda().view(1, 3, 1, 1)
+
+        mean = cfg.TRANSFORM.MEAN
+        std = cfg.TRANSFORM.STD
+        assert len(mean) == len(std)
+
+        mean_list = list()
+        std_list = list()
+        for m, s in zip(mean, std):
+            mean_list.append(m * 255)
+            std_list.append(s * 255)
+        n = len(mean_list)
+        self.mean = torch.tensor(mean_list).cuda().view(1, n, 1, 1)
+        self.std = torch.tensor(std_list).cuda().view(1, n, 1, 1)
+
+        # self.mean = torch.tensor([0.485 * 255, 0.456 * 255, 0.406 * 255]).cuda().view(1, 3, 1, 1)
+        # self.std = torch.tensor([0.229 * 255, 0.224 * 255, 0.225 * 255]).cuda().view(1, 3, 1, 1)
         # With Amp, it isn't necessary to manually convert data to half.
         # if args.fp16:
         #     self.mean = self.mean.half()

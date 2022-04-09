@@ -32,7 +32,7 @@ def validate(args, cfg, val_loader, model, criterion):
 
     end = time.time()
 
-    prefetcher = data_prefetcher(val_loader)
+    prefetcher = data_prefetcher(cfg, val_loader)
     input, target = prefetcher.next()
     i = 0
     while input is not None:

@@ -19,7 +19,7 @@ def add_config(_C):
     _C.OPTIMIZER.NAME = 'SGD'
     # Initial learning rate.
     # Will be scaled by <global batch size>/256: lr = lr * float(train_batch_size * args.world_size) / 256.
-    _C.OPTIMIZER.LR = 1e-3
+    _C.OPTIMIZER.LR = 1e-1
     _C.OPTIMIZER.MOMENTUM = 0.9
     # ---------------------------------------------------------------------------- #
     # Weight Decay
