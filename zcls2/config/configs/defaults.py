@@ -3,7 +3,7 @@ from yacs.config import CfgNode as CN
 _C = CN()
 
 # Output basedir.
-_C.OUTPUT_DIR = "./tmp"
+_C.OUTPUT_DIR = "./outputs/tmp"
 
 # Note that non-determinism may still be present due to non-deterministic
 # operator implementations in GPU operator libraries.

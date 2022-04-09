@@ -64,11 +64,10 @@ def main():
 
     assert torch.backends.cudnn.enabled, "Amp requires cudnn backend to be enabled."
 
-    # args.output_dir = 'outputs'
-    if args.local_rank == 0 and not os.path.exists(args.output_dir):
-        os.makedirs(args.output_dir)
+    if args.local_rank == 0 and not os.path.exists(cfg.OUTPUT_DIR):
+        os.makedirs(cfg.OUTPUT_DIR)
 
-    logging.setup_logging(local_rank=args.local_rank, output_dir=args.output_dir)
+    logging.setup_logging(local_rank=args.local_rank, output_dir=cfg.OUTPUT_DIR)
     logger.info("Environment info:\n" + collect_env_info())
     logger.info(args)
     logger.info("Loaded configuration file {}".format(args.config))
@@ -195,7 +194,7 @@ def main():
                 'best_prec5': best_prec5,
                 'optimizer': optimizer.state_dict(),
                 'lr_scheduler': lr_scheduler.state_dict(),
-            }, is_best, output_dir=args.output_dir, filename=f'checkpoint_{epoch}.pth.tar')
+            }, is_best, output_dir=cfg.OUTPUT_DIR, filename=f'checkpoint_{epoch}.pth.tar')
 
 
 if __name__ == '__main__':
