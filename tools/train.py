@@ -34,13 +34,10 @@ except ImportError:
     raise ImportError("Please install apex from https://www.github.com/nvidia/apex to run this example.")
 
 
-def main():
-    global best_prec1, best_prec5, best_epoch, args
-    best_prec1 = 0
-    best_prec5 = 0
-    best_epoch = 0
-    args = parse()
-
+def init(args, cfg):
+    # ---------------------------------------------------------------------------- #
+    # Configure args
+    # ---------------------------------------------------------------------------- #
     cudnn.benchmark = True
     if args.deterministic:
         cudnn.benchmark = False
@@ -58,16 +55,22 @@ def main():
     if args.distributed:
         args.gpu = args.local_rank
         torch.cuda.set_device(args.gpu)
-        torch.distributed.init_process_group(backend='nccl',
-                                             init_method='env://')
+        torch.distributed.init_process_group(backend=cfg.DIST_BACKEND, init_method=cfg.INIT_METHOD)
         args.world_size = torch.distributed.get_world_size()
 
     assert torch.backends.cudnn.enabled, "Amp requires cudnn backend to be enabled."
 
-    if args.local_rank == 0 and not os.path.exists(cfg.OUTPUT_DIR):
-        os.makedirs(cfg.OUTPUT_DIR)
+    if args.channels_last:
+        memory_format = torch.channels_last
+    else:
+        memory_format = torch.contiguous_format
+    # ---------------------------------------------------------------------------- #
+    # Log
+    # ---------------------------------------------------------------------------- #
+    if args.local_rank == 0 and not os.path.exists(args.output_dir):
+        os.makedirs(args.output_dir)
 
-    logging.setup_logging(local_rank=args.local_rank, output_dir=cfg.OUTPUT_DIR)
+    logging.setup_logging(local_rank=args.local_rank, output_dir=args.output_dir)
     logger.info("Environment info:\n" + collect_env_info())
     logger.info(args)
     logger.info("Loaded configuration file {}".format(args.config))
@@ -85,17 +88,34 @@ def main():
     logger.info("loss_scale = {}".format(args.loss_scale, type(args.loss_scale)))
 
     logger.info("CUDNN VERSION: {}\n".format(torch.backends.cudnn.version()))
+    # ---------------------------------------------------------------------------- #
+    # Configure cfg
+    # ---------------------------------------------------------------------------- #
+    cfg.DISTRIBUTED = args.distributed
+    cfg.RANK_ID = args.gpu
+    cfg.NUM_GPUS = args.world_size
 
-    if args.channels_last:
-        memory_format = torch.channels_last
-    else:
-        memory_format = torch.contiguous_format
+    cfg.DETERMINISTIC = args.deterministic
+
+    cfg.TRAIN.RESUME = args.resume
+
+    return memory_format
+
+
+def main():
+    global best_prec1, best_prec5, best_epoch, args
+    best_prec1 = 0
+    best_prec5 = 0
+    best_epoch = 0
+
+    args = parse()
+    if os.path.isfile(args.config):
+        cfg.merge_from_file(args.config)
+    memory_format = init(args, cfg)
 
     model = build_model(cfg, memory_format)
 
     # Scale learning rate based on global batch size
-    # args.lr = args.lr * float(args.batch_size * args.world_size) / 256.
-    # args.lr = args.lr * float(cfg.DATALOADER.TRAIN_BATCH_SIZE * args.world_size) / 256.
     cfg.OPTIMIZER.LR = cfg.OPTIMIZER.LR * float(cfg.DATALOADER.TRAIN_BATCH_SIZE * args.world_size) / 256.
     optimizer = build_optimizer(cfg, model)
 
@@ -112,7 +132,7 @@ def main():
     # This must be done AFTER the call to amp.initialize.  If model = DDP(model) is called
     # before model, ... = amp.initialize(model, ...), the call to amp.initialize may alter
     # the types of model's parameters in a way that disrupts or destroys DDP's allreduce hooks.
-    if args.distributed:
+    if cfg.DISTRIBUTED:
         # By default, apex.parallel.DistributedDataParallel overlaps communication with
         # computation in the backward pass.
         # model = DDP(model)
@@ -123,14 +143,13 @@ def main():
     criterion = build_criterion(cfg).cuda()
 
     # Optionally resume from a checkpoint
-    if args.resume:
+    if cfg.RESUME:
         # Use a local scope to avoid dangling references
         def resume():
-            if os.path.isfile(args.resume):
-                logger.info("=> loading checkpoint '{}'".format(args.resume))
-                checkpoint = torch.load(args.resume, map_location=lambda storage, loc: storage.cuda(args.gpu))
+            if os.path.isfile(cfg.RESUME):
+                logger.info("=> loading checkpoint '{}'".format(cfg.RESUME))
+                checkpoint = torch.load(cfg.RESUME, map_location=lambda storage, loc: storage.cuda(cfg.RANK_ID))
                 cfg.TRAIN.START_EPOCH = checkpoint['epoch']
-                # args.start_epoch = checkpoint['epoch']
                 global best_prec1
                 global best_prec5
                 global best_epoch
@@ -141,17 +160,17 @@ def main():
                 optimizer.load_state_dict(checkpoint['optimizer'])
                 lr_scheduler.load_state_dict(checkpoint['lr_scheduler'])
                 logger.info("=> loaded checkpoint '{}' (epoch {})"
-                            .format(args.resume, checkpoint['epoch']))
+                            .format(cfg.RESUME, checkpoint['epoch']))
             else:
-                logger.info("=> no checkpoint found at '{}'".format(args.resume))
+                logger.info("=> no checkpoint found at '{}'".format(cfg.RESUME))
 
         resume()
 
     # # Data loading code
-    train_sampler, train_loader, val_loader = build_data(args, cfg, memory_format)
+    train_sampler, train_loader, val_loader = build_data(cfg, memory_format)
 
-    if args.evaluate:
-        validate(args, cfg, val_loader, model, criterion)
+    if cfg.EVALUATE:
+        validate(cfg, val_loader, model, criterion)
         return
 
     warmup = cfg.LR_SCHEDULER.IS_WARMUP
@@ -160,11 +179,11 @@ def main():
     for epoch in range(cfg.TRAIN.START_EPOCH, cfg.TRAIN.MAX_EPOCH):
         if isinstance(train_loader.dataset, MPDataset):
             train_loader.dataset.set_epoch(epoch)
-        elif args.distributed:
+        elif cfg.DISTRIBUTED:
             train_sampler.set_epoch(epoch)
 
         # train for one epoch
-        train(args, cfg, train_loader, model, criterion, optimizer, epoch)
+        train(cfg, train_loader, model, criterion, optimizer, epoch)
         torch.cuda.empty_cache()
         if warmup and epoch < warmup_epoch:
             pass
@@ -172,7 +191,7 @@ def main():
             lr_scheduler.step()
 
         # evaluate on validation set
-        prec1, prec5 = validate(args, cfg, val_loader, model, criterion)
+        prec1, prec5 = validate(cfg, val_loader, model, criterion)
         torch.cuda.empty_cache()
 
         is_best = prec1 > best_prec1
@@ -184,10 +203,9 @@ def main():
                     .format(top1=best_prec1, top5=best_prec5, be=best_epoch))
 
         # remember best prec@1 and save checkpoint
-        if args.local_rank == 0:
+        if cfg.RANK_ID == 0:
             save_checkpoint({
                 'epoch': epoch + 1,
-                # 'arch': args.arch,
                 'arch': cfg.MODEL.ARCH,
                 'state_dict': model.state_dict(),
                 'best_prec1': best_prec1,

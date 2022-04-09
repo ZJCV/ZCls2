@@ -15,15 +15,15 @@ from .sampler.build import build_sampler
 from .dataloader.build import build_dataloader
 
 
-def build_data(args, cfg, memory_format):
+def build_data(cfg, memory_format):
     train_transform, val_transform = build_transform(cfg)
-    train_dataset, val_dataset = build_dataset(args, cfg, train_transform, val_transform)
+    train_dataset, val_dataset = build_dataset(cfg, train_transform, val_transform)
 
     if isinstance(train_dataset, IterableDataset):
         train_sampler, val_sampler = None, None
         shuffle = False
     else:
-        train_sampler, val_sampler = build_sampler(args, train_dataset, val_dataset)
+        train_sampler, val_sampler = build_sampler(cfg, train_dataset, val_dataset)
         shuffle = train_sampler is None
 
     train_loader, val_loader = build_dataloader(cfg,

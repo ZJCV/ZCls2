@@ -30,7 +30,7 @@ from zcls2.util import logging
 logger = logging.get_logger(__name__)
 
 
-def train(args, cfg, train_loader, model, criterion, optimizer, epoch):
+def train(cfg, train_loader, model, criterion, optimizer, epoch):
     batch_time = AverageMeter()
     losses = AverageMeter()
     top1 = AverageMeter()
@@ -48,37 +48,37 @@ def train(args, cfg, train_loader, model, criterion, optimizer, epoch):
     i = 0
     while input is not None:
         i += 1
-        if args.prof >= 0 and i == args.prof:
+        if cfg.PROF >= 0 and i == cfg.PROF:
             logger.info("Profiling begun at iteration {}".format(i))
             torch.cuda.cudart().cudaProfilerStart()
 
-        if args.prof >= 0: torch.cuda.nvtx.range_push("Body of iteration {}".format(i))
+        if cfg.PROF >= 0: torch.cuda.nvtx.range_push("Body of iteration {}".format(i))
 
         if warmup and epoch < warmup_epoch:
             adjust_learning_rate(cfg, optimizer, epoch, i, len(train_loader))
 
         # compute output
-        if args.prof >= 0: torch.cuda.nvtx.range_push("forward")
+        if cfg.PROF >= 0: torch.cuda.nvtx.range_push("forward")
         output = model(input)
-        if args.prof >= 0: torch.cuda.nvtx.range_pop()
+        if cfg.PROF >= 0: torch.cuda.nvtx.range_pop()
         loss = criterion(output, target)
 
         # compute gradient and do SGD step
         optimizer.zero_grad()
 
-        if args.prof >= 0: torch.cuda.nvtx.range_push("backward")
+        if cfg.PROF >= 0: torch.cuda.nvtx.range_push("backward")
         with amp.scale_loss(loss, optimizer) as scaled_loss:
             scaled_loss.backward()
-        if args.prof >= 0: torch.cuda.nvtx.range_pop()
+        if cfg.PROF >= 0: torch.cuda.nvtx.range_pop()
 
         # for param in model.parameters():
         #     print(param.data.double().sum().item(), param.grad.data.double().sum().item())
 
-        if args.prof >= 0: torch.cuda.nvtx.range_push("optimizer.step()")
+        if cfg.PROF >= 0: torch.cuda.nvtx.range_push("optimizer.step()")
         optimizer.step()
-        if args.prof >= 0: torch.cuda.nvtx.range_pop()
+        if cfg.PROF >= 0: torch.cuda.nvtx.range_pop()
 
-        if i % args.print_freq == 0:
+        if i % cfg.PRINT_FREQ == 0:
             # Every print_freq iterations, check the loss, accuracy, and speed.
             # For best performance, it doesn't make sense to print these metrics every
             # iteration, since they incur an allreduce and some host<->device syncs.
@@ -87,10 +87,10 @@ def train(args, cfg, train_loader, model, criterion, optimizer, epoch):
             prec1, prec5 = accuracy(output.data, target, topk=(1, 5))
 
             # Average loss and accuracy across processes for logging
-            if args.distributed:
-                reduced_loss = reduce_tensor(args.world_size, loss.data)
-                prec1 = reduce_tensor(args.world_size, prec1)
-                prec5 = reduce_tensor(args.world_size, prec5)
+            if cfg.DISTRIBUTED:
+                reduced_loss = reduce_tensor(cfg.NUM_GPUS, loss.data)
+                prec1 = reduce_tensor(cfg.NUM_GPUS, prec1)
+                prec5 = reduce_tensor(cfg.NUM_GPUS, prec5)
             else:
                 reduced_loss = loss.data
 
@@ -100,10 +100,10 @@ def train(args, cfg, train_loader, model, criterion, optimizer, epoch):
             top5.update(to_python_float(prec5), input.size(0))
 
             torch.cuda.synchronize()
-            batch_time.update((time.time() - end) / args.print_freq)
+            batch_time.update((time.time() - end) / cfg.PRINT_FREQ)
             end = time.time()
 
-            if args.local_rank == 0:
+            if cfg.RANK_ID == 0:
                 logger.info('Epoch: [{0}][{1}/{2}]\t'
                             'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
                             'Speed {3:.3f} ({4:.3f})\t'
@@ -112,21 +112,19 @@ def train(args, cfg, train_loader, model, criterion, optimizer, epoch):
                             'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'
                             'Prec@5 {top5.val:.3f} ({top5.avg:.3f})'.format(
                     epoch, i, len(train_loader),
-                    # args.world_size * args.batch_size / batch_time.val,
-                    # args.world_size * args.batch_size / batch_time.avg,
-                    args.world_size * cfg.DATALOADER.TRAIN_BATCH_SIZE / batch_time.val,
-                    args.world_size * cfg.DATALOADER.TRAIN_BATCH_SIZE / batch_time.avg,
+                    cfg.NUM_GPUS * cfg.DATALOADER.TRAIN_BATCH_SIZE / batch_time.val,
+                    cfg.NUM_GPUS * cfg.DATALOADER.TRAIN_BATCH_SIZE / batch_time.avg,
                     batch_time=batch_time,
                     lr=optimizer.param_groups[0]['lr'],
                     loss=losses, top1=top1, top5=top5))
-        if args.prof >= 0: torch.cuda.nvtx.range_push("prefetcher.next()")
+        if cfg.PROF >= 0: torch.cuda.nvtx.range_push("prefetcher.next()")
         input, target = prefetcher.next()
-        if args.prof >= 0: torch.cuda.nvtx.range_pop()
+        if cfg.PROF >= 0: torch.cuda.nvtx.range_pop()
 
         # Pop range "Body of iteration {}".format(i)
-        if args.prof >= 0: torch.cuda.nvtx.range_pop()
+        if cfg.PROF >= 0: torch.cuda.nvtx.range_pop()
 
-        if args.prof >= 0 and i == args.prof + 10:
+        if cfg.PROF >= 0 and i == cfg.PROF + 10:
             logger.info("Profiling ended at iteration {}".format(i))
             torch.cuda.cudart().cudaProfilerStop()
             quit()

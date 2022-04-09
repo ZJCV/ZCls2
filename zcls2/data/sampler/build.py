@@ -10,10 +10,10 @@
 from torch.utils.data.distributed import DistributedSampler
 
 
-def build_sampler(args, train_dataset, val_dataset):
+def build_sampler(cfg, train_dataset, val_dataset):
     train_sampler = None
     val_sampler = None
-    if args.distributed:
+    if cfg.DISTRIBUTED:
         train_sampler = DistributedSampler(train_dataset)
         val_sampler = DistributedSampler(val_dataset)
 

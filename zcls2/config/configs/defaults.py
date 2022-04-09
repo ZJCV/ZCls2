@@ -9,9 +9,13 @@ _C.OUTPUT_DIR = "./outputs/tmp"
 # operator implementations in GPU operator libraries.
 _C.RNG_SEED = 1
 
+_C.DETERMINISTIC = False
+
 # ---------------------------------------------------------------------------- #
 # Distributed options
 # ---------------------------------------------------------------------------- #
+_C.DISTRIBUTED = False
+
 # Number of GPUs to use (applies to both training and testing).
 _C.NUM_GPUS = 1
 
@@ -25,8 +29,6 @@ _C.RANK_ID = 0
 _C.DIST_BACKEND = "nccl"
 
 # Initialization method, includes TCP or shared file-system
-# _C.INIT_METHOD = "tcp://localhost:39129"
-# _C.INIT_METHOD = "env://localhost:31612"
 _C.INIT_METHOD = "env://"
 
 # ---------------------------------------------------------------------------- #
@@ -34,8 +36,11 @@ _C.INIT_METHOD = "env://"
 # ---------------------------------------------------------------------------- #
 _C.TRAIN = CN()
 
-# How many iterations to print the log on the command line
-_C.TRAIN.LOG_STEP = 10
+# Only run 10 iterations for profiling.
+_C.PROF = -1
+
+# print frequency (default: 10)
+_C.PRINT_FREQ = 10
 
 # refert to
 # [How to Break GPU Memory Boundaries Even with Large Batch Sizes](https://towardsdatascience.com/how-to-break-gpu-memory-boundaries-even-with-large-batch-sizes-7a9c27a400ce)
@@ -55,20 +60,10 @@ _C.TRAIN.EVAL_EPOCH = 1
 _C.TRAIN.MAX_EPOCH = 90
 
 # resume model weights, train epoch, criterion, optimizer and lr_scheduler
-_C.TRAIN.RESUME = False
+_C.RESUME = ""
 
-# Graphical recording of training log
-_C.TRAIN.USE_TENSORBOARD = True
-
-# Hybrid precision training
-# refer to [pytorch-distributed](https://github.com/zjykzj/pytorch-distributed)
-_C.TRAIN.HYBRID_PRECISION = False
-
-# the data enhancement operation mixup
-_C.TRAIN.MIXUP = False
-
-# the data enhancement operation cutmix
-_C.TRAIN.CUTMIX = False
+# evaluate model on validation set
+_C.EVALUATE = False
 
 # note: when using clip_gradient, set too small MAX_NORM value will make training slower
 # 1. [Proper way to do gradient clipping?](https://discuss.pytorch.org/t/proper-way-to-do-gradient-clipping/191)

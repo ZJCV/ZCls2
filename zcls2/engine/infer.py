@@ -21,7 +21,7 @@ from zcls2.util import logging
 logger = logging.get_logger(__name__)
 
 
-def validate(args, cfg, val_loader, model, criterion):
+def validate(cfg, val_loader, model, criterion):
     batch_time = AverageMeter()
     losses = AverageMeter()
     top1 = AverageMeter()
@@ -46,10 +46,10 @@ def validate(args, cfg, val_loader, model, criterion):
         # measure accuracy and record loss
         prec1, prec5 = accuracy(output.data, target, topk=(1, 5))
 
-        if args.distributed:
-            reduced_loss = reduce_tensor(args.world_size, loss.data)
-            prec1 = reduce_tensor(args.world_size, prec1)
-            prec5 = reduce_tensor(args.world_size, prec5)
+        if cfg.DISTRIBUTED:
+            reduced_loss = reduce_tensor(cfg.NUM_GPUS, loss.data)
+            prec1 = reduce_tensor(cfg.NUM_GPUS, prec1)
+            prec5 = reduce_tensor(cfg.NUM_GPUS, prec5)
         else:
             reduced_loss = loss.data
 
@@ -62,7 +62,7 @@ def validate(args, cfg, val_loader, model, criterion):
         end = time.time()
 
         # TODO:  Change timings to mirror train().
-        if args.local_rank == 0 and i % args.print_freq == 0:
+        if cfg.RANK_ID == 0 and i % cfg.PRINT_FREQ == 0:
             logger.info('Test: [{0}/{1}]\t'
                         'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
                         'Speed {2:.3f} ({3:.3f})\t'
@@ -70,10 +70,8 @@ def validate(args, cfg, val_loader, model, criterion):
                         'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'
                         'Prec@5 {top5.val:.3f} ({top5.avg:.3f})'.format(
                 i, len(val_loader),
-                # args.world_size * args.batch_size / batch_time.val,
-                # args.world_size * args.batch_size / batch_time.avg,
-                args.world_size * cfg.DATALOADER.TRAIN_BATCH_SIZE / batch_time.val,
-                args.world_size * cfg.DATALOADER.TRAIN_BATCH_SIZE / batch_time.avg,
+                cfg.NUM_GPUS * cfg.DATALOADER.TRAIN_BATCH_SIZE / batch_time.val,
+                cfg.NUM_GPUS * cfg.DATALOADER.TRAIN_BATCH_SIZE / batch_time.avg,
                 batch_time=batch_time, loss=losses,
                 top1=top1, top5=top5))
 

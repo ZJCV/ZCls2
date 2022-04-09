@@ -9,7 +9,6 @@
 
 import os
 
-from ..transform.build import build_transform
 from .general_dataset import GeneralDataset
 from .general_dataset_v2 import GeneralDatasetV2
 from .mp_dataset import MPDataset
@@ -21,7 +20,7 @@ __supported_dataset__ = [
 ]
 
 
-def build_dataset(args, cfg, train_transform, val_transform):
+def build_dataset(cfg, train_transform, val_transform):
     dataset_name = cfg.DATASET.NAME
     assert dataset_name in __supported_dataset__, f"{dataset_name} do not support"
 
@@ -44,9 +43,9 @@ def build_dataset(args, cfg, train_transform, val_transform):
             valdir, transform=val_transform
         )
     elif dataset_name == 'MPDataset':
-        num_gpus = args.world_size
-        rank_id = args.local_rank
-        epoch = args.epoch
+        num_gpus = cfg.NUM_GPUS
+        rank_id = cfg.RANK_ID
+        epoch = cfg.TRAIN.START_EPOCH
 
         train_dataset = MPDataset(
             traindir, transform=train_transform, shuffle=True, num_gpus=num_gpus, rank_id=rank_id, epoch=epoch

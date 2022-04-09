@@ -4,14 +4,13 @@
 @date: 2022/4/3 下午1:30
 @file: parser.py
 @author: zj
-@description: 
+@description:
+args仅保留apex特有的训练配置，其他的训练参数均包含在cfg文件中
+cfg负责数据/模型/损失函数/优化器/学习率调度器以及其他组件配置
 """
 
 import os
 import argparse
-
-from ..model.model.build import __supported_model__
-from ..data.dataset.build import __supported_dataset__
 
 
 def parse():
