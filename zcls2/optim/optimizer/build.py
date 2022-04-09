@@ -12,25 +12,30 @@ import torch.nn as nn
 from .sgd import build_sgd
 
 __supported__ = [
-    'sgd'
+    'SGD'
 ]
 
 
-def build_optimizer(args, model):
-    assert args.optimizer in __supported__
+def build_optimizer(cfg, model):
+    optimizer_name = cfg.OPTIMIZER.NAME
+    lr = cfg.OPTIMIZER.LR
+    momentum = cfg.OPTIMIZER.MOMENTUM
+    weight_decay = cfg.OPTIMIZER.WEIGHT_DECAY.DECAY
+
+    assert optimizer_name in __supported__
     assert isinstance(model, nn.Module)
-    groups = filter_weight(model)
+    groups = filter_weight(cfg, model)
 
-    if args.optimizer == 'sgd':
+    if optimizer_name == 'SGD':
         return build_sgd(groups,
-                         lr=args.lr,
-                         momentum=args.momentum,
-                         weight_decay=args.weight_decay)
+                         lr=lr,
+                         momentum=momentum,
+                         weight_decay=weight_decay)
     else:
-        raise ValueError(f"{args.optimizer} does not support")
+        raise ValueError(f"{optimizer_name} does not support")
 
 
-def filter_weight(module):
+def filter_weight(cfg, module):
     """
     1. Avoid bias of all layers and normalization layer for weight decay.
     2. And filter all layers which require_grad=False
@@ -44,19 +49,31 @@ def filter_weight(module):
         if isinstance(m, nn.Linear):
             group_decay.append(m.weight)
             if m.bias is not None:
-                # NO Linear BIAS
-                group_no_decay.append(m.bias)
+                if cfg.OPTIMIZER.WEIGHT_DECAY.NO_BIAS is True:
+                    # NO Linear BIAS
+                    group_no_decay.append(m.bias)
+                else:
+                    group_decay.append(m.bias)
         elif isinstance(m, nn.modules.conv._ConvNd):
             group_decay.append(m.weight)
             if m.bias is not None:
-                # NO Conv BIAS
-                group_no_decay.append(m.bias)
+                if cfg.OPTIMIZER.WEIGHT_DECAY.NO_BIAS is True:
+                    # NO Conv BIAS
+                    group_no_decay.append(m.bias)
+                else:
+                    group_decay.append(m.bias)
         elif isinstance(m, (nn.modules.batchnorm._BatchNorm, nn.GroupNorm, nn.LayerNorm)):
-            # NO BN Weights / BIAS
-            if m.weight is not None:
-                group_no_decay.append(m.weight)
-            if m.bias is not None:
-                group_no_decay.append(m.bias)
+            if cfg.OPTIMIZER.WEIGHT_DECAY.NO_NORM is True:
+                # NO BN Weights / BIAS
+                if m.weight is not None:
+                    group_no_decay.append(m.weight)
+                if m.bias is not None:
+                    group_no_decay.append(m.bias)
+            else:
+                if m.weight is not None:
+                    group_decay.append(m.weight)
+                if m.bias is not None:
+                    group_decay.append(m.bias)
 
     assert len(list(module.parameters())) == len(group_decay) + len(group_no_decay)
 

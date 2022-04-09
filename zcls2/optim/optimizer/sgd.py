@@ -9,7 +9,7 @@
 import torch
 
 
-def build_sgd(groups, lr=1e-3, momentum=0.9, weight_decay=1e-5):
+def build_sgd(groups, lr=1e-3, momentum=0.9, weight_decay=1e-4):
     return torch.optim.SGD(groups,
                            lr=lr,
                            momentum=momentum,

@@ -24,7 +24,7 @@ def adjust_learning_rate(args, cfg, optimizer, epoch, step, len_epoch):
     #     factor = factor + 1
     #
     # lr = args.lr * (0.1 ** factor)
-    lr = args.lr
+    lr = cfg.OPTIMIZER.LR
 
     warmup_epoch = cfg.LR_SCHEDULER.WARMUP_EPOCH
     """Warmup"""

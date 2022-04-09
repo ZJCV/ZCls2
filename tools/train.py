@@ -96,8 +96,9 @@ def main():
 
     # Scale learning rate based on global batch size
     # args.lr = args.lr * float(args.batch_size * args.world_size) / 256.
-    args.lr = args.lr * float(cfg.DATALOADER.TRAIN_BATCH_SIZE * args.world_size) / 256.
-    optimizer = build_optimizer(args, model)
+    # args.lr = args.lr * float(cfg.DATALOADER.TRAIN_BATCH_SIZE * args.world_size) / 256.
+    cfg.OPTIMIZER.LR = cfg.OPTIMIZER.LR * float(cfg.DATALOADER.TRAIN_BATCH_SIZE * args.world_size) / 256.
+    optimizer = build_optimizer(cfg, model)
 
     # Initialize Amp.  Amp accepts either values or strings for the optional override arguments,
     # for convenient interoperation with argparse.
