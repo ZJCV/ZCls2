@@ -28,9 +28,9 @@
 
 ## 背景
 
-经过近一年半的开发，[ZCls](https://github.com/ZJCV/ZCls)已经集成了许多优秀的训练特性，包括配置模块，分布式训练，混合精度训练，`mixup/cutmix`以及许多模型实现等等。在开发过程中，逐渐发现和当前最好的分类训练框架（比如[apex](https://github.com/NVIDIA/apex/tree/master/examples/imagenet)）相比，[ZCls](https://github.com/ZJCV/ZCls)的训练性能并不突出。
+经过近一年半的开发，[ZCls](https://github.com/ZJCV/ZCls)已经集成了许多优秀的训练特性，包括配置模块，注册模块，训练模块，以及许多模型实现(`resnet/mobilenet/senet-sknet-resnest/acbnet-repvgg-dbbnet/ghostnet/gcnet...`)等等。在开发过程中，逐渐发现和当前最好的分类训练框架（比如[apex](https://github.com/NVIDIA/apex/tree/master/examples/imagenet)）相比，[ZCls](https://github.com/ZJCV/ZCls)的训练速度并不突出。
 
-为了更好的提高训练性能，我决定重新开发一款更快速的分类模型训练框架[ZCls2](https://github.com/ZJCV/ZCls2)，基于[apex](https://github.com/NVIDIA/apex/tree/master/examples/imagenet)的同时能够提供更多更友好和更强大的特性。在初步的实现中，可以发现相比于[ZCls](https://github.com/ZJCV/ZCls)，新开发的[ZCls2](https://github.com/ZJCV/ZCls2)能够提高至少`50%`的训练速度。更多功能正在开发中。
+为了更好的提高训练速度，我决定重新开发一款更快速的分类模型训练框架[ZCls2](https://github.com/ZJCV/ZCls2)，基于[apex](https://github.com/NVIDIA/apex/tree/master/examples/imagenet)的同时能够提供更多更友好和更强大的特性。在初步的实现中，可以发现相比于[ZCls](https://github.com/ZJCV/ZCls)，新开发的[ZCls2](https://github.com/ZJCV/ZCls2)能够提高至少`50%`的训练速度。更多功能正在开发中。
 
 ## 安装
 

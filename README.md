@@ -28,9 +28,9 @@
 
 ## Background
 
-After nearly one and a half years of development, [ZCls](https://github.com/ZJCV/ZCls) has integrated many training features, includes configuration module, distributed training, mixed accuracy training, mixup / cutmix and many model implementations and so on. In the development process, it is found that compared with the current excellent classification training framework, such as [apex](https://github.com/NVIDIA/apex/tree/master/examples/imagenet), the training performance of [ZCls](https://github.com/ZJCV/ZCls) is not outstanding. 
+After nearly one and a half years of development, [ZCls](https://github.com/ZJCV/ZCls) has integrated many training features, includes configuration module, register module, training module, and many model implementations (`resnet/mobilenet/senet-sknet-resnest/acbnet-repvgg-dbbnet/ghostnet/gcnet...`) and so on. In the development process, it is found that compared with the current excellent classification training framework, such as [apex](https://github.com/NVIDIA/apex/tree/master/examples/imagenet), the training speed of [ZCls](https://github.com/ZJCV/ZCls) is not outstanding. 
 
-In order to better improve the training performance, we decided to develop a new training framework [ZCls2](https://github.com/ZJCV/ZCls2), which is implemented based on [apex](https://github.com/NVIDIA/apex/tree/master/examples/imagenet) and provides more friendly and powerful functions. In the preliminary implementation, it can be found that [ZCls2](https://github.com/ZJCV/ZCls2) improves the training speed by at least 50% compared with [ZCls](https://github.com/ZJCV/ZCls).  More functions are being added.
+In order to better improve the training speed, we decided to develop a new training framework [ZCls2](https://github.com/ZJCV/ZCls2), which is implemented based on [apex](https://github.com/NVIDIA/apex/tree/master/examples/imagenet) and provides more friendly and powerful functions. In the preliminary implementation, it can be found that [ZCls2](https://github.com/ZJCV/ZCls2) improves the training speed by at least 50% compared with [ZCls](https://github.com/ZJCV/ZCls).  More functions are being added.
 
 ## Installation
 
