@@ -11,11 +11,9 @@ import torch.optim as optim
 from torch.optim.optimizer import Optimizer
 
 
-def build_cosine_annearling_lr(args, optimizer):
+def build_cosine_annearling_lr(optimizer, warmup=True, warmup_epoch=5, max_epoch=90, minimal_lr=1e-6):
     assert isinstance(optimizer, Optimizer)
 
-    max_epoch = args.epochs
-    if args.warmup:
-        max_epoch = max_epoch - args.warmup_epochs
-    minimal_lr = 1e-6
+    if warmup:
+        max_epoch = max_epoch - warmup_epoch
     return optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=max_epoch, eta_min=minimal_lr)

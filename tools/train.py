@@ -106,7 +106,7 @@ def main():
                                       keep_batchnorm_fp32=args.keep_batchnorm_fp32,
                                       loss_scale=args.loss_scale
                                       )
-    lr_scheduler = build_lr_scheduler(args, optimizer)
+    lr_scheduler = build_lr_scheduler(cfg, optimizer)
 
     # For distributed training, wrap the model with apex.parallel.DistributedDataParallel.
     # This must be done AFTER the call to amp.initialize.  If model = DDP(model) is called
@@ -122,7 +122,6 @@ def main():
     # define loss function (criterion) and optimizer
     criterion = build_criterion(cfg).cuda()
 
-    args.epoch = 0
     # Optionally resume from a checkpoint
     if args.resume:
         # Use a local scope to avoid dangling references
@@ -130,7 +129,8 @@ def main():
             if os.path.isfile(args.resume):
                 logger.info("=> loading checkpoint '{}'".format(args.resume))
                 checkpoint = torch.load(args.resume, map_location=lambda storage, loc: storage.cuda(args.gpu))
-                args.start_epoch = checkpoint['epoch']
+                cfg.TRAIN.START_EPOCH = checkpoint['epoch']
+                # args.start_epoch = checkpoint['epoch']
                 global best_prec1
                 global best_prec5
                 global best_epoch
@@ -142,7 +142,6 @@ def main():
                 lr_scheduler.load_state_dict(checkpoint['lr_scheduler'])
                 logger.info("=> loaded checkpoint '{}' (epoch {})"
                             .format(args.resume, checkpoint['epoch']))
-                args.epoch = checkpoint['epoch']
             else:
                 logger.info("=> no checkpoint found at '{}'".format(args.resume))
 
@@ -155,7 +154,10 @@ def main():
         validate(args, cfg, val_loader, model, criterion)
         return
 
-    for epoch in range(args.start_epoch, args.epochs):
+    warmup = cfg.LR_SCHEDULER.IS_WARMUP
+    warmup_epoch = cfg.LR_SCHEDULER.WARMUP_EPOCH
+
+    for epoch in range(cfg.TRAIN.START_EPOCH, cfg.TRAIN.MAX_EPOCH):
         if isinstance(train_loader.dataset, MPDataset):
             train_loader.dataset.set_epoch(epoch)
         elif args.distributed:
@@ -164,7 +166,7 @@ def main():
         # train for one epoch
         train(args, cfg, train_loader, model, criterion, optimizer, epoch)
         torch.cuda.empty_cache()
-        if args.warmup and epoch < args.warmup_epochs:
+        if warmup and epoch < warmup_epoch:
             pass
         else:
             lr_scheduler.step()

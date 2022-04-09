@@ -42,14 +42,17 @@ _C.TRAIN.LOG_STEP = 10
 # [How to implement accumulated gradient？](https://discuss.pytorch.org/t/how-to-implement-accumulated-gradient/3822)
 _C.TRAIN.GRADIENT_ACCUMULATE_STEP = 1
 
+# number of epoch to begin train
+_C.TRAIN.START_EPOCH = 0
+
 # how many rounds to save training params, includes model weights, train epoch, criterion, optimizer and lr_scheduler
-_C.TRAIN.SAVE_EPOCH = 5
+_C.TRAIN.SAVE_EPOCH = 1
 
 # how many rounds to use model infer test dataset
-_C.TRAIN.EVAL_EPOCH = 5
+_C.TRAIN.EVAL_EPOCH = 1
 
-# how many rounds to train
-_C.TRAIN.MAX_EPOCH = 200
+# number of total epochs to run
+_C.TRAIN.MAX_EPOCH = 90
 
 # resume model weights, train epoch, criterion, optimizer and lr_scheduler
 _C.TRAIN.RESUME = False

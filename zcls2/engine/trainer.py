@@ -40,6 +40,9 @@ def train(args, cfg, train_loader, model, criterion, optimizer, epoch):
     model.train()
     end = time.time()
 
+    warmup = cfg.LR_SCHEDULER.IS_WARMUP
+    warmup_epoch = cfg.LR_SCHEDULER.WARMUP_EPOCH
+
     prefetcher = data_prefetcher(train_loader)
     input, target = prefetcher.next()
     i = 0
@@ -51,8 +54,8 @@ def train(args, cfg, train_loader, model, criterion, optimizer, epoch):
 
         if args.prof >= 0: torch.cuda.nvtx.range_push("Body of iteration {}".format(i))
 
-        if args.warmup and epoch < args.warmup_epochs:
-            adjust_learning_rate(args, optimizer, epoch, i, len(train_loader))
+        if warmup and epoch < warmup_epoch:
+            adjust_learning_rate(args, cfg, optimizer, epoch, i, len(train_loader))
 
         # compute output
         if args.prof >= 0: torch.cuda.nvtx.range_push("forward")

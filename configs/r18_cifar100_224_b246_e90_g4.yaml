@@ -2,12 +2,13 @@ RNG_SEED: 1
 DIST_BACKEND: "nccl"
 INIT_METHOD: "env://"
 OUTPUT_DIR: 'outputs/cifar_imagenet_224_b256_e90'
-#TRAIN:
-#  LOG_STEP: 10
-#  SAVE_EPOCH: 5
-#  EVAL_EPOCH: 5
-#  MAX_EPOCH: 200
-#  RESUME: False
+TRAIN:
+  #  LOG_STEP: 10
+  #  SAVE_EPOCH: 5
+  #  EVAL_EPOCH: 5
+  START_EPOCH: 0
+  MAX_EPOCH: 90
+  RESUME: False
 DATALOADER:
   TRAIN_BATCH_SIZE: 256
   TEST_BATCH_SIZE: 256
@@ -15,8 +16,8 @@ DATALOADER:
   RANDOM_SAMPLE: True
 DATASET:
   NAME: 'GeneralDatasetV2'
-  TRAIN_ROOT: '/home/mk/repos/data/cifar/zcls_cifar/train'
-  TEST_ROOT: '/home/mk/repos/data/cifar/zcls_cifar/test'
+  TRAIN_ROOT: '/home/zj/repos/ZCls2/data/cifar/zcls_cifar/train'
+  TEST_ROOT: '/home/zj/repos/ZCls2/data/cifar/zcls_cifar/test'
 #TRANSFORM:
 #  NORMALIZE: ((0.485, 0.456, 0.406), (0.229, 0.224, 0.225), 255.0, 1.0)
 MODEL:
@@ -27,3 +28,10 @@ MODEL:
   CRITERION:
     NAME: 'CrossEntropyLoss'
     REDUCTION: 'mean'
+LR_SCHEDULER:
+  NAME: 'MultiStepLR'
+  IS_WARMUP: True
+  WARMUP_EPOCH: 5
+  MULTISTEP_LR:
+    MILESTONES: [ 30, 60, 80 ]
+    GAMMA: 0.1

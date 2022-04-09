@@ -16,7 +16,7 @@ __supported_lr_scheduler__ = [
 ]
 
 
-def adjust_learning_rate(args, optimizer, epoch, step, len_epoch):
+def adjust_learning_rate(args, cfg, optimizer, epoch, step, len_epoch):
     """LR schedule that should yield 76% converged accuracy with batch size 256"""
     # factor = epoch // 30
     #
@@ -26,9 +26,10 @@ def adjust_learning_rate(args, optimizer, epoch, step, len_epoch):
     # lr = args.lr * (0.1 ** factor)
     lr = args.lr
 
+    warmup_epoch = cfg.LR_SCHEDULER.WARMUP_EPOCH
     """Warmup"""
-    if epoch < 5:
-        lr = lr * float(1 + step + epoch * len_epoch) / (5. * len_epoch)
+    if epoch < warmup_epoch:
+        lr = lr * float(1 + step + epoch * len_epoch) / (warmup_epoch * len_epoch)
 
     # if(args.local_rank == 0):
     #     print("epoch = {}, step = {}, lr = {}".format(epoch, step, lr))
@@ -37,12 +38,21 @@ def adjust_learning_rate(args, optimizer, epoch, step, len_epoch):
         param_group['lr'] = lr
 
 
-def build_lr_scheduler(args, optimizer):
-    assert args.lr_scheduler in __supported_lr_scheduler__
+def build_lr_scheduler(cfg, optimizer):
+    lr_scheduler_name = cfg.LR_SCHEDULER.NAME
+    assert lr_scheduler_name in __supported_lr_scheduler__
 
-    if args.lr_scheduler == 'MultiStepLR':
-        return build_multistep_lr(args, optimizer)
-    elif args.lr_scheduler == 'CosineAnnealingLR':
-        return build_cosine_annearling_lr(args, optimizer)
+    if lr_scheduler_name == 'MultiStepLR':
+        milestones = cfg.LR_SCHEDULER.MULTISTEP_LR.MILESTONES
+        gamma = cfg.LR_SCHEDULER.MULTISTEP_LR.GAMMA
+        return build_multistep_lr(optimizer, milestones=milestones, gamma=gamma)
+    elif lr_scheduler_name == 'CosineAnnealingLR':
+        warmup = cfg.LR_SCHEDULER.IS_WARMUP
+        warmup_epoch = cfg.LR_SCHEDULER.WARMUP_EPOCH
+        max_epoch = cfg.TRAIN.MAX_EPOCH
+
+        return build_cosine_annearling_lr(optimizer,
+                                          warmup=warmup, warmup_epoch=warmup_epoch, max_epoch=max_epoch,
+                                          minimal_lr=1e-6)
     else:
-        raise ValueError(f"{args.lr_scheduler} does not support")
+        raise ValueError(f"{lr_scheduler_name} does not support")

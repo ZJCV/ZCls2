@@ -41,10 +41,10 @@ def parse():
 
     # parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
     #                     help='number of data loading workers (default: 4)')
-    parser.add_argument('--epochs', default=90, type=int, metavar='N',
-                        help='number of total epochs to run')
-    parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
-                        help='manual epoch number (useful on restarts)')
+    # parser.add_argument('--epochs', default=90, type=int, metavar='N',
+    #                     help='number of total epochs to run')
+    # parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
+    #                     help='manual epoch number (useful on restarts)')
     # parser.add_argument('-b', '--batch-size', default=256, type=int,
     #                     metavar='N', help='mini-batch size per process (default: 256)')
 
@@ -60,12 +60,12 @@ def parse():
                         help='momentum')
     parser.add_argument('--weight-decay', '--wd', default=1e-4, type=float,
                         metavar='W', help='weight decay (default: 1e-4)')
-    parser.add_argument('--warmup', default=True, type=bool, metavar='WARMUP',
-                        help='Is warmup (default: True)')
-    parser.add_argument('--warmup-epochs', default=5, type=int, metavar='WARMUP-EPOCHS',
-                        help='Warmup epochs (default: 5)')
-    parser.add_argument('--lr-scheduler', default='MultiStepLR', type=str, metavar='LR-SCHEDULER',
-                        help='LR scheduler type (default: MultiStepLR)')
+    # parser.add_argument('--warmup', default=True, type=bool, metavar='WARMUP',
+    #                     help='Is warmup (default: True)')
+    # parser.add_argument('--warmup-epochs', default=5, type=int, metavar='WARMUP-EPOCHS',
+    #                     help='Warmup epochs (default: 5)')
+    # parser.add_argument('--lr-scheduler', default='MultiStepLR', type=str, metavar='LR-SCHEDULER',
+    #                     help='LR scheduler type (default: MultiStepLR)')
 
     parser.add_argument('--print-freq', '-p', default=10, type=int,
                         metavar='N', help='print frequency (default: 10)')
