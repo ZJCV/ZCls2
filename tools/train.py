@@ -3,7 +3,6 @@ import os
 import torch
 import torch.nn.parallel
 import torch.backends.cudnn as cudnn
-import torch.distributed as dist
 import torch.optim
 import torch.utils.data
 import torch.utils.data.distributed
@@ -16,7 +15,8 @@ from zcls2.model.criterion.build import build_criterion
 from zcls2.model.model.build import build_model
 from zcls2.engine.trainer import train
 from zcls2.engine.infer import validate
-from zcls2.util.parser import parse
+from zcls2.util.distributed import init_dist
+from zcls2.util.parser import parse, load_cfg
 from zcls2.util.collect_env import collect_env_info
 from zcls2.util.checkpoint import save_checkpoint
 from zcls2.data.dataset.mp_dataset import MPDataset
@@ -35,52 +35,15 @@ except ImportError:
 
 
 def init(args, cfg):
-    # ---------------------------------------------------------------------------- #
-    # Configure args
-    # ---------------------------------------------------------------------------- #
-    cudnn.benchmark = True
-    if args.deterministic:
-        cudnn.benchmark = False
-        cudnn.deterministic = True
-        torch.manual_seed(args.local_rank)
-        torch.set_printoptions(precision=10)
+    init_dist(args, cfg)
 
-    args.distributed = False
-    if 'WORLD_SIZE' in os.environ:
-        args.distributed = int(os.environ['WORLD_SIZE']) > 1
-
-    args.gpu = 0
-    args.world_size = 1
-
-    if args.distributed:
-        args.gpu = args.local_rank
-        torch.cuda.set_device(args.gpu)
-        torch.distributed.init_process_group(backend=cfg.DIST_BACKEND, init_method=cfg.INIT_METHOD)
-        args.world_size = torch.distributed.get_world_size()
-
-    assert torch.backends.cudnn.enabled, "Amp requires cudnn backend to be enabled."
-
-    if args.channels_last:
-        memory_format = torch.channels_last
-    else:
-        memory_format = torch.contiguous_format
-    # ---------------------------------------------------------------------------- #
-    # Log
-    # ---------------------------------------------------------------------------- #
-    if args.local_rank == 0 and not os.path.exists(args.output_dir):
-        os.makedirs(args.output_dir)
-
-    logging.setup_logging(local_rank=args.local_rank, output_dir=args.output_dir)
-    logger.info("Environment info:\n" + collect_env_info())
-    logger.info(args)
-    logger.info("Loaded configuration file {}".format(args.config))
-    if args.config:
+    if os.path.isfile(args.config):
         cfg.merge_from_file(args.config)
-        with open(args.config, "r") as cf:
-            config_str = "\n" + cf.read()
-            logger.info(config_str)
-    logger.info("Running with config:\n{}".format(cfg))
+    if args.local_rank == 0 and not os.path.exists(cfg.OUTPUT_DIR):
+        os.makedirs(cfg.OUTPUT_DIR)
 
+    logging.setup_logging(local_rank=args.local_rank, output_dir=cfg.OUTPUT_DIR)
+    logger.info("Environment info:\n" + collect_env_info())
     logger.info("local_rank: {0}, master_addr: {1}, master_port: {2}".format(
         os.environ['LOCAL_RANK'], os.environ['MASTER_ADDR'], os.environ['MASTER_PORT']))
     logger.info("opt_level = {}".format(args.opt_level))
@@ -88,18 +51,16 @@ def init(args, cfg):
     logger.info("loss_scale = {}".format(args.loss_scale, type(args.loss_scale)))
 
     logger.info("CUDNN VERSION: {}\n".format(torch.backends.cudnn.version()))
-    # ---------------------------------------------------------------------------- #
-    # Configure cfg
-    # ---------------------------------------------------------------------------- #
-    cfg.DISTRIBUTED = args.distributed
-    cfg.RANK_ID = args.gpu
-    cfg.NUM_GPUS = args.world_size
 
-    cfg.DETERMINISTIC = args.deterministic
-
-    cfg.TRAIN.RESUME = args.resume
-
-    return memory_format
+    logger.info("Loaded configuration file: {}".format(args.config))
+    if args.config:
+        cfg.merge_from_file(args.config)
+        with open(args.config, "r") as cf:
+            config_str = "\n" + cf.read()
+            logger.info(config_str)
+    logger.info(f"Loaded args: {args}")
+    load_cfg(args, cfg)
+    logger.info("Running with config:\n{}".format(cfg))
 
 
 def main():
@@ -109,14 +70,16 @@ def main():
     best_epoch = 0
 
     args = parse()
-    if os.path.isfile(args.config):
-        cfg.merge_from_file(args.config)
-    memory_format = init(args, cfg)
+    init(args, cfg)
+    if cfg.CHANNELS_LAST:
+        memory_format = torch.channels_last
+    else:
+        memory_format = torch.contiguous_format
 
     model = build_model(cfg, memory_format)
 
     # Scale learning rate based on global batch size
-    cfg.OPTIMIZER.LR = cfg.OPTIMIZER.LR * float(cfg.DATALOADER.TRAIN_BATCH_SIZE * args.world_size) / 256.
+    cfg.OPTIMIZER.LR = cfg.OPTIMIZER.LR * float(cfg.DATALOADER.TRAIN_BATCH_SIZE * cfg.NUM_GPUS) / 256.
     optimizer = build_optimizer(cfg, model)
 
     # Initialize Amp.  Amp accepts either values or strings for the optional override arguments,
@@ -173,9 +136,6 @@ def main():
         validate(cfg, val_loader, model, criterion)
         return
 
-    warmup = cfg.LR_SCHEDULER.IS_WARMUP
-    warmup_epoch = cfg.LR_SCHEDULER.WARMUP_EPOCH
-
     for epoch in range(cfg.TRAIN.START_EPOCH, cfg.TRAIN.MAX_EPOCH):
         if isinstance(train_loader.dataset, MPDataset):
             train_loader.dataset.set_epoch(epoch)
@@ -185,7 +145,7 @@ def main():
         # train for one epoch
         train(cfg, train_loader, model, criterion, optimizer, epoch)
         torch.cuda.empty_cache()
-        if warmup and epoch < warmup_epoch:
+        if cfg.LR_SCHEDULER.IS_WARMUP and epoch < cfg.LR_SCHEDULER.WARMUP_EPOCH:
             pass
         else:
             lr_scheduler.step()

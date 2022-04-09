@@ -22,9 +22,12 @@ def build_optimizer(cfg, model):
     momentum = cfg.OPTIMIZER.MOMENTUM
     weight_decay = cfg.OPTIMIZER.WEIGHT_DECAY.DECAY
 
+    no_bias = cfg.OPTIMIZER.WEIGHT_DECAY.NO_BIAS
+    no_norm = cfg.OPTIMIZER.WEIGHT_DECAY.NO_NORM
+
     assert optimizer_name in __supported__
     assert isinstance(model, nn.Module)
-    groups = filter_weight(cfg, model)
+    groups = filter_weight(model, no_bias, no_norm)
 
     if optimizer_name == 'SGD':
         return build_sgd(groups,
@@ -35,7 +38,7 @@ def build_optimizer(cfg, model):
         raise ValueError(f"{optimizer_name} does not support")
 
 
-def filter_weight(cfg, module):
+def filter_weight(module, no_bias, no_norm):
     """
     1. Avoid bias of all layers and normalization layer for weight decay.
     2. And filter all layers which require_grad=False
@@ -49,7 +52,7 @@ def filter_weight(cfg, module):
         if isinstance(m, nn.Linear):
             group_decay.append(m.weight)
             if m.bias is not None:
-                if cfg.OPTIMIZER.WEIGHT_DECAY.NO_BIAS is True:
+                if no_bias is True:
                     # NO Linear BIAS
                     group_no_decay.append(m.bias)
                 else:
@@ -57,13 +60,13 @@ def filter_weight(cfg, module):
         elif isinstance(m, nn.modules.conv._ConvNd):
             group_decay.append(m.weight)
             if m.bias is not None:
-                if cfg.OPTIMIZER.WEIGHT_DECAY.NO_BIAS is True:
+                if no_bias is True:
                     # NO Conv BIAS
                     group_no_decay.append(m.bias)
                 else:
                     group_decay.append(m.bias)
         elif isinstance(m, (nn.modules.batchnorm._BatchNorm, nn.GroupNorm, nn.LayerNorm)):
-            if cfg.OPTIMIZER.WEIGHT_DECAY.NO_NORM is True:
+            if no_norm is True:
                 # NO BN Weights / BIAS
                 if m.weight is not None:
                     group_no_decay.append(m.weight)

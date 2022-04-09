@@ -7,8 +7,35 @@
 @description: 
 """
 
+import os
+
 import torch
 import torch.distributed as dist
+import torch.backends.cudnn as cudnn
+
+
+def init_dist(args, cfg):
+    cudnn.benchmark = True
+    if args.deterministic:
+        cudnn.benchmark = False
+        cudnn.deterministic = True
+        torch.manual_seed(args.local_rank)
+        torch.set_printoptions(precision=10)
+
+    args.distributed = False
+    if 'WORLD_SIZE' in os.environ:
+        args.distributed = int(os.environ['WORLD_SIZE']) > 1
+
+    args.gpu = 0
+    args.world_size = 1
+
+    if args.distributed:
+        args.gpu = args.local_rank
+        torch.cuda.set_device(args.gpu)
+        torch.distributed.init_process_group(backend=cfg.DIST_BACKEND, init_method=cfg.INIT_METHOD)
+        args.world_size = torch.distributed.get_world_size()
+
+    assert torch.backends.cudnn.enabled, "Amp requires cudnn backend to be enabled."
 
 
 def reduce_tensor(world_size, tensor):

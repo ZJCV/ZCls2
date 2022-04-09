@@ -22,19 +22,11 @@ def parse():
                         metavar="CONFIG",
                         help="path to config file")
 
-    parser.add_argument('--print-freq', '-p', default=10, type=int,
-                        metavar='N', help='print frequency (default: 10)')
-    parser.add_argument('--output-dir', '-o', default='outputs', type=str,
-                        metavar='OUTPUT_DIR', help='output path (default: outputs)')
     parser.add_argument('--resume', default='', type=str, metavar='PATH',
                         help='path to latest checkpoint (default: none)')
     parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true',
                         help='evaluate model on validation set')
-    parser.add_argument('--pretrained', dest='pretrained', action='store_true',
-                        help='use pre-trained model')
 
-    parser.add_argument('--prof', default=-1, type=int,
-                        help='Only run 10 iterations for profiling.')
     parser.add_argument('--deterministic', action='store_true')
 
     parser.add_argument("--local_rank", default=os.getenv('LOCAL_RANK', 0), type=int)
@@ -46,3 +38,16 @@ def parse():
     args = parser.parse_args()
 
     return args
+
+
+def load_cfg(args, cfg):
+    cfg.DISTRIBUTED = args.distributed
+    cfg.RANK_ID = args.gpu
+    cfg.NUM_GPUS = args.world_size
+
+    cfg.DETERMINISTIC = args.deterministic
+
+    cfg.RESUME = args.resume
+    cfg.EVALUATE = args.evaluate
+
+    cfg.CHANNELS_LAST = args.channels_last
