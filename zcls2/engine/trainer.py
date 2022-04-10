@@ -54,7 +54,7 @@ def train(cfg, train_loader, model, criterion, optimizer, epoch):
 
         if cfg.PROF >= 0: torch.cuda.nvtx.range_push("Body of iteration {}".format(i))
 
-        if warmup and epoch < warmup_epoch:
+        if warmup and epoch < warmup_epoch + 1:
             adjust_learning_rate(cfg, optimizer, epoch, i, len(train_loader))
 
         # compute output
@@ -111,7 +111,7 @@ def train(cfg, train_loader, model, criterion, optimizer, epoch):
                             'Loss {loss.val:.10f} ({loss.avg:.4f})\t'
                             'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'
                             'Prec@5 {top5.val:.3f} ({top5.avg:.3f})'.format(
-                    epoch + 1, cfg.TRAIN.MAX_EPOCH, i, len(train_loader),
+                    epoch, cfg.TRAIN.MAX_EPOCH, i, len(train_loader),
                     cfg.NUM_GPUS * cfg.DATALOADER.TRAIN_BATCH_SIZE / batch_time.val,
                     cfg.NUM_GPUS * cfg.DATALOADER.TRAIN_BATCH_SIZE / batch_time.avg,
                     batch_time=batch_time,

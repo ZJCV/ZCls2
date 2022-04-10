@@ -50,8 +50,8 @@ _C.INIT_METHOD = "env://"
 # ---------------------------------------------------------------------------- #
 _C.TRAIN = CN()
 
-# number of epoch to begin train
-_C.TRAIN.START_EPOCH = 0
+# number of epoch to begin train (default: 1)
+_C.TRAIN.START_EPOCH = 1
 
 # how many rounds to use model infer test dataset
 _C.TRAIN.EVAL_EPOCH = 1

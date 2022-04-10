@@ -18,21 +18,12 @@ __supported_lr_scheduler__ = [
 
 def adjust_learning_rate(cfg, optimizer, epoch, step, len_epoch):
     """LR schedule that should yield 76% converged accuracy with batch size 256"""
-    # factor = epoch // 30
-    #
-    # if epoch >= 80:
-    #     factor = factor + 1
-    #
-    # lr = args.lr * (0.1 ** factor)
     lr = cfg.OPTIMIZER.LR
 
     warmup_epoch = cfg.LR_SCHEDULER.WARMUP_EPOCH
     """Warmup"""
-    if epoch < warmup_epoch:
-        lr = lr * float(1 + step + epoch * len_epoch) / (warmup_epoch * len_epoch)
-
-    # if(args.local_rank == 0):
-    #     print("epoch = {}, step = {}, lr = {}".format(epoch, step, lr))
+    if epoch < warmup_epoch + 1:
+        lr = lr * float(1 + step + (epoch - 1) * len_epoch) / (warmup_epoch * len_epoch)
 
     for param_group in optimizer.param_groups:
         param_group['lr'] = lr

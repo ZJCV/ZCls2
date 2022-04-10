@@ -138,7 +138,11 @@ def main():
         validate(cfg, val_loader, model, criterion)
         return
 
-    for epoch in range(cfg.TRAIN.START_EPOCH, cfg.TRAIN.MAX_EPOCH):
+    warmup = cfg.LR_SCHEDULER.IS_WARMUP
+    warmup_epoch = cfg.LR_SCHEDULER.WARMUP_EPOCH
+
+    assert cfg.TRAIN.START_EPOCH > 0
+    for epoch in range(cfg.TRAIN.START_EPOCH, cfg.TRAIN.MAX_EPOCH + 1):
         # train for one epoch
         start = time.time()
 
@@ -149,7 +153,7 @@ def main():
 
         train(cfg, train_loader, model, criterion, optimizer, epoch)
         torch.cuda.empty_cache()
-        if cfg.LR_SCHEDULER.IS_WARMUP and epoch < cfg.LR_SCHEDULER.WARMUP_EPOCH:
+        if warmup and epoch < (warmup_epoch + 1):
             pass
         else:
             lr_scheduler.step()
@@ -157,7 +161,7 @@ def main():
         end = time.time()
         logger.info("One epoch train need: {:.3f}".format((end - start)))
 
-        if (epoch + 1) % cfg.EVAL_EPOCH == 0:
+        if epoch % cfg.TRAIN.EVAL_EPOCH == 0:
             # evaluate on validation set
             start = time.time()
             prec1, prec5 = validate(cfg, val_loader, model, criterion)
@@ -167,21 +171,21 @@ def main():
             if is_best:
                 best_prec1 = prec1
                 best_prec5 = prec5
-                best_epoch = epoch + 1
+                best_epoch = epoch
             logger.info(' * Best_prec@1 {top1:.3f} Best_prec@5 {top5:.3f} Best_epoch {be}'
                         .format(top1=best_prec1, top5=best_prec5, be=best_epoch))
 
             # remember best prec@1 and save checkpoint
             if cfg.RANK_ID == 0:
                 save_checkpoint({
-                    'epoch': epoch + 1,
+                    'epoch': epoch,
                     'arch': cfg.MODEL.ARCH,
                     'state_dict': model.state_dict(),
                     'prec1': prec1,
                     'prec5': prec5,
                     'best_prec1': best_prec1,
                     'best_prec5': best_prec5,
-                    'best_epoch': epoch + 1,
+                    'best_epoch': epoch,
                     'optimizer': optimizer.state_dict(),
                     'lr_scheduler': lr_scheduler.state_dict(),
                 }, is_best, output_dir=cfg.OUTPUT_DIR, filename=f'checkpoint_{epoch}.pth.tar')
