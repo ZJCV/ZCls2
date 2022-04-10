@@ -46,6 +46,7 @@ def load_cfg(args, cfg):
     cfg.NUM_GPUS = args.world_size
 
     cfg.DETERMINISTIC = args.deterministic
+    cfg.RNG_SEED = args.local_rank
 
     cfg.RESUME = args.resume
     cfg.EVALUATE = args.evaluate
