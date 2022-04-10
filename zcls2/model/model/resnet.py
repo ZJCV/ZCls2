@@ -22,7 +22,7 @@ def get_resnet(pretrained=False, num_classes=1000, arch='resnet18'):
     assert arch in __supported_model__, f"{arch} not in {__supported_model__}"
 
     if pretrained == True:
-        model = models.__dict__[arch](pretrained=True)
+        model = models.__dict__[arch](pretrained=True, num_classes=1000)
         if num_classes != 1000:
             old_fc = model.fc
             assert isinstance(old_fc, nn.Linear)

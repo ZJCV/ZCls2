@@ -27,6 +27,7 @@ def get_ghostnet(pretrained=False, num_classes=1000, arch='ghostnet_050'):
             in_features = old_fc.in_features
             new_fc = create_linear(in_features, num_classes, bias=old_fc.bias is not None)
 
+            model.classifier = None
             model.classifier = new_fc
     else:
         model = models.__dict__[arch](pretrained=False, num_classes=num_classes)

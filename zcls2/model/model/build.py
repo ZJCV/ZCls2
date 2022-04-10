@@ -7,13 +7,13 @@
 @description: 
 """
 
-from . import resnet, ghostnet
+from . import resnet, ghostnet, mobilenet
 
 from zcls2.util import logging
 
 logger = logging.get_logger(__name__)
 
-__supported_model__ = resnet.__supported_model__ + ghostnet.__supported_model__
+__supported_model__ = resnet.__supported_model__ + ghostnet.__supported_model__ + mobilenet.__supported_model__
 
 
 def build_model(cfg, memory_format):
@@ -34,6 +34,8 @@ def build_model(cfg, memory_format):
         model = ghostnet.get_ghostnet(pretrained=is_pretrained, num_classes=num_classes, arch=model_arch)
     elif model_arch in resnet.__supported_model__:
         model = resnet.get_resnet(pretrained=is_pretrained, num_classes=num_classes, arch=model_arch)
+    elif model_arch in mobilenet.__supported_model__:
+        model = mobilenet.get_mobilenet(pretrained=is_pretrained, num_classes=num_classes, arch=model_arch)
     else:
         raise ValueError(f"{model_arch} does not support")
 
