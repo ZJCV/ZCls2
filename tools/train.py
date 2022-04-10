@@ -61,8 +61,11 @@ def init(args, cfg):
             logger.info(config_str)
     logger.info(f"Loaded args: {args}")
     load_cfg(args, cfg)
-    logger.info("Running with config:\n{}".format(cfg))
 
+    # Scale learning rate based on global batch size
+    cfg.OPTIMIZER.LR = cfg.OPTIMIZER.LR * float(cfg.DATALOADER.TRAIN_BATCH_SIZE * cfg.NUM_GPUS) / 256.
+
+    logger.info("Running with config:\n{}".format(cfg))
 
 def main():
     global best_prec1, best_prec5, best_epoch, args
@@ -78,9 +81,6 @@ def main():
         memory_format = torch.contiguous_format
 
     model = build_model(cfg, memory_format)
-
-    # Scale learning rate based on global batch size
-    cfg.OPTIMIZER.LR = cfg.OPTIMIZER.LR * float(cfg.DATALOADER.TRAIN_BATCH_SIZE * cfg.NUM_GPUS) / 256.
     optimizer = build_optimizer(cfg, model)
 
     # Initialize Amp.  Amp accepts either values or strings for the optional override arguments,
@@ -138,19 +138,21 @@ def main():
         return
 
     for epoch in range(cfg.TRAIN.START_EPOCH, cfg.TRAIN.MAX_EPOCH):
+        # train for one epoch
+        start = time.time()
+
         if isinstance(train_loader.dataset, MPDataset):
             train_loader.dataset.set_epoch(epoch)
         elif cfg.DISTRIBUTED:
             train_sampler.set_epoch(epoch)
 
-        # train for one epoch
-        start = time.time()
         train(cfg, train_loader, model, criterion, optimizer, epoch)
         torch.cuda.empty_cache()
         if cfg.LR_SCHEDULER.IS_WARMUP and epoch < cfg.LR_SCHEDULER.WARMUP_EPOCH:
             pass
         else:
             lr_scheduler.step()
+
         end = time.time()
         logger.info("One epoch train need: {:.3f}".format((end - start)))
 
