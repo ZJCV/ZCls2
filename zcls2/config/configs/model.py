@@ -19,8 +19,8 @@ def add_config(_C):
     _C.MODEL.ARCH = 'resnet18'
     # use pre-trained model
     _C.MODEL.PRETRAINED = True
-    # number of model output (default: 1000)
-    _C.MODEL.NUM_CLASSES = 1000
+    # number of model output (default: 100 for CIFAR100)
+    _C.MODEL.NUM_CLASSES = 100
     # enabling apex sync BN.
     _C.MODEL.SYNC_BN = False
 

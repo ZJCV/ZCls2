@@ -67,6 +67,7 @@ def init(args, cfg):
 
     logger.info("Running with config:\n{}".format(cfg))
 
+
 def main():
     global best_prec1, best_prec5, best_epoch, args
     best_prec1 = 0
@@ -156,33 +157,37 @@ def main():
         end = time.time()
         logger.info("One epoch train need: {:.3f}".format((end - start)))
 
-        # evaluate on validation set
-        start = time.time()
-        prec1, prec5 = validate(cfg, val_loader, model, criterion)
-        torch.cuda.empty_cache()
+        if (epoch + 1) % cfg.EVAL_EPOCH == 0:
+            # evaluate on validation set
+            start = time.time()
+            prec1, prec5 = validate(cfg, val_loader, model, criterion)
+            torch.cuda.empty_cache()
 
-        is_best = prec1 > best_prec1
-        if is_best:
-            best_prec1 = prec1
-            best_prec5 = prec5
-            best_epoch = epoch + 1
-        logger.info(' * Best_prec@1 {top1:.3f} Best_prec@5 {top5:.3f} Best_epoch {be}'
-                    .format(top1=best_prec1, top5=best_prec5, be=best_epoch))
+            is_best = prec1 > best_prec1
+            if is_best:
+                best_prec1 = prec1
+                best_prec5 = prec5
+                best_epoch = epoch + 1
+            logger.info(' * Best_prec@1 {top1:.3f} Best_prec@5 {top5:.3f} Best_epoch {be}'
+                        .format(top1=best_prec1, top5=best_prec5, be=best_epoch))
 
-        # remember best prec@1 and save checkpoint
-        if cfg.RANK_ID == 0:
-            save_checkpoint({
-                'epoch': epoch + 1,
-                'arch': cfg.MODEL.ARCH,
-                'state_dict': model.state_dict(),
-                'best_prec1': best_prec1,
-                'best_prec5': best_prec5,
-                'optimizer': optimizer.state_dict(),
-                'lr_scheduler': lr_scheduler.state_dict(),
-            }, is_best, output_dir=cfg.OUTPUT_DIR, filename=f'checkpoint_{epoch}.pth.tar')
+            # remember best prec@1 and save checkpoint
+            if cfg.RANK_ID == 0:
+                save_checkpoint({
+                    'epoch': epoch + 1,
+                    'arch': cfg.MODEL.ARCH,
+                    'state_dict': model.state_dict(),
+                    'prec1': prec1,
+                    'prec5': prec5,
+                    'best_prec1': best_prec1,
+                    'best_prec5': best_prec5,
+                    'best_epoch': epoch + 1,
+                    'optimizer': optimizer.state_dict(),
+                    'lr_scheduler': lr_scheduler.state_dict(),
+                }, is_best, output_dir=cfg.OUTPUT_DIR, filename=f'checkpoint_{epoch}.pth.tar')
 
-        end = time.time()
-        logger.info("One epoch validate need: {:.3f}".format((end - start)))
+            end = time.time()
+            logger.info("One epoch validate need: {:.3f}".format((end - start)))
 
 
 if __name__ == '__main__':
