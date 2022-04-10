@@ -1,4 +1,5 @@
 import os
+import time
 
 import torch
 import torch.nn.parallel
@@ -143,14 +144,18 @@ def main():
             train_sampler.set_epoch(epoch)
 
         # train for one epoch
+        start = time.time()
         train(cfg, train_loader, model, criterion, optimizer, epoch)
         torch.cuda.empty_cache()
         if cfg.LR_SCHEDULER.IS_WARMUP and epoch < cfg.LR_SCHEDULER.WARMUP_EPOCH:
             pass
         else:
             lr_scheduler.step()
+        end = time.time()
+        logger.info("One epoch train need: {:.3f}".format((end - start)))
 
         # evaluate on validation set
+        start = time.time()
         prec1, prec5 = validate(cfg, val_loader, model, criterion)
         torch.cuda.empty_cache()
 
@@ -173,6 +178,9 @@ def main():
                 'optimizer': optimizer.state_dict(),
                 'lr_scheduler': lr_scheduler.state_dict(),
             }, is_best, output_dir=cfg.OUTPUT_DIR, filename=f'checkpoint_{epoch}.pth.tar')
+
+        end = time.time()
+        logger.info("One epoch validate need: {:.3f}".format((end - start)))
 
 
 if __name__ == '__main__':

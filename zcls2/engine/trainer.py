@@ -104,14 +104,14 @@ def train(cfg, train_loader, model, criterion, optimizer, epoch):
             end = time.time()
 
             if cfg.RANK_ID == 0:
-                logger.info('Epoch: [{0}][{1}/{2}]\t'
+                logger.info('Epoch: [{0}/{1}][{2}/{3}]\t'
                             'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
-                            'Speed {3:.3f} ({4:.3f})\t'
+                            'Speed {4:.3f} ({5:.3f})\t'
                             'Lr {lr:.10f}\t'
                             'Loss {loss.val:.10f} ({loss.avg:.4f})\t'
                             'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'
                             'Prec@5 {top5.val:.3f} ({top5.avg:.3f})'.format(
-                    epoch, i, len(train_loader),
+                    epoch + 1, cfg.TRAIN.MAX_EPOCH, i, len(train_loader),
                     cfg.NUM_GPUS * cfg.DATALOADER.TRAIN_BATCH_SIZE / batch_time.val,
                     cfg.NUM_GPUS * cfg.DATALOADER.TRAIN_BATCH_SIZE / batch_time.avg,
                     batch_time=batch_time,
