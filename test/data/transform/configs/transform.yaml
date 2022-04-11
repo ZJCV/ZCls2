@@ -1,0 +1,24 @@
+TRANSFORM:
+  TRAIN_METHODS: ('ColorJitter', 'RandomAutocontrast', 'RandomAdjustSharpness', 'RandomErasing', 'RandomPosterize',
+    'CenterCrop', 'RandomCrop', 'RandomHorizontalFlip', 'RandomVerticalFlip', 'RandomRotation', 'RandomResizedCrop', 'Resize',
+    'AutoAugment', 'RandAugment')
+  TEST_METHODS: ('ColorJitter', 'RandomAutocontrast', 'RandomAdjustSharpness', 'RandomErasing', 'RandomPosterize',
+    'CenterCrop', 'RandomCrop', 'RandomHorizontalFlip', 'RandomVerticalFlip', 'RandomRotation', 'RandomResizedCrop', 'Resize',
+    'AutoAugment', 'RandAugment')
+  ConvertImageDtype: 'uint8'
+  NORMALIZE: ((0.485, 0.456, 0.406), (0.229, 0.224, 0.225), False)
+  AutoAugment: ("IMAGENET", "NEAREST")
+  TRAIN_CROP: (224,)
+  TEST_CROP: (224,)
+  RandomHorizontalFlip: 0.5
+  RandomVerticalFlip: 0.5
+  RandomRotate: (0, "NEAREST", False)
+  TRAIN_RESIZE: (224,)
+  TEST_RESIZE: (256,)
+  TRAIN_RESIZE_CROP: (224,)
+  TEST_RESIZE_CROP: (224,)
+  ColorJitter: (0, 0, 0, 0)
+  RandomAutocontrast: 0.5
+  RandomAdjustSharpness: (1, 0.5)
+  RandomErasing: (0.5, (0.02, 0.33), (0.3, 3.3), 0, False)
+  RandomPosterize: (8, 0.5)

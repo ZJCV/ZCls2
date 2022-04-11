@@ -15,8 +15,7 @@ class data_prefetcher():
         self.loader = iter(loader)
         self.stream = torch.cuda.Stream()
 
-        mean = cfg.TRANSFORM.MEAN
-        std = cfg.TRANSFORM.STD
+        mean, std, _ = cfg.TRANSFORM.NORMALIZE
         assert len(mean) == len(std)
 
         mean_list = list()

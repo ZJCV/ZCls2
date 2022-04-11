@@ -16,8 +16,12 @@ DATASET:
   TRAIN_ROOT: './data/cifar/train'
   TEST_ROOT: './data/cifar/test'
 TRANSFORM:
-  MEAN: (0.485, 0.456, 0.406)
-  STD: (0.229, 0.224, 0.225)
+  TRAIN_METHODS: ('RandomResizedCrop', 'RandomHorizontalFlip')
+  TEST_METHODS: ('Resize', 'CenterCrop')
+  TRAIN_RESIZE_CROP: (224,)
+  TEST_RESIZE: (256,)
+  TEST_CROP: (224,)
+  NORMALIZE: ((0.485, 0.456, 0.406), (0.229, 0.224, 0.225), False)
 MODEL:
   ARCH: 'resnet18'
   PRETRAINED: True

@@ -16,8 +16,11 @@ from .dataloader.build import build_dataloader
 
 
 def build_data(cfg, memory_format):
-    train_transform, val_transform = build_transform(cfg)
-    train_dataset, val_dataset = build_dataset(cfg, train_transform, val_transform)
+    train_transform, train_target_transform = build_transform(cfg, is_train=True)
+    train_dataset = build_dataset(cfg, train_transform, train_target_transform, is_train=True)
+
+    val_transform, val_target_transform = build_transform(cfg, is_train=False)
+    val_dataset = build_dataset(cfg, val_transform, val_target_transform, is_train=False)
 
     if isinstance(train_dataset, IterableDataset):
         train_sampler, val_sampler = None, None
