@@ -16,4 +16,7 @@ def build_cosine_annearling_lr(optimizer, warmup=True, warmup_epoch=5, max_epoch
 
     if warmup:
         max_epoch = max_epoch - warmup_epoch
-    return optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=max_epoch, eta_min=minimal_lr)
+    # Ensure that the last round is minimal_lr
+    lr_scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=max_epoch - 1, eta_min=minimal_lr)
+
+    return lr_scheduler
