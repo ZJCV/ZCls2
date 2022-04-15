@@ -25,7 +25,7 @@ time1=$(date +%s)
 echo "start time: $time1"
 
 CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 --master_port="15231" \
-  main_amp.py --arch resnet18 --pretrained --num-classes 100 \
+  main_amp.py --arch resnet18 --pretrained --num-classes 10 \
   --workers 4 --batch-size 256 --learning-rate 0.1 --momentum 0.9 --weight-decay 1e-4 \
   --epochs 90 --start-epoch 0 \
   --opt-level O1 \
