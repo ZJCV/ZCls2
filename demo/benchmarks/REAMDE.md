@@ -27,6 +27,48 @@ bash run.sh
 
 This script will download torchvision data and extract to `./data/` folder.
 
+```
+ZCls2/data$ tree -L 2
+.
+├── cifar10
+│   ├── cifar-10-batches-py
+│   ├── cifar-10-python.tar.gz
+│   ├── train
+│   └── val
+├── cifar100
+│   ├── cifar-100-python
+│   ├── cifar-100-python.tar.gz
+│   ├── train
+│   └── val
+├── cifar-10-python.tar.gz
+└── fashionmnist
+    ├── FashionMNIST
+    │   ├── processed
+    │   └── raw
+    ├── train
+    │   ├── Ankle boot
+    │   ├── Bag
+    │   ├── Coat
+    │   ├── Dress
+    │   ├── Pullover
+    │   ├── Sandal
+    │   ├── Shirt
+    │   ├── Sneaker
+    │   ├── Trouser
+    │   └── T-shirt
+    └── val
+        ├── Ankle boot
+        ├── Bag
+        ├── Coat
+        ├── Dress
+        ├── Pullover
+        ├── Sandal
+        ├── Shirt
+        ├── Sneaker
+        ├── Trouser
+        └── T-shirt
+```
+
 ## Results
 
 | repos  | arch | dataset  | top1  | top5  | train_time  |
@@ -38,7 +80,7 @@ This script will download torchvision data and extract to `./data/` folder.
 | apex  | resnet18  | fashionmnist  | 88.830  | 99.880 | 902  |
 | zcls2 | resnet18  | fashionmnist  | 94.250   | 99.970  | 907  |
 
-I don't set `cudnn.deterministic = True` and `cudnn.benchmark = False`, so each time the best_prec@1/best_prec@5 is different, may be big diff. For example, FashionMNIST in ZCls2:
+I don't set `cudnn.deterministic = True` and `cudnn.benchmark = False`, so each time the `best_prec@1/best_prec@5` is different, may be big diff. For example, FashionMNIST in ZCls2:
 
 1. `94.250 / 99.970`
 2. `88.150 / 99.850`
