@@ -5,38 +5,33 @@
 
 
     Linux (Windows is not officially supported)
-    Python 3.8
+    Python 3.9
     PyTorch 1.8.2 or higher
     torchvison 0.9.2 or higher
 
-[comment]: <> (## Install ZCls2)
+About `apex`，see [NVIDIA/apex](https://github.com/NVIDIA/apex)
 
-[comment]: <> (### Source install)
+## Install ZCls2
 
-[comment]: <> (* Install PyTorch and torchvision following the official instructions.)
+### Source install
 
-[comment]: <> (* Clone the ZCls2 repository.)
+* Install `pytorch/torchvision/apex` following the official instructions.
 
-[comment]: <> (```)
+* Clone the `ZCls2` repository.
 
-[comment]: <> (git clone https://github.com/ZJCV/ZCls2.git)
+```
+git clone https://github.com/ZJCV/ZCls2.git
+cd ZCls2
+```
 
-[comment]: <> (cd ZCls2)
+* Install `ZCls2`.
 
-[comment]: <> (```)
+```
+python3 setup.py install
+```
 
-[comment]: <> (* Install ZCls2.)
+### Pip install
 
-[comment]: <> (```)
-
-[comment]: <> (python3 setup.py install)
-
-[comment]: <> (```)
-
-[comment]: <> (### Pip install)
-
-[comment]: <> (```python)
-
-[comment]: <> (pip3 install zcls2)
-
-[comment]: <> (```)
+```python
+pip3 install zcls2
+```

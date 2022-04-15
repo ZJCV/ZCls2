@@ -11,6 +11,7 @@
 
     .
     ├── configs                      - Sample configuration file
+    ├── demo                         - Example projects
     ├── docs                         - Operation document
     ├── imgs                         - Common images
     ├── LICENSE                      - License file
