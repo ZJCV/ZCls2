@@ -7,11 +7,17 @@
 @description: 
 """
 
+from typing import Optional
+
 import torch.optim as optim
 from torch.optim.optimizer import Optimizer
 
 
-def build_cosine_annearling_lr(optimizer, warmup=True, warmup_epoch=5, max_epoch=90, minimal_lr=1e-6):
+def build_cosine_annearling_lr(optimizer: Optimizer,
+                               warmup: Optional[bool] = True,
+                               warmup_epoch: Optional[int] = 5,
+                               max_epoch: Optional[int] = 90,
+                               minimal_lr: Optional[float] = 1e-6):
     assert isinstance(optimizer, Optimizer)
 
     if warmup:

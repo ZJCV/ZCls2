@@ -7,12 +7,15 @@
 @description: 
 """
 
+from typing import Tuple, Optional
+
 import torch
 
 import numpy as np
 
 
-def fast_collate(batch, memory_format):
+def fast_collate(batch, memory_format: Optional[torch.memory_format] = torch.contiguous_format) \
+        -> Tuple[torch.Tensor, torch.Tensor]:
     imgs = [img[0] for img in batch]
     targets = torch.tensor([target[1] for target in batch], dtype=torch.int64)
     w = imgs[0].size[0]

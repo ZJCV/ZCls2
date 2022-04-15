@@ -7,10 +7,12 @@
 @description: 
 """
 
+from yacs.config import CfgNode
+
 from torch.utils.data.distributed import DistributedSampler
 
 
-def build_sampler(cfg, train_dataset, val_dataset):
+def build_sampler(cfg: CfgNode, train_dataset, val_dataset):
     train_sampler = None
     val_sampler = None
     if cfg.DISTRIBUTED:

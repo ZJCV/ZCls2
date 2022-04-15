@@ -7,6 +7,9 @@
 @description: 
 """
 
+from yacs.config import CfgNode
+from torch.optim.optimizer import Optimizer
+
 from .multi_step_lr import build_multistep_lr
 from .cosine_annealing_lr import build_cosine_annearling_lr
 
@@ -16,7 +19,7 @@ __supported_lr_scheduler__ = [
 ]
 
 
-def adjust_learning_rate(cfg, optimizer, epoch, step, len_epoch):
+def adjust_learning_rate(cfg: CfgNode, optimizer: Optimizer, epoch: int, step: int, len_epoch: int):
     """LR schedule that should yield 76% converged accuracy with batch size 256"""
     lr = cfg.OPTIMIZER.LR
 
@@ -29,7 +32,7 @@ def adjust_learning_rate(cfg, optimizer, epoch, step, len_epoch):
         param_group['lr'] = lr
 
 
-def build_lr_scheduler(cfg, optimizer):
+def build_lr_scheduler(cfg: CfgNode, optimizer: Optimizer):
     lr_scheduler_name = cfg.LR_SCHEDULER.NAME
     assert lr_scheduler_name in __supported_lr_scheduler__
 

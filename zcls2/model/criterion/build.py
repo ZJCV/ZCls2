@@ -7,6 +7,9 @@
 @description: 
 """
 
+import torch.nn as nn
+from yacs.config import CfgNode
+
 from .cross_entropy_loss import build_cross_entropy_loss
 from .large_margin_softmax_loss import build_large_margin_softmax_loss
 
@@ -16,7 +19,7 @@ __supported_criterion__ = [
 ]
 
 
-def build_criterion(cfg):
+def build_criterion(cfg: CfgNode) -> nn.Module:
     loss_name = cfg.MODEL.CRITERION.NAME
     reduction = cfg.MODEL.CRITERION.REDUCTION
 

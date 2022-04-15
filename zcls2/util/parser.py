@@ -10,10 +10,14 @@ cfg负责数据/模型/损失函数/优化器/学习率调度器以及其他组�
 """
 
 import os
+
 import argparse
+from argparse import Namespace
+
+from yacs.config import CfgNode
 
 
-def parse():
+def parse() -> Namespace:
     parser = argparse.ArgumentParser(description='ZCls2 Training with Pytorch')
     parser.add_argument('-cfg',
                         "--config",
@@ -40,7 +44,7 @@ def parse():
     return args
 
 
-def load_cfg(args, cfg):
+def load_cfg(args: Namespace, cfg: CfgNode):
     cfg.DISTRIBUTED = args.distributed
     cfg.RANK_ID = args.gpu
     cfg.NUM_GPUS = args.world_size

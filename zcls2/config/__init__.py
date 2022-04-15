@@ -4,7 +4,7 @@
 @date: 2022/4/4 上午11:17
 @file: __init__.py.py
 @author: zj
-@description: 
+@description:
 """
 
 from zcls2.config.configs.defaults import _C
@@ -28,4 +28,4 @@ def get_cfg_defaults():
     return _C.clone()
 
 
-cfg = get_cfg_defaults()
+# cfg = get_cfg_defaults()

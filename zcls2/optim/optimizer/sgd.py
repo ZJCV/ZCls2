@@ -6,10 +6,16 @@
 @author: zj
 @description: 
 """
+from typing import Optional
+
 import torch
+from torch.optim.optimizer import Optimizer
 
 
-def build_sgd(groups, lr=1e-3, momentum=0.9, weight_decay=1e-4):
+def build_sgd(groups: list,
+              lr: Optional[float] = 1e-3,
+              momentum: Optional[float] = 0.9,
+              weight_decay: Optional[float] = 1e-4) -> Optimizer:
     return torch.optim.SGD(groups,
                            lr=lr,
                            momentum=momentum,

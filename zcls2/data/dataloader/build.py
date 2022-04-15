@@ -8,15 +8,23 @@
 """
 
 import torch
+from torch.utils.data import Dataset, Sampler
+
+from yacs.config import CfgNode
 
 from .collate import fast_collate
 
 
-def build_dataloader(cfg, train_dataset, val_dataset, train_sampler, val_sampler, shuffle, memory_format):
+def build_dataloader(cfg: CfgNode, train_dataset: Dataset, val_dataset: Dataset,
+                     train_sampler: Sampler, val_sampler: Sampler, shuffle: bool):
     train_batch_size = cfg.DATALOADER.TRAIN_BATCH_SIZE
     test_batch_size = cfg.DATALOADER.TEST_BATCH_SIZE
     num_workers = cfg.DATALOADER.NUM_WORKERS
 
+    if cfg.CHANNELS_LAST:
+        memory_format = torch.channels_last
+    else:
+        memory_format = torch.contiguous_format
     collate_fn = lambda b: fast_collate(b, memory_format)
 
     train_loader = torch.utils.data.DataLoader(

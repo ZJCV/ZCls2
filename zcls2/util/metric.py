@@ -7,8 +7,10 @@
 @description: 
 """
 
+import torch
 
-def accuracy(output, target, topk=(1,)):
+
+def accuracy(output: torch.Tensor, target: torch.Tensor, topk=(1,)) -> list:
     """Computes the precision@k for the specified values of k"""
     maxk = max(topk)
     batch_size = target.size(0)

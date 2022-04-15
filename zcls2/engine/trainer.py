@@ -8,7 +8,14 @@
 """
 
 import time
+
+from typing import Optional
+from yacs.config import CfgNode
+
 import torch
+import torch.nn as nn
+from torch.optim.optimizer import Optimizer
+from torch.utils.data import DataLoader
 
 try:
     from apex.parallel import DistributedDataParallel as DDP
@@ -30,7 +37,8 @@ from zcls2.util import logging
 logger = logging.get_logger(__name__)
 
 
-def train(cfg, train_loader, model, criterion, optimizer, epoch):
+def train(cfg: CfgNode, train_loader: DataLoader, model: nn.Module, criterion: nn.Module, optimizer: Optimizer,
+          epoch: Optional[int] = 1) -> None:
     batch_time = AverageMeter()
     losses = AverageMeter()
     top1 = AverageMeter()

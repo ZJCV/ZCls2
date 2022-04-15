@@ -10,6 +10,8 @@
 import torch.nn as nn
 import torchvision.models as models
 
+from typing import Optional
+
 from .util import create_linear
 
 __supported_model__ = [
@@ -18,7 +20,9 @@ __supported_model__ = [
 ]
 
 
-def get_resnet(pretrained=False, num_classes=1000, arch='resnet18'):
+def get_resnet(pretrained: Optional[bool] = False,
+               num_classes: Optional[int] = 1000,
+               arch: Optional[str] = 'resnet18') -> nn.Module:
     assert arch in __supported_model__, f"{arch} not in {__supported_model__}"
 
     if pretrained == True:

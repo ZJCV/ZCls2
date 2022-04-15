@@ -13,8 +13,11 @@ import torch
 import torch.distributed as dist
 import torch.backends.cudnn as cudnn
 
+from yacs.config import CfgNode
+from argparse import Namespace
 
-def init_dist(args, cfg):
+
+def init_dist(args: Namespace, cfg: CfgNode) -> None:
     cudnn.benchmark = True
     if args.deterministic:
         cudnn.benchmark = False

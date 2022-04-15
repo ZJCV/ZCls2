@@ -10,6 +10,8 @@
 import torch.nn as nn
 import torchvision.models as models
 
+from typing import Optional
+
 from .util import create_linear
 
 __supported_model__ = [
@@ -17,7 +19,9 @@ __supported_model__ = [
 ]
 
 
-def get_mobilenet(pretrained=False, num_classes=1000, arch='mobilenet_v2'):
+def get_mobilenet(pretrained: Optional[bool] = False,
+                  num_classes: Optional[int] = 1000,
+                  arch: Optional[str] = 'mobilenet_v2') -> nn.Module:
     assert arch in __supported_model__, f"{arch} not in {__supported_model__}"
 
     if pretrained == True:

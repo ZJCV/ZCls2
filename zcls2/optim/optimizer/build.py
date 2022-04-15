@@ -7,7 +7,11 @@
 @description: 
 """
 
+from yacs.config import CfgNode
+from typing import Optional
+
 import torch.nn as nn
+from torch.optim.optimizer import Optimizer
 
 from .sgd import build_sgd
 
@@ -16,7 +20,7 @@ __supported__ = [
 ]
 
 
-def build_optimizer(cfg, model):
+def build_optimizer(cfg: CfgNode, model: nn.Module) -> Optimizer:
     optimizer_name = cfg.OPTIMIZER.NAME
     lr = cfg.OPTIMIZER.LR
     momentum = cfg.OPTIMIZER.MOMENTUM
@@ -38,7 +42,9 @@ def build_optimizer(cfg, model):
         raise ValueError(f"{optimizer_name} does not support")
 
 
-def filter_weight(module, no_bias, no_norm):
+def filter_weight(module: nn.Module,
+                  no_bias: Optional[bool] = False,
+                  no_norm: Optional[bool] = False) -> list:
     """
     1. Avoid bias of all layers and normalization layer for weight decay.
     2. And filter all layers which require_grad=False

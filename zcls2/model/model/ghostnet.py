@@ -8,6 +8,7 @@
 """
 
 import torch.nn as nn
+from typing import Optional
 import timm.models as models
 
 from .util import create_linear
@@ -15,7 +16,9 @@ from .util import create_linear
 __supported_model__ = ['ghostnet_050', 'ghostnet_100', 'ghostnet_130']
 
 
-def get_ghostnet(pretrained=False, num_classes=1000, arch='ghostnet_050'):
+def get_ghostnet(pretrained: Optional[bool] = False,
+                 num_classes: Optional[int] = 1000,
+                 arch: Optional[str] = 'ghostnet_050') -> nn.Module:
     assert arch in __supported_model__, f"{arch} not in {__supported_model__}"
 
     if pretrained == True:

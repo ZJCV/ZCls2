@@ -7,11 +7,15 @@
 @description: 
 """
 
+from typing import Optional
+
 import torch.optim as optim
 from torch.optim.optimizer import Optimizer
 
 
-def build_multistep_lr(optimizer, milestones=None, gamma=0.1):
+def build_multistep_lr(optimizer: Optimizer,
+                       milestones: Optional[list] = None,
+                       gamma: Optional[float] = 0.1):
     assert isinstance(optimizer, Optimizer)
     if milestones is None:
         milestones = [30, 60, 80]

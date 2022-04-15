@@ -7,8 +7,14 @@
 @description: 
 """
 
-import torch
 import time
+
+from typing import Tuple
+from yacs.config import CfgNode
+
+import torch
+import torch.nn as nn
+from torch.utils.data import DataLoader
 
 from ..util.meter import AverageMeter
 from ..util.prefetcher import data_prefetcher
@@ -21,7 +27,7 @@ from zcls2.util import logging
 logger = logging.get_logger(__name__)
 
 
-def validate(cfg, val_loader, model, criterion):
+def validate(cfg: CfgNode, val_loader: DataLoader, model: nn.Module, criterion: nn.Module) -> Tuple[float, float]:
     batch_time = AverageMeter()
     losses = AverageMeter()
     top1 = AverageMeter()

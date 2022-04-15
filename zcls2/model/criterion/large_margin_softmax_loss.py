@@ -72,5 +72,5 @@ class LargeMarginSoftmaxV1(nn.Module):
         return loss
 
 
-def build_large_margin_softmax_loss(reduction='mean'):
+def build_large_margin_softmax_loss(reduction: str = 'mean') -> nn.Module:
     return LargeMarginSoftmaxV1(reduction=reduction)

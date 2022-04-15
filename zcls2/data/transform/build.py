@@ -7,14 +7,16 @@
 @description: 
 """
 
-import torch
+from typing import Tuple
+from yacs.config import CfgNode
 
-import torchvision.transforms.transforms as transforms
+import torch
 import torchvision.transforms.autoaugment as autoaugment
 import torchvision.transforms.functional as F
+import torchvision.transforms.transforms as transforms
 
-from .square_pad import SquarePad
 from .resize import Resize
+from .square_pad import SquarePad
 
 __supported_transform__ = [
     # Normal transform
@@ -46,7 +48,7 @@ __supported_transform__ = [
 ]
 
 
-def parse_transform(cfg, is_train=True):
+def parse_transform(cfg: CfgNode, is_train=True) -> transforms.Compose:
     methods = cfg.TRANSFORM.TRAIN_METHODS if is_train else cfg.TRANSFORM.TEST_METHODS
     assert isinstance(methods, tuple)
 
@@ -131,9 +133,9 @@ def parse_transform(cfg, is_train=True):
     return transforms.Compose(aug_list)
 
 
-def parse_target_transform():
-    return None
+def parse_target_transform() -> transforms.Compose:
+    return transforms.Compose([])
 
 
-def build_transform(cfg, is_train=True):
+def build_transform(cfg: CfgNode, is_train=True) -> Tuple[transforms.Compose, transforms.Compose]:
     return parse_transform(cfg, is_train), parse_target_transform()

@@ -10,5 +10,5 @@
 import torch.nn as nn
 
 
-def build_cross_entropy_loss(reduction: str = 'mean'):
+def build_cross_entropy_loss(reduction: str = 'mean') -> nn.Module:
     return nn.CrossEntropyLoss(reduction=reduction)

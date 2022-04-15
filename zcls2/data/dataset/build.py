@@ -7,6 +7,12 @@
 @description: 
 """
 
+from typing import Optional
+from yacs.config import CfgNode
+
+from torch.utils.data import Dataset
+import torchvision.transforms.transforms as transforms
+
 from .general_dataset import GeneralDataset
 from .general_dataset_v2 import GeneralDatasetV2
 from .mp_dataset import MPDataset
@@ -18,7 +24,10 @@ __supported_dataset__ = [
 ]
 
 
-def build_dataset(cfg, transform=None, target_transform=None, is_train=True):
+def build_dataset(cfg: CfgNode,
+                  transform: Optional[transforms.Compose] = None,
+                  target_transform: Optional[transforms.Compose] = None,
+                  is_train: Optional[bool] = True) -> Dataset:
     dataset_name = cfg.DATASET.NAME
     assert dataset_name in __supported_dataset__, f"{dataset_name} do not support"
 

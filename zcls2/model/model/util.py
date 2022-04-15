@@ -10,16 +10,17 @@
 import math
 
 import torch.nn as nn
+from typing import Optional
 
 
-def create_linear(in_features, out_features, bias=True):
+def create_linear(in_features: int, out_features: int, bias: Optional[bool] = True) -> nn.Module:
     fc = nn.Linear(in_features, out_features, bias=bias)
     reset_linear_parameters(fc)
 
     return fc
 
 
-def reset_linear_parameters(module):
+def reset_linear_parameters(module: nn.Module) -> None:
     """
     refer to: [[PyTorch]torch.nn各个层使用的默认的初始化分布](https://zhuanlan.zhihu.com/p/190207193)
     """
