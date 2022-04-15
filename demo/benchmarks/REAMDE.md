@@ -5,7 +5,7 @@
 
 ## Requirements
 
-* Model: Torchvision Pretrained ResNet18/ResNet50
+* Model: Torchvision Pretrained ResNet18
 * Dataset: CIFAR10/CIFAR100/FashionMNIST
 * Train:
   * Epoch: 90
@@ -19,10 +19,10 @@
 
 ## Prepare data
 
-Go to the `/path/to/demo/benchmarks/datasets` folder, run
+Go to the `./demo/benchmarks/datasets` folder, run
 
 ```shell
-$ bash run.sh
+bash run.sh
 ```
 
 This script will download torchvision data and extract to `./data/` folder.
@@ -37,3 +37,9 @@ This script will download torchvision data and extract to `./data/` folder.
 | zcls2 | resnet18  | cifar100  | 72.760   | 92.070  | 797  |
 | apex  | resnet18  | fashionmnist  | 88.830  | 99.880 | 902  |
 | zcls2 | resnet18  | fashionmnist  | 94.250   | 99.970  | 907  |
+
+I don't set `cudnn.deterministic = True` and `cudnn.benchmark = False`, so each time the best_prec@1/best_prec@5 is different, may be big diff. For example, FashionMNIST in ZCls2:
+
+1. `94.250 / 99.970`
+2. `88.150 / 99.850`
+3. `94.240 / 99.960`
