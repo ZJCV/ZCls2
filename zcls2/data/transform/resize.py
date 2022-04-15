@@ -10,10 +10,10 @@
 import cv2
 import numpy as np
 
-from typing import Sequence
+from typing import Sequence, Tuple
 
 
-def get_hw(img: np.ndarray, size: int, mode: int):
+def get_hw(img: np.ndarray, size: int, mode: int) -> Tuple[int, int]:
     assert mode in [0, 1]
     h, w = img.shape[:2]
 
