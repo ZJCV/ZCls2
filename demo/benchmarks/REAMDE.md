@@ -17,17 +17,23 @@
 * apex: commit `727a6452c9b781930acee5e24e09efe9360b4890`
 * zcls2: commit `33de745bc6ab4fdedb07754c075cec13a7ce16be`
 
-## Data
+## Prepare data
 
+Go to the `/path/to/demo/benchmarks/datasets` folder, run
 
+```shell
+$ bash run.sh
+```
+
+This script will download torchvision data and extract to `./data/` folder.
 
 ## Results
 
-| repos  | arch | dataset  | top1  | top5  | train_time/s  |
+| repos  | arch | dataset  | top1  | top5  | train_time  |
 |---|---|---|---|---|---|
-| apex  | resnet18  | cifar100  | 71.530  | 91.650  | 802  |
-| zcls2 | resnet18  | cifar100  | 72.440  | 91.930  | 802  |
-|   |   |   |   |   |   |
-|   |   |   |   |   |   |
-|   |   |   |   |   |   |
-|   |   |   |   |   |   |
+| apex  | resnet18  | cifar10  | 84.940  |  99.360 | 797  |
+| zcls2 | resnet18  | cifar10  |  87.490 | 99.540  | 797  |
+| apex  | resnet18  | cifar100  | 72.760  | 92.350  | 807  |
+| zcls2 | resnet18  | cifar100  | 72.760   | 92.070  | 797  |
+| apex  | resnet18  | fashionmnist  | 88.830  | 99.880 | 902  |
+| zcls2 | resnet18  | fashionmnist  | 94.250   | 99.970  | 907  |
