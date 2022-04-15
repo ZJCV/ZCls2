@@ -8,7 +8,10 @@ import torch.optim
 import torch.utils.data
 import torch.utils.data.distributed
 
-from zcls2.config import cfg
+from yacs.config import CfgNode
+from argparse import Namespace
+
+from zcls2.config import get_cfg_defaults
 from zcls2.data.build import build_data
 from zcls2.optim.optimizer.build import build_optimizer
 from zcls2.optim.lr_scheduler.build import build_lr_scheduler
@@ -35,7 +38,8 @@ except ImportError:
     raise ImportError("Please install apex from https://www.github.com/nvidia/apex to run this example.")
 
 
-def init(args, cfg):
+def init_cfg(args: Namespace) -> CfgNode:
+    cfg = get_cfg_defaults()
     init_dist(args, cfg)
 
     if os.path.isfile(args.config):
@@ -66,6 +70,9 @@ def init(args, cfg):
     cfg.OPTIMIZER.LR = cfg.OPTIMIZER.LR * float(cfg.DATALOADER.TRAIN_BATCH_SIZE * cfg.NUM_GPUS) / 256.
 
     logger.info("Running with config:\n{}".format(cfg))
+    cfg.freeze()
+
+    return cfg
 
 
 def main():
@@ -73,15 +80,11 @@ def main():
     best_prec1 = 0
     best_prec5 = 0
     best_epoch = 0
-
     args = parse()
-    init(args, cfg)
-    if cfg.CHANNELS_LAST:
-        memory_format = torch.channels_last
-    else:
-        memory_format = torch.contiguous_format
 
-    model = build_model(cfg, memory_format)
+    cfg = init_cfg(args)
+
+    model = build_model(cfg)
     optimizer = build_optimizer(cfg, model)
 
     # Initialize Amp.  Amp accepts either values or strings for the optional override arguments,
@@ -132,7 +135,7 @@ def main():
         resume()
 
     # # Data loading code
-    train_sampler, train_loader, val_loader = build_data(cfg, memory_format)
+    train_sampler, train_loader, val_loader = build_data(cfg)
 
     if cfg.EVALUATE:
         validate(cfg, val_loader, model, criterion)
@@ -149,6 +152,7 @@ def main():
         if isinstance(train_loader.dataset, MPDataset):
             train_loader.dataset.set_epoch(epoch)
         elif cfg.DISTRIBUTED:
+            assert isinstance(train_sampler, torch.utils.data.DistributedSampler)
             train_sampler.set_epoch(epoch)
 
         train(cfg, train_loader, model, criterion, optimizer, epoch)
