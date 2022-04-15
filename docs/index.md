@@ -6,6 +6,7 @@
 
 * [INSTALL](install.md)
 * [GET_STARTING](get-started.md)
+* [Compare ZCls2 with Apex](compare-zcls2-with-apex.md)
 
 ## Project layout
 

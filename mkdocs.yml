@@ -40,4 +40,4 @@ nav:
     - Home: index.md
     - Install: install.md
     - Get started: get-started.md
-    - Benchmark: compare-zcls2-with-apex.md
+    - Compare ZCls2 with Apex: compare-zcls2-with-apex.md
