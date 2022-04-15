@@ -15,7 +15,7 @@ numpy == 1.21.2
 
 # zcls2/data/transform/resize.py: 10
 # zcls2/util/collect_env.py: 165
-opencv_python_headless == 4.5.3.56
+opencv_contrib_python == 4.5.3.56
 
 # zcls2/util/collect_env.py: 12
 tabulate == 0.8.9
