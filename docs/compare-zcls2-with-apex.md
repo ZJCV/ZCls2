@@ -5,17 +5,19 @@
 
 ## Requirements
 
+```markdown
 * Model: Torchvision Pretrained ResNet18
 * Dataset: CIFAR10/CIFAR100/FashionMNIST
 * Train:
-  * Epoch: 90
-  * Num gpus: 4
-  * Batch size: 256 / one gpu
-  * Loss: CrossEntropyLoss
-  * Optimizer: SGD (initial lr 0.1)
-  * Lr_scheduler: Warmup (5) + MultiStepLR(30/60/80)
+    * Epoch: 90
+    * Num gpus: 4
+    * Batch size: 256 / one gpu
+    * Loss: CrossEntropyLoss
+    * Optimizer: SGD (initial lr 0.1)
+    * Lr_scheduler: Warmup (5) + MultiStepLR(30/60/80)
 * apex: commit `727a6452c9b781930acee5e24e09efe9360b4890`
 * zcls2: commit `33de745bc6ab4fdedb07754c075cec13a7ce16be`
+```
 
 ## Prepare data
 
