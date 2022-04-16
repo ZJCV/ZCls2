@@ -9,9 +9,11 @@
 
 import os
 import argparse
+from argparse import Namespace
 
 from tqdm import tqdm
 from PIL import Image
+from torch.utils.data import Dataset
 import torchvision.datasets as datasets
 
 __supported__ = [
@@ -21,7 +23,7 @@ __supported__ = [
 ]
 
 
-def parse():
+def parse() -> Namespace:
     parser = argparse.ArgumentParser(description='Extract cifar10/cifar100/fashion_mnist dataset')
     parser.add_argument('--dataset', '-data', metavar='DATASET', default='CIFAR10',
                         choices=__supported__,
@@ -34,7 +36,7 @@ def parse():
     return args
 
 
-def process(data_root, dataset):
+def process(data_root: str, dataset: Dataset) -> None:
     assert isinstance(dataset, datasets.VisionDataset)
 
     if not os.path.exists(data_root):
@@ -55,7 +57,7 @@ def process(data_root, dataset):
         image.save(img_path)
 
 
-def main(data_root, dataset_name):
+def main(data_root: str, dataset_name: str) -> None:
     assert isinstance(dataset_name, str) and dataset_name in __supported__
 
     train_dir = os.path.join(data_root, 'train')
