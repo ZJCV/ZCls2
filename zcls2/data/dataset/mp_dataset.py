@@ -9,16 +9,19 @@
 
 import os
 
+from typing import Tuple, Optional, Any, Iterator, Callable
+
 import torch
 from torch.utils.data import IterableDataset
-from torch.utils.data import RandomSampler, SequentialSampler
+from torch.utils.data import RandomSampler, SequentialSampler, Sampler
+from torch.utils.data.dataset import T_co
 from torchvision.datasets.folder import default_loader
 
 from zcls2.config.key_word import KEY_DATASET, KEY_CLASSES, KEY_SEP
 from ..sampler.distributed_sampler import DistributedSampler
 
 
-def get_base_info(cls_path, data_path):
+def get_base_info(cls_path: str, data_path: str) -> Tuple[list, int]:
     assert os.path.isfile(cls_path), cls_path
     classes = list()
     with open(cls_path, 'r') as f:
@@ -33,7 +36,11 @@ def get_base_info(cls_path, data_path):
     return classes, length
 
 
-def build_sampler(dataset, num_gpus=1, random_sample=False, rank_id=0, drop_last=False):
+def build_sampler(dataset,
+                  num_gpus: Optional[int] = 1,
+                  random_sample: Optional[bool] = False,
+                  rank_id: Optional[int] = 0,
+                  drop_last: Optional[bool] = False) -> Sampler:
     if num_gpus <= 1:
         if random_sample:
             # different work use same generator
@@ -54,7 +61,7 @@ def build_sampler(dataset, num_gpus=1, random_sample=False, rank_id=0, drop_last
     return sampler
 
 
-def get_subset_data(data_path, indices):
+def get_subset_data(data_path: str, indices: list) -> Tuple[list, list]:
     sub_img_list = [0 for _ in indices]
     sub_label_list = [0 for _ in indices]
 
@@ -75,7 +82,7 @@ def get_subset_data(data_path, indices):
     return sub_img_list, sub_label_list
 
 
-def shuffle_dataset(sampler, cur_epoch, is_shuffle=False):
+def shuffle_dataset(sampler: Sampler, cur_epoch: int, is_shuffle: Optional[bool] = False):
     """"
     Shuffles the data.
     Args:
@@ -97,8 +104,15 @@ def shuffle_dataset(sampler, cur_epoch, is_shuffle=False):
 
 class MPDataset(IterableDataset):
 
-    def __init__(self, root, transform=None, target_transform=None, top_k=(1, 5), keep_rgb: bool = False,
-                 shuffle: bool = False, num_gpus: int = 1, rank_id: int = 0, epoch: int = 0, drop_last: bool = False):
+    def __init__(self, root,
+                 transform: Optional[Callable] = None,
+                 target_transform: Optional[Callable] = None,
+                 keep_rgb: Optional[bool] = False,
+                 shuffle: Optional[bool] = False,
+                 num_gpus: Optional[int] = 1,
+                 rank_id: Optional[int] = 0,
+                 epoch: Optional[int] = 0,
+                 drop_last: Optional[bool] = False) -> None:
         super(MPDataset).__init__()
         self.root = root
         self.transform = transform
@@ -116,7 +130,7 @@ class MPDataset(IterableDataset):
                                      rank_id=self.rank, drop_last=drop_last)
         self.set_epoch(epoch)
 
-    def parse_file(self, img_list, label_list):
+    def parse_file(self, img_list: list, label_list: list) -> Tuple[Any, Any]:
         for img_path, target in zip(img_list, label_list):
             image = default_loader(img_path)
             if self.transform is not None:
@@ -126,7 +140,7 @@ class MPDataset(IterableDataset):
 
             yield image, target
 
-    def get_indices(self):
+    def get_indices(self) -> list:
         worker_info = torch.utils.data.get_worker_info()
 
         if worker_info is not None:
@@ -140,7 +154,7 @@ class MPDataset(IterableDataset):
 
         return indices
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[T_co]:
         indices = self.get_indices()
 
         img_list, label_list = get_subset_data(self.data_path, indices)
@@ -148,7 +162,7 @@ class MPDataset(IterableDataset):
 
         return iter(self.parse_file(img_list, label_list))
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.indices_length if self.num_replicas > 1 else self.length
 
     def set_epoch(self, epoch: int) -> None:

@@ -7,18 +7,22 @@
 @description: like torchvision.datasets.ImageFolder
 """
 
+from typing import Optional, Tuple, Any, Callable
+
 from torch.utils.data import Dataset
 import torchvision.datasets as datasets
 
 
 class GeneralDataset(Dataset):
 
-    def __init__(self, root, transform=None, target_transform=None):
+    def __init__(self, root: str,
+                 transform: Optional[Callable] = None,
+                 target_transform: Optional[Callable] = None) -> None:
         self.data_set = datasets.ImageFolder(root, transform=transform, target_transform=target_transform)
         self.classes = self.data_set.classes
         self.root = root
 
-    def __getitem__(self, index: int):
+    def __getitem__(self, index: int) -> Tuple[Any, Any]:
         image, target = self.data_set.__getitem__(index)
 
         return image, target
@@ -26,8 +30,8 @@ class GeneralDataset(Dataset):
     def __len__(self) -> int:
         return self.data_set.__len__()
 
-    def get_classes(self):
+    def get_classes(self) -> list:
         return self.classes
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.__class__.__name__ + ' (' + self.root + ')'

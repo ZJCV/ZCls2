@@ -16,11 +16,13 @@ import torchvision.transforms.transforms as transforms
 from .general_dataset import GeneralDataset
 from .general_dataset_v2 import GeneralDatasetV2
 from .mp_dataset import MPDataset
+from .mix_dataset import MixDataset
 
 __supported_dataset__ = [
     'GeneralDataset',
     'GeneralDatasetV2',
-    'MPDataset'
+    'MPDataset',
+    'MixDataset',
 ]
 
 
@@ -50,6 +52,10 @@ def build_dataset(cfg: CfgNode,
         dataset = MPDataset(
             data_root, transform=transform, target_transform=target_transform,
             shuffle=is_train, num_gpus=num_gpus, rank_id=rank_id, epoch=epoch
+        )
+    elif dataset_name == 'MixDataset':
+        dataset = MixDataset(
+            data_root, transform=transform, target_transform=target_transform, train=is_train
         )
     else:
         raise ValueError(f"{dataset_name} do not support")

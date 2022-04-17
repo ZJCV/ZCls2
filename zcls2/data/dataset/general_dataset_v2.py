@@ -9,13 +9,15 @@
 
 import os
 
+from typing import Optional, Tuple, Any, Callable
+
 from torch.utils.data import Dataset
 from torchvision.datasets.folder import default_loader
 
 from zcls2.config.key_word import KEY_DATASET, KEY_CLASSES, KEY_SEP
 
 
-def get_base_info(cls_path, data_path):
+def get_base_info(cls_path: str, data_path: str) -> Tuple[list, list, list]:
     assert os.path.isfile(cls_path), cls_path
     classes = list()
     with open(cls_path, 'r') as f:
@@ -42,7 +44,9 @@ def get_base_info(cls_path, data_path):
 
 class GeneralDatasetV2(Dataset):
 
-    def __init__(self, root, transform=None, target_transform=None):
+    def __init__(self, root: str,
+                 transform: Optional[Callable] = None,
+                 target_transform: Optional[Callable] = None) -> None:
         assert os.path.isdir(root), root
         self.root = root
         self.transform = transform
@@ -57,7 +61,7 @@ class GeneralDatasetV2(Dataset):
         self.target_list = target_list
         self.length = len(self.data_list)
 
-    def __getitem__(self, index: int):
+    def __getitem__(self, index: int) -> Tuple[Any, Any]:
         img_path = self.data_list[index]
         target = self.target_list[index]
 
@@ -72,8 +76,8 @@ class GeneralDatasetV2(Dataset):
     def __len__(self) -> int:
         return self.length
 
-    def get_classes(self):
+    def get_classes(self) -> list:
         return self.classes
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.__class__.__name__ + ' (' + self.root + ')'
