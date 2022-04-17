@@ -1,7 +1,7 @@
 PRINT_FREQ: 10
 DIST_BACKEND: "nccl"
 INIT_METHOD: "env://"
-OUTPUT_DIR: 'outputs/cifar_imagenet_224_b256_e90'
+OUTPUT_DIR: 'outputs/mbv3_mix_224_b256_e90_g4'
 TRAIN:
   EVAL_EPOCH: 1
   START_EPOCH: 1
@@ -12,9 +12,9 @@ DATALOADER:
   NUM_WORKERS: 4
   RANDOM_SAMPLE: True
 DATASET:
-  NAME: 'GeneralDatasetV2'
-  TRAIN_ROOT: './data/cifar/train'
-  TEST_ROOT: './data/cifar/test'
+  NAME: 'MixDataset'
+  TRAIN_ROOT: './data/'
+  TEST_ROOT: './data/'
 TRANSFORM:
   TRAIN_METHODS: ('RandomResizedCrop', 'RandomHorizontalFlip')
   TEST_METHODS: ('Resize', 'CenterCrop')
@@ -23,9 +23,9 @@ TRANSFORM:
   TEST_CROP: (224,)
   NORMALIZE: ((0.485, 0.456, 0.406), (0.229, 0.224, 0.225), False)
 MODEL:
-  ARCH: 'resnet18'
+  ARCH: 'mobilenet_v3_large'
   PRETRAINED: True
-  NUM_CLASSES: 100
+  NUM_CLASSES: 130
   SYNC_BN: False
   CRITERION:
     NAME: 'CrossEntropyLoss'
