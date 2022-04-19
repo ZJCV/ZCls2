@@ -12,6 +12,8 @@ from typing import Optional, Tuple, Any, Callable
 from torch.utils.data import Dataset
 import torchvision.datasets as datasets
 
+__all__ = ['GeneralDataset']
+
 
 class GeneralDataset(Dataset):
 

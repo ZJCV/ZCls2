@@ -13,17 +13,12 @@ from yacs.config import CfgNode
 from torch.utils.data import Dataset
 import torchvision.transforms.transforms as transforms
 
-from .general_dataset import GeneralDataset
-from .general_dataset_v2 import GeneralDatasetV2
-from .mp_dataset import MPDataset
-from .mix_dataset import MixDataset
+from . import general_dataset, general_dataset_v2, mp_dataset, mix_dataset
 
-__supported_dataset__ = [
-    'GeneralDataset',
-    'GeneralDatasetV2',
-    'MPDataset',
-    'MixDataset',
-]
+__all__ = general_dataset.__all__ \
+          + general_dataset_v2.__all__ \
+          + mp_dataset.__all__ \
+          + mix_dataset.__all__
 
 
 def build_dataset(cfg: CfgNode,
@@ -31,30 +26,30 @@ def build_dataset(cfg: CfgNode,
                   target_transform: Optional[transforms.Compose] = None,
                   is_train: Optional[bool] = True) -> Dataset:
     dataset_name = cfg.DATASET.NAME
-    assert dataset_name in __supported_dataset__, f"{dataset_name} do not support"
+    assert dataset_name in __all__, f"{dataset_name} do not support"
 
     data_root = cfg.DATASET.TRAIN_ROOT if is_train else cfg.DATASET.TEST_ROOT
 
     # Data loading code
-    if dataset_name == 'GeneralDataset':
-        dataset = GeneralDataset(
+    if dataset_name in general_dataset.__all__:
+        dataset = general_dataset.__dict__[dataset_name](
             data_root, transform=transform, target_transform=target_transform
         )
-    elif dataset_name == 'GeneralDatasetV2':
-        dataset = GeneralDatasetV2(
+    elif dataset_name in general_dataset_v2.__all__:
+        dataset = general_dataset_v2.__dict__[dataset_name](
             data_root, transform=transform, target_transform=target_transform
         )
-    elif dataset_name == 'MPDataset':
+    elif dataset_name in mp_dataset.__all__:
         num_gpus = cfg.NUM_GPUS
         rank_id = cfg.RANK_ID
         epoch = cfg.TRAIN.START_EPOCH
 
-        dataset = MPDataset(
+        dataset = mp_dataset.__dict__[dataset_name](
             data_root, transform=transform, target_transform=target_transform,
             shuffle=is_train, num_gpus=num_gpus, rank_id=rank_id, epoch=epoch
         )
-    elif dataset_name == 'MixDataset':
-        dataset = MixDataset(
+    elif dataset_name in mix_dataset.__all__:
+        dataset = mix_dataset.__dict__[dataset_name](
             data_root, transform=transform, target_transform=target_transform, train=is_train
         )
     else:

@@ -15,6 +15,8 @@ from typing import Optional, Tuple, Any, Callable
 from torch.utils.data import Dataset
 from torchvision.datasets import CIFAR100, FashionMNIST, SVHN
 
+__all__ = ['MixDataset']
+
 
 class MixDataset(Dataset):
 

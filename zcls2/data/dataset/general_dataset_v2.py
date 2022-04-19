@@ -16,6 +16,8 @@ from torchvision.datasets.folder import default_loader
 
 from zcls2.config.key_word import KEY_DATASET, KEY_CLASSES, KEY_SEP
 
+__all__ = ['GeneralDatasetV2']
+
 
 def get_base_info(cls_path: str, data_path: str) -> Tuple[list, list, list]:
     assert os.path.isfile(cls_path), cls_path

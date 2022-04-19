@@ -12,6 +12,8 @@ from typing import Optional, Tuple, Any, Callable
 from torch.utils.data import Dataset
 from torchvision.datasets import CIFAR10, CIFAR100
 
+__all__ = ['CIFAR']
+
 
 class CIFAR(Dataset):
 

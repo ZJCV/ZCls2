@@ -20,6 +20,8 @@ from torchvision.datasets.folder import default_loader
 from zcls2.config.key_word import KEY_DATASET, KEY_CLASSES, KEY_SEP
 from ..sampler.distributed_sampler import DistributedSampler
 
+__all__ = ['MPDataset']
+
 
 def get_base_info(cls_path: str, data_path: str) -> Tuple[list, int]:
     assert os.path.isfile(cls_path), cls_path
