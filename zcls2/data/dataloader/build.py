@@ -6,9 +6,11 @@
 @author: zj
 @description: 
 """
+from typing import Tuple, Any
 
 import torch
 from torch.utils.data import Dataset, Sampler
+from torch.utils.data._utils.collate import default_collate
 
 from yacs.config import CfgNode
 
@@ -16,7 +18,7 @@ from .collate import fast_collate
 
 
 def build_dataloader(cfg: CfgNode, train_dataset: Dataset, val_dataset: Dataset,
-                     train_sampler: Sampler, val_sampler: Sampler, shuffle: bool):
+                     train_sampler: Sampler, val_sampler: Sampler, shuffle: bool) -> Tuple[Any, Any]:
     train_batch_size = cfg.DATALOADER.TRAIN_BATCH_SIZE
     test_batch_size = cfg.DATALOADER.TEST_BATCH_SIZE
     num_workers = cfg.DATALOADER.NUM_WORKERS
@@ -25,7 +27,11 @@ def build_dataloader(cfg: CfgNode, train_dataset: Dataset, val_dataset: Dataset,
         memory_format = torch.channels_last
     else:
         memory_format = torch.contiguous_format
-    collate_fn = lambda b: fast_collate(b, memory_format)
+
+    if cfg.DATALOADER.COLLATE_FN == 'fast':
+        collate_fn = lambda b: fast_collate(b, memory_format)
+    else:
+        collate_fn = default_collate
 
     train_loader = torch.utils.data.DataLoader(
         train_dataset, batch_size=train_batch_size, shuffle=shuffle,
