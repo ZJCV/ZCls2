@@ -7,8 +7,8 @@
 @description: 
 """
 
-from yacs.config import CfgNode
 from typing import Optional
+from yacs.config import CfgNode
 
 import torch.nn as nn
 from torch.optim.optimizer import Optimizer

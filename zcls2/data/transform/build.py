@@ -11,9 +11,9 @@ from typing import Tuple
 from yacs.config import CfgNode
 
 import torch
-import torchvision.transforms.autoaugment as autoaugment
 import torchvision.transforms.functional as F
-import torchvision.transforms.transforms as transforms
+from torchvision.transforms import autoaugment
+from torchvision.transforms import transforms
 
 from .resize import Resize
 from .square_pad import SquarePad

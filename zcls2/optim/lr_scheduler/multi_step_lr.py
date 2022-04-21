@@ -9,15 +9,15 @@
 
 from typing import Optional
 
-import torch.optim as optim
 from torch.optim.optimizer import Optimizer
+from torch.optim.lr_scheduler import MultiStepLR
 
 
 def build_multistep_lr(optimizer: Optimizer,
                        milestones: Optional[list] = None,
-                       gamma: Optional[float] = 0.1):
+                       gamma: Optional[float] = 0.1) -> MultiStepLR:
     assert isinstance(optimizer, Optimizer)
     if milestones is None:
         milestones = [30, 60, 80]
 
-    return optim.lr_scheduler.MultiStepLR(optimizer, milestones=milestones, gamma=gamma)
+    return MultiStepLR(optimizer, milestones=milestones, gamma=gamma)

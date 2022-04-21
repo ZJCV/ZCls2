@@ -4,13 +4,13 @@
 @date: 2020/11/25 下午6:52
 @file: dataset.py
 @author: zj
-@description: 
+@description: Dataset settings
 """
 
 from yacs.config import CfgNode as CN
 
 
-def add_config(_C):
+def add_config(_C: CN) -> None:
     # ---------------------------------------------------------------------------- #
     # DataSet
     # ---------------------------------------------------------------------------- #

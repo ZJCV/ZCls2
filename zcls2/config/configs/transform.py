@@ -4,13 +4,13 @@
 @date: 2020/11/25 下午6:51
 @file: transform.py
 @author: zj
-@description: 
+@description: Transform settings
 """
 
 from yacs.config import CfgNode as CN
 
 
-def add_config(_C):
+def add_config(_C: CN) -> None:
     # ---------------------------------------------------------------------------- #
     # Transform
     # ---------------------------------------------------------------------------- #

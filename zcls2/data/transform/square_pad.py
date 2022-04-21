@@ -6,8 +6,12 @@
 @author: zj
 @description: 
 """
+from typing import Optional
 
 import numpy as np
+from PIL import Image
+
+import torch
 import torchvision.transforms.functional as F
 
 
@@ -17,10 +21,10 @@ class SquarePad(object):
     refer to [How to resize and pad in a torchvision.transforms.Compose()?](https://discuss.pytorch.org/t/how-to-resize-and-pad-in-a-torchvision-transforms-compose/71850)
     """
 
-    def __call__(self, image):
+    def __call__(self, image: Optional[Image.Image, torch.Tensor]) -> Optional[Image.Image, torch.Tensor]:
         w, h = image.size
         max_wh = np.max([w, h])
         hp = int((max_wh - w) / 2)
         vp = int((max_wh - h) / 2)
-        padding = (hp, vp, hp, vp)
+        padding = [hp, vp, hp, vp]
         return F.pad(image, padding, 0, 'constant')

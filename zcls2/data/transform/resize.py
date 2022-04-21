@@ -6,11 +6,10 @@
 @author: zj
 @description: 
 """
+from typing import Sequence, Tuple
 
 import cv2
 import numpy as np
-
-from typing import Sequence, Tuple
 
 
 def get_hw(img: np.ndarray, size: int, mode: int) -> Tuple[int, int]:

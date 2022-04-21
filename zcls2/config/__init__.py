@@ -7,6 +7,7 @@
 @description:
 """
 
+from yacs.config import CfgNode
 from zcls2.config.configs.defaults import _C
 from .configs import dataset, dataloader, model, lr_scheduler, optimizer, custom_config, transform
 
@@ -21,11 +22,10 @@ transform.add_config(_C)
 custom_config.add_custom_config(_C)
 
 
-def get_cfg_defaults():
+def get_cfg_defaults() -> CfgNode:
     """Get a yacs CfgNode object with default values for my_project."""
     # Return a clone so that the defaults will not be altered
     # This is for the "local variable" use pattern
     return _C.clone()
-
 
 # cfg = get_cfg_defaults()

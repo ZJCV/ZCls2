@@ -4,13 +4,13 @@
 @date: 2020/11/25 下午6:48
 @file: lr_scheduler.py
 @author: zj
-@description: 
+@description: Lr-scheduler settings
 """
 
 from yacs.config import CfgNode as CN
 
 
-def add_config(_C):
+def add_config(_C: CN) -> None:
     # ---------------------------------------------------------------------------- #
     # LR_Scheduler
     # ---------------------------------------------------------------------------- #

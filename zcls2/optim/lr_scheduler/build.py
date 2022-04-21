@@ -19,7 +19,7 @@ __supported_lr_scheduler__ = [
 ]
 
 
-def adjust_learning_rate(cfg: CfgNode, optimizer: Optimizer, epoch: int, step: int, len_epoch: int):
+def adjust_learning_rate(cfg: CfgNode, optimizer: Optimizer, epoch: int, step: int, len_epoch: int) -> None:
     """LR schedule that should yield 76% converged accuracy with batch size 256"""
     lr = cfg.OPTIMIZER.LR
 

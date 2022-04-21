@@ -4,13 +4,13 @@
 @date: 2020/11/25 下午6:49
 @file: optimizer.py
 @author: zj
-@description: 
+@description: Optimizer settings
 """
 
 from yacs.config import CfgNode as CN
 
 
-def add_config(_C):
+def add_config(_C: CN) -> None:
     # ---------------------------------------------------------------------------- #
     # Optimizer
     # ---------------------------------------------------------------------------- #

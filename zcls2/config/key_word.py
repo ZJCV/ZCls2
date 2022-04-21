@@ -4,7 +4,7 @@
 @date: 2022/4/4 上午11:18
 @file: key_word.py
 @author: zj
-@description: 
+@description: Common keywords
 """
 
 # Output identifier
