@@ -13,6 +13,10 @@
   <a href="https://github.com/RichardLitt/standard-readme"><img src="https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square"></a>
   <a href="https://conventionalcommits.org"><img src="https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg"></a>
   <a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg"></a>
+  <a href="https://pypi.org/project/zcls2/"><img src="https://img.shields.io/badge/PYPI-zcls2-brightgreen"></a>
+  <a href='https://zcls2.readthedocs.io/en/latest/?badge=latest'>
+      <img src='https://readthedocs.org/projects/zcls2/badge/?version=latest' alt='Documentation Status' />
+  </a>
 </p>
 
 ## 内容列表
