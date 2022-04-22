@@ -18,7 +18,7 @@ from zcls2.util import logging
 
 logger = logging.get_logger(__name__)
 
-__supported_model__ = resnet.__all__ + ghostnet.__supported_model__ + mobilenet.__supported_model__
+__supported_model__ = resnet.__all__ + ghostnet.__supported_model__ + mobilenet.__all__
 
 
 def build_model(cfg: CfgNode) -> nn.Module:
@@ -39,8 +39,8 @@ def build_model(cfg: CfgNode) -> nn.Module:
         model = ghostnet.get_ghostnet(pretrained=is_pretrained, num_classes=num_classes, arch=model_arch)
     elif model_arch in resnet.__all__:
         model = resnet.__dict__[model_arch](pretrained=is_pretrained, num_classes=num_classes)
-    elif model_arch in mobilenet.__supported_model__:
-        model = mobilenet.get_mobilenet(pretrained=is_pretrained, num_classes=num_classes, arch=model_arch)
+    elif model_arch in mobilenet.__all__:
+        model = mobilenet.__dict__[model_arch](pretrained=is_pretrained, num_classes=num_classes)
     else:
         raise ValueError(f"{model_arch} does not support")
 

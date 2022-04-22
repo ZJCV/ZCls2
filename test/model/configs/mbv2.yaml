@@ -1,0 +1,5 @@
+MODEL:
+  ARCH: 'mobilenet_v2'
+  PRETRAINED: True
+  NUM_CLASSES: 132
+  SYNC_BN: False
