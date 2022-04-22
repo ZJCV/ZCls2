@@ -11,15 +11,15 @@ from zcls2.config import get_cfg_defaults
 from zcls2.model.model.build import build_model
 
 
-def r18(cfg):
-    model = build_model(cfg)
-    print(model)
-
-
-if __name__ == '__main__':
+def r18():
     cfg = get_cfg_defaults()
     CONFIG_FILE = 'configs/r18.yaml'
     cfg.merge_from_file(CONFIG_FILE)
     # print(cfg)
 
-    r18(cfg)
+    model = build_model(cfg)
+    print(model)
+
+
+if __name__ == '__main__':
+    r18()

@@ -84,7 +84,8 @@ def main():
 
     cfg = init_cfg(args)
 
-    model = build_model(cfg)
+    device = torch.device(f'cuda:{cfg.RANK_ID}') if cfg.DISTRIBUTED else torch.device('cpu')
+    model = build_model(cfg, device)
     optimizer = build_optimizer(cfg, model)
 
     # Initialize Amp.  Amp accepts either values or strings for the optional override arguments,
@@ -108,7 +109,7 @@ def main():
         model = DDP(model, delay_allreduce=True)
 
     # define loss function (criterion) and optimizer
-    criterion = build_criterion(cfg).cuda()
+    criterion = build_criterion(cfg).to(device)
 
     # Optionally resume from a checkpoint
     if cfg.RESUME:
@@ -116,7 +117,7 @@ def main():
         def resume():
             if os.path.isfile(cfg.RESUME):
                 logger.info("=> loading checkpoint '{}'".format(cfg.RESUME))
-                checkpoint = torch.load(cfg.RESUME, map_location=lambda storage, loc: storage.cuda(cfg.RANK_ID))
+                checkpoint = torch.load(cfg.RESUME, map_location=lambda storage, loc: storage.to(device))
                 cfg.TRAIN.START_EPOCH = checkpoint['epoch']
                 global best_prec1
                 global best_prec5

@@ -21,7 +21,7 @@ logger = logging.get_logger(__name__)
 __supported_model__ = resnet.__all__ + ghostnet.__supported_model__ + mobilenet.__all__
 
 
-def build_model(cfg: CfgNode) -> nn.Module:
+def build_model(cfg: CfgNode, device: torch.device = torch.device('cpu')) -> nn.Module:
     model_arch = cfg.MODEL.ARCH
     is_pretrained = cfg.MODEL.PRETRAINED
     num_classes = cfg.MODEL.NUM_CLASSES
@@ -49,10 +49,6 @@ def build_model(cfg: CfgNode) -> nn.Module:
         logger.info("using apex synced BN")
         model = apex.parallel.convert_syncbn_model(model)
 
-    if cfg.CHANNELS_LAST:
-        memory_format = torch.channels_last
-    else:
-        memory_format = torch.contiguous_format
-    model = model.cuda().to(memory_format=memory_format)
+    model = model.to(device)
 
     return model
