@@ -10,7 +10,8 @@ from typing import Type, Any, Callable, Union, List, Optional
 
 from torchvision.models.resnet import BasicBlock, Bottleneck, ResNet, model_urls
 
-# see [vision/torchvision/_internally_replaced_utils.py](https://github.com/pytorch/vision/blob/b50ffef5f85029b1440ac155ca1e6d95c55520aa/torchvision/_internally_replaced_utils.py)
+# See vision/torchvision/_internally_replaced_utils.py
+# https://github.com/pytorch/vision/blob/b50ffef5f85029b1440ac155ca1e6d95c55520aa/torchvision/_internally_replaced_utils.py
 try:
     from torch.hub import load_state_dict_from_url
 except ImportError:
