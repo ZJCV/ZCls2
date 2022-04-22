@@ -68,8 +68,8 @@ def _mobilenet_v3_model(
 
         # If the number of model outputs is different from the model setting,
         # the corresponding pretraining model weight will not be loaded
-        assert isinstance(model.classifier[1], nn.Linear)
-        if model.classifier[1].out_features != 1000:
+        assert isinstance(model.classifier[3], nn.Linear)
+        if model.classifier[3].out_features != 1000:
             state_dict.pop('classifier.3.weight')
             state_dict.pop('classifier.3.bias')
 
