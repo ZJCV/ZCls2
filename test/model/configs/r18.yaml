@@ -1,0 +1,5 @@
+MODEL:
+  ARCH: 'resnet18'
+  PRETRAINED: True
+  NUM_CLASSES: 100
+  SYNC_BN: False
