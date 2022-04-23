@@ -9,7 +9,10 @@
     PyTorch 1.8.2 or higher
     torchvison 0.9.2 or higher
 
-About `apex`，see [NVIDIA/apex](https://github.com/NVIDIA/apex)
+About `apex`，see [NVIDIA/apex](https://github.com/NVIDIA/apex). I recommend people to use docker training environment, see
+
+* [NGC Pytorch](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch)
+* [PyTorch Release Notes](https://docs.nvidia.com/deeplearning/frameworks/pytorch-release-notes/index.html)
 
 ## Install ZCls2
 
@@ -30,7 +33,7 @@ cd ZCls2
 python3 setup.py install
 ```
 
-### Pip install
+### Pip install (*RECOMMEND*)
 
 ```python
 pip3 install zcls2
