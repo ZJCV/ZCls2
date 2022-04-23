@@ -10,7 +10,7 @@ AUTHOR = "zj"
 AUTHOR_EMAIL = "wy163zhuj@163.com"
 DESCRIPTION = "More Faster Object Classification Training Framework"
 URL = "https://github.com/ZJCV/ZCls2"
-PYTHON_REQUIRES = ">=3.9"
+PYTHON_REQUIRES = ">=3.8"
 INSTALL_REQUIRES = [
     "Pillow >= 8.1.0",
     "numpy >= 1.20.1",

@@ -5,7 +5,7 @@
 
 
     Linux (Windows is not officially supported)
-    Python 3.9
+    Python 3.8
     PyTorch 1.8.2 or higher
     torchvison 0.9.2 or higher
 
