@@ -1,5 +1,13 @@
 # CHANGE
 
+## v0.2.0
+
+* New features
+  1. Update benchmarks (`Apex` vs. `ZCls2`)
+* Bug fixes
+* Breaking changes
+  1. Change model output type. [899c725](https://github.com/ZJCV/ZCls2/commit/899c725655a59ec09d5cdb043b4ebb3f7c05eea6)
+
 ## v0.1.1
 
 * New features
