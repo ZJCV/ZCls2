@@ -16,6 +16,7 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 
+from ..config.key_word import KEY_OUTPUT
 from ..util.meter import AverageMeter
 from ..util.prefetcher import data_prefetcher
 from ..util.metric import accuracy
@@ -50,7 +51,7 @@ def validate(cfg: CfgNode, val_loader: DataLoader, model: nn.Module, criterion: 
             loss = criterion(output, target)
 
         # measure accuracy and record loss
-        prec1, prec5 = accuracy(output.data, target, topk=(1, 5))
+        prec1, prec5 = accuracy(output[KEY_OUTPUT].data, target, topk=(1, 5))
 
         if cfg.DISTRIBUTED:
             reduced_loss = reduce_tensor(cfg.NUM_GPUS, loss.data)

@@ -25,6 +25,7 @@ try:
 except ImportError:
     raise ImportError("Please install apex from https://www.github.com/nvidia/apex to run this example.")
 
+from ..config.key_word import KEY_OUTPUT
 from ..util.meter import AverageMeter
 from ..util.prefetcher import data_prefetcher
 from ..util.metric import accuracy
@@ -92,7 +93,7 @@ def train(cfg: CfgNode, train_loader: DataLoader, model: nn.Module, criterion: n
             # iteration, since they incur an allreduce and some host<->device syncs.
 
             # Measure accuracy
-            prec1, prec5 = accuracy(output.data, target, topk=(1, 5))
+            prec1, prec5 = accuracy(output[KEY_OUTPUT].data, target, topk=(1, 5))
 
             # Average loss and accuracy across processes for logging
             if cfg.DISTRIBUTED:

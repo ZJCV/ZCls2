@@ -6,8 +6,9 @@
 @author: zj
 @description: Custom ResNet, derived from torchvision
 """
-from typing import Type, Any, Callable, Union, List, Optional
+from typing import Type, Any, Callable, Union, List, Optional, Dict
 
+from torch import nn as nn, Tensor
 from torchvision.models.resnet import BasicBlock, Bottleneck, ResNet, model_urls
 
 # See vision/torchvision/_internally_replaced_utils.py
@@ -17,10 +18,28 @@ try:
 except ImportError:
     from torch.utils.model_zoo import load_url as load_state_dict_from_url
 
+from zcls2.config.key_word import KEY_OUTPUT
+
 __all__ = [
     'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152',
     'resnext50_32x4d', 'resnext101_32x8d', 'wide_resnet50_2', 'wide_resnet101_2'
 ]
+
+
+class ZResNet(ResNet):
+
+    def __init__(self, block: Type[Union[BasicBlock, Bottleneck]], layers: List[int], num_classes: int = 1000,
+                 zero_init_residual: bool = False, groups: int = 1, width_per_group: int = 64,
+                 replace_stride_with_dilation: Optional[List[bool]] = None,
+                 norm_layer: Optional[Callable[..., nn.Module]] = None) -> None:
+        super().__init__(block, layers, num_classes, zero_init_residual, groups, width_per_group,
+                         replace_stride_with_dilation, norm_layer)
+
+    def forward(self, x: Tensor) -> Dict:
+        res = super().forward(x)
+        return {
+            KEY_OUTPUT: res
+        }
 
 
 def _resnet(
@@ -31,7 +50,7 @@ def _resnet(
         progress: bool,
         **kwargs: Any
 ) -> ResNet:
-    model = ResNet(block, layers, **kwargs)
+    model = ZResNet(block, layers, **kwargs)
 
     if pretrained:
         state_dict = load_state_dict_from_url(model_urls[arch],

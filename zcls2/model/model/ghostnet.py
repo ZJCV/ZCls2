@@ -6,14 +6,29 @@
 @author: zj
 @description: 
 """
+from typing import Optional, Dict
 
-import torch.nn as nn
-from typing import Optional
+from torch import Tensor, nn
+import torch.nn.functional as F
+
 import timm.models as models
+from timm.models import GhostNet
 
+from zcls2.config.key_word import KEY_OUTPUT
 from .util import create_linear
 
 __supported_model__ = ['ghostnet_050', 'ghostnet_100', 'ghostnet_130']
+
+
+def forward(self: GhostNet, x: Tensor) -> Dict:
+    x = self.forward_features(x)
+    x = self.flatten(x)
+    if self.dropout > 0.:
+        x = F.dropout(x, p=self.dropout, training=self.training)
+    x = self.classifier(x)
+    return {
+        KEY_OUTPUT: x
+    }
 
 
 def get_ghostnet(pretrained: Optional[bool] = False,
@@ -35,6 +50,7 @@ def get_ghostnet(pretrained: Optional[bool] = False,
     else:
         model = models.__dict__[arch](pretrained=False, num_classes=num_classes)
 
+    model.forward = forward
     return model
 
 

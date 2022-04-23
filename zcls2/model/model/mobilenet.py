@@ -6,23 +6,42 @@
 @author: zj
 @description: Custom MobileNetV2/V3, derived from torchvision
 """
-from typing import Any, List
+from typing import Any, List, Optional, Callable, Dict
 
-from torch import nn
+from torch import nn, Tensor
 from torchvision.models.mobilenet import MobileNetV2, MobileNetV3
 from torchvision.models import mobilenetv2
 from torchvision.models import mobilenetv3
 
 # See vision/torchvision/_internally_replaced_utils.py
 # https://github.com/pytorch/vision/blob/b50ffef5f85029b1440ac155ca1e6d95c55520aa/torchvision/_internally_replaced_utils.py
+from torchvision.models.mobilenetv3 import InvertedResidualConfig
+
 try:
     from torch.hub import load_state_dict_from_url
 except ImportError:
     from torch.utils.model_zoo import load_url as load_state_dict_from_url
 
+from zcls2.config.key_word import KEY_OUTPUT
+
 __all__ = [
     'mobilenet_v2', 'mobilenet_v3_large', 'mobilenet_v3_small'
 ]
+
+
+class ZMobileNetV2(MobileNetV2):
+
+    def __init__(self, num_classes: int = 1000, width_mult: float = 1.0,
+                 inverted_residual_setting: Optional[List[List[int]]] = None, round_nearest: int = 8,
+                 block: Optional[Callable[..., nn.Module]] = None,
+                 norm_layer: Optional[Callable[..., nn.Module]] = None) -> None:
+        super().__init__(num_classes, width_mult, inverted_residual_setting, round_nearest, block, norm_layer)
+
+    def forward(self, x: Tensor) -> Dict:
+        res = super().forward(x)
+        return {
+            KEY_OUTPUT: res
+        }
 
 
 def mobilenet_v2(pretrained: bool = False, progress: bool = True, **kwargs: Any) -> MobileNetV2:
@@ -34,7 +53,7 @@ def mobilenet_v2(pretrained: bool = False, progress: bool = True, **kwargs: Any)
         pretrained (bool): If True, returns a model pre-trained on ImageNet
         progress (bool): If True, displays a progress bar of the download to stderr
     """
-    model = MobileNetV2(**kwargs)
+    model = ZMobileNetV2(**kwargs)
     if pretrained:
         state_dict = load_state_dict_from_url(mobilenetv2.model_urls['mobilenet_v2'],
                                               progress=progress)
@@ -52,6 +71,20 @@ def mobilenet_v2(pretrained: bool = False, progress: bool = True, **kwargs: Any)
     return model
 
 
+class ZMobileNetV3(MobileNetV3):
+
+    def __init__(self, inverted_residual_setting: List[InvertedResidualConfig], last_channel: int,
+                 num_classes: int = 1000, block: Optional[Callable[..., nn.Module]] = None,
+                 norm_layer: Optional[Callable[..., nn.Module]] = None, **kwargs: Any) -> None:
+        super().__init__(inverted_residual_setting, last_channel, num_classes, block, norm_layer, **kwargs)
+
+    def forward(self, x: Tensor) -> Dict:
+        res = super().forward(x)
+        return {
+            KEY_OUTPUT: res
+        }
+
+
 def _mobilenet_v3_model(
         arch: str,
         inverted_residual_setting: List[mobilenetv3.InvertedResidualConfig],
@@ -60,7 +93,7 @@ def _mobilenet_v3_model(
         progress: bool,
         **kwargs: Any
 ):
-    model = MobileNetV3(inverted_residual_setting, last_channel, **kwargs)
+    model = ZMobileNetV3(inverted_residual_setting, last_channel, **kwargs)
     if pretrained:
         if mobilenetv3.model_urls.get(arch, None) is None:
             raise ValueError("No checkpoint is available for model type {}".format(arch))
