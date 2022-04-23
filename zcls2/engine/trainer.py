@@ -112,12 +112,12 @@ def train(cfg: CfgNode, train_loader: DataLoader, model: nn.Module, criterion: n
             end = time.time()
 
             if cfg.RANK_ID == 0:
-                logger.info('Epoch: [{0}/{1}][{2}/{3}]\t'
-                            'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
-                            'Speed {4:.3f} ({5:.3f})\t'
-                            'Lr {lr:.10f}\t'
-                            'Loss {loss.val:.10f} ({loss.avg:.4f})\t'
-                            'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'
+                logger.info('Epoch: [{0}/{1}][{2}/{3}] '
+                            'Time {batch_time.val:.3f} ({batch_time.avg:.3f}) '
+                            'Speed {4:.3f} ({5:.3f}) '
+                            'Lr {lr:.10f} '
+                            'Loss {loss.val:.10f} ({loss.avg:.4f}) '
+                            'Prec@1 {top1.val:.3f} ({top1.avg:.3f}) '
                             'Prec@5 {top5.val:.3f} ({top5.avg:.3f})'.format(
                     epoch, cfg.TRAIN.MAX_EPOCH, i, len(train_loader),
                     cfg.NUM_GPUS * cfg.DATALOADER.TRAIN_BATCH_SIZE / batch_time.val,

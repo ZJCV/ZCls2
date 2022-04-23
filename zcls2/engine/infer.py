@@ -69,11 +69,11 @@ def validate(cfg: CfgNode, val_loader: DataLoader, model: nn.Module, criterion: 
 
         # TODO:  Change timings to mirror train().
         if cfg.RANK_ID == 0 and i % cfg.PRINT_FREQ == 0:
-            logger.info('Test: [{0}/{1}]\t'
-                        'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
-                        'Speed {2:.3f} ({3:.3f})\t'
-                        'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
-                        'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'
+            logger.info('Test: [{0}/{1}] '
+                        'Time {batch_time.val:.3f} ({batch_time.avg:.3f}) '
+                        'Speed {2:.3f} ({3:.3f}) '
+                        'Loss {loss.val:.4f} ({loss.avg:.4f}) '
+                        'Prec@1 {top1.val:.3f} ({top1.avg:.3f}) '
                         'Prec@5 {top5.val:.3f} ({top5.avg:.3f})'.format(
                 i, len(val_loader),
                 cfg.NUM_GPUS * cfg.DATALOADER.TRAIN_BATCH_SIZE / batch_time.val,
