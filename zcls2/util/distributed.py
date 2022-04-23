@@ -16,13 +16,14 @@ import torch.backends.cudnn as cudnn
 from yacs.config import CfgNode
 from argparse import Namespace
 
+from .misc import init_seed
+
 
 def init_dist(args: Namespace, cfg: CfgNode) -> None:
-    cudnn.benchmark = True
+    cudnn.benchmark = False if args.deterministic else True
+    cudnn.deterministic = True if args.deterministic else False
     if args.deterministic:
-        cudnn.benchmark = False
-        cudnn.deterministic = True
-        torch.manual_seed(args.local_rank)
+        init_seed(args.local_rank)
         torch.set_printoptions(precision=10)
 
     args.distributed = False
