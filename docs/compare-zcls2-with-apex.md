@@ -76,11 +76,11 @@ ZCls2/data$ tree -L 2
 | repos  | arch | dataset  | top1  | top5  |
 |---|---|---|---|---|
 | apex  | resnet18  | cifar10  | 92.910 | 99.800 |
-| zcls2 | resnet18  | cifar10  | 92.410 | 99.770 |
-| apex  | resnet18  | cifar100 | 73.250 | 92.890 |
-| zcls2 | resnet18  | cifar100 | 73.190 | 93.080 |
+| zcls2 | resnet18  | cifar10  | 92.490 | 99.800 |
+| apex  | resnet18  | cifar100 | 73.400 | 93.000 |
+| zcls2 | resnet18  | cifar100 | 73.260 | 92.910 |
 | apex  | resnet18  | fashionmnist  | 94.230 | 99.950 |
-| zcls2 | resnet18  | fashionmnist  | 93.920 | 99.930 |
+| zcls2 | resnet18  | fashionmnist  | 94.250 | 99.940 |
 
 I don't set `cudnn.deterministic = True` and `cudnn.benchmark = False`, so each time the `best_prec@1/best_prec@5` is different, may be big diff. For example, 
 
@@ -88,19 +88,25 @@ I don't set `cudnn.deterministic = True` and `cudnn.benchmark = False`, so each 
 
 1. Apex
    1. `92.910 | 99.800`
+   2. `92.390 | 99.780`
 2. ZCls2
    1. `92.410 | 99.770`
+   2. `92.490 | 99.800`
 
 ### CIFAR100
 
 1. Apex
    1. `73.250 | 92.890`
+   2. `73.400 | 93.000`
 2. ZCls2
    1. `73.190 | 93.080`
+   2. `73.260 | 92.910`
 
 ### FashionMNIST
 
 1. Apex
    1. `94.230 | 99.950`
+   2. `94.060 | 99.950`
 2. ZCls2
    1. `93.920 | 99.930`
+   2. `94.250 | 99.940`
