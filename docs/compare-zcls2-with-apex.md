@@ -16,7 +16,7 @@
     * Optimizer: SGD (initial lr 0.01)
     * Lr_scheduler: Warmup (5) + MultiStepLR(30/60/80)
 * apex: commit `727a6452c9b781930acee5e24e09efe9360b4890`
-* zcls2: commit `33de745bc6ab4fdedb07754c075cec13a7ce16be`
+* zcls2: commit `193b3995c37578222957ac9e72f6ad9d49438b70`
 ```
 
 ## Prepare data
