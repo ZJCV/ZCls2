@@ -49,6 +49,11 @@ def build_model(cfg: CfgNode, device: torch.device = torch.device('cpu')) -> nn.
         logger.info("using apex synced BN")
         model = apex.parallel.convert_syncbn_model(model)
 
-    model = model.to(device)
+    if cfg.CHANNELS_LAST:
+        memory_format = torch.channels_last
+    else:
+        memory_format = torch.contiguous_format
+    # Same as Apex setting
+    model = model.to(device, memory_format=memory_format)
 
     return model
