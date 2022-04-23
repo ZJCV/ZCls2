@@ -38,11 +38,11 @@ In order to better improve the training speed, we decided to develop a new train
 
 ## Installation
 
-...
+See [Install](https://zcls2.readthedocs.io/en/latest/install/)
 
 ## Usage
 
-...
+See [Get started](https://zcls2.readthedocs.io/en/latest/get-started/)
 
 ## Maintainers
 

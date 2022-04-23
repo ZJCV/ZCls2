@@ -38,11 +38,11 @@
 
 ## 安装
 
-...
+查看[Install](https://zcls2.readthedocs.io/en/latest/install/)
 
 ## 用法
 
-...
+查看[Get started](https://zcls2.readthedocs.io/en/latest/get-started/)
 
 ## 主要维护人员
 
