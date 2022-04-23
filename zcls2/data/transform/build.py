@@ -39,10 +39,10 @@ __supported_transform__ = [
     'RandomRotation',
     'RandomResizedCrop',
     'Resize',
-    # augment
+    # Augment
     'AutoAugment',
     'RandAugment',
-    # custom
+    # Custom
     'OpenCVResize',
     'SquarePad',
 ]
