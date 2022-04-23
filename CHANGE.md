@@ -1,5 +1,12 @@
 # CHANGE
 
+## v0.1.1
+
+* New features
+  1. Adjust zcls2 python version constraints (`python >= 3.9` to `python >= 3.8`)
+* Bug fixes
+* Breaking changes.
+
 ## v0.1.0
 
 * New features
