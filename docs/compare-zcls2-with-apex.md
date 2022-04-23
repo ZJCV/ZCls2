@@ -13,7 +13,7 @@
     * Num gpus: 4
     * Batch size: 256 / one gpu
     * Loss: CrossEntropyLoss
-    * Optimizer: SGD (initial lr 0.1)
+    * Optimizer: SGD (initial lr 0.01)
     * Lr_scheduler: Warmup (5) + MultiStepLR(30/60/80)
 * apex: commit `727a6452c9b781930acee5e24e09efe9360b4890`
 * zcls2: commit `33de745bc6ab4fdedb07754c075cec13a7ce16be`
@@ -73,31 +73,34 @@ ZCls2/data$ tree -L 2
 
 ## Results
 
-| repos  | arch | dataset  | top1  | top5  | train_time  |
-|---|---|---|---|---|---|
-| apex  | resnet18  | cifar10  | 84.940  |  99.360 | 797  |
-| zcls2 | resnet18  | cifar10  |  87.490 | 99.540  | 797  |
-| apex  | resnet18  | cifar100  | 72.760  | 92.350  | 807  |
-| zcls2 | resnet18  | cifar100  | 72.760   | 92.070  | 797  |
-| apex  | resnet18  | fashionmnist  | 88.830  | 99.880 | 902  |
-| zcls2 | resnet18  | fashionmnist  | 94.250   | 99.970  | 907  |
+| repos  | arch | dataset  | top1  | top5  |
+|---|---|---|---|---|
+| apex  | resnet18  | cifar10  | 92.910 | 99.800 |
+| zcls2 | resnet18  | cifar10  | 92.410 | 99.770 |
+| apex  | resnet18  | cifar100 | 73.250 | 92.890 |
+| zcls2 | resnet18  | cifar100 | 73.190 | 93.080 |
+| apex  | resnet18  | fashionmnist  | 94.230 | 99.950 |
+| zcls2 | resnet18  | fashionmnist  | 93.920 | 99.930 |
 
-I don't set `cudnn.deterministic = True` and `cudnn.benchmark = False`, so each time the `best_prec@1/best_prec@5` is different, may be big diff. 
+I don't set `cudnn.deterministic = True` and `cudnn.benchmark = False`, so each time the `best_prec@1/best_prec@5` is different, may be big diff. For example, 
 
-For example, FashionMNIST in ZCls2:
+### CIFAR10
 
-1. `94.250 / 99.970`
-2. `88.150 / 99.850`
-3. `94.240 / 99.960`
+1. Apex
+   1. `92.910 | 99.800`
+2. ZCls2
+   1. `92.410 | 99.770`
 
-CIFAR10 in ZCls2:
+### CIFAR100
 
-1. `87.490 / 99.540`
-2. `79.170 / 98.610`
-3. `82.780 / 99.260`
+1. Apex
+   1. `73.250 | 92.890`
+2. ZCls2
+   1. `73.190 | 93.080`
 
-CIFAR10 in Apex:
+### FashionMNIST
 
-1. `84.940 / 99.360`
-2. `83.120 / 99.250`
-3. `85.709 / 99.350`
+1. Apex
+   1. `94.230 | 99.950`
+2. ZCls2
+   1. `93.920 | 99.930`
