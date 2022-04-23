@@ -13,6 +13,7 @@ from argparse import Namespace
 
 from zcls2.config import get_cfg_defaults
 from zcls2.data.build import build_data
+from zcls2.data.dataset.mp_dataset import MPDataset
 from zcls2.optim.optimizer.build import build_optimizer
 from zcls2.optim.lr_scheduler.build import build_lr_scheduler
 from zcls2.model.criterion.build import build_criterion
@@ -23,7 +24,6 @@ from zcls2.util.distributed import init_dist
 from zcls2.util.parser import parse, load_cfg
 from zcls2.util.collect_env import collect_env_info
 from zcls2.util.checkpoint import save_checkpoint
-from zcls2.data.dataset.mp_dataset import MPDataset
 
 from zcls2.util import logging
 
