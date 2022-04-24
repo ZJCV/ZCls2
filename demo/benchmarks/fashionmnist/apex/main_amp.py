@@ -153,6 +153,15 @@ def main():
 
             model.fc = None
             model.fc = new_fc
+        elif isinstance(model, models.MobileNetV2):
+            old_fc = model.classifier[1]
+            assert isinstance(old_fc, nn.Linear)
+
+            in_features = old_fc.in_features
+            new_fc = create_linear(in_features, args.num_classes, bias=old_fc.bias is not None)
+
+            model.classifier[1] = None
+            model.classifier[1] = new_fc
         else:
             raise ValueError(f'{args.arch} does not support')
 

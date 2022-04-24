@@ -81,32 +81,56 @@ ZCls2/data$ tree -L 2
 | zcls2 | resnet18  | cifar100 | 73.260 | 92.910 |
 | apex  | resnet18  | fashionmnist  | 94.230 | 99.950 |
 | zcls2 | resnet18  | fashionmnist  | 94.250 | 99.940 |
+| apex  | mobilenetv2  | cifar10  | 92.800 | 99.850 |
+| zcls2 | mobilenetv2  | cifar10  | 92.830 | 99.800 |
+| apex  | mobilenetv2  | cifar100 | 73.560 | 93.140 |
+| zcls2 | mobilenetv2  | cifar100 | 73.610 | 93.320 |
+| apex  | mobilenetv2  | fashionmnist  | 93.870 | 99.980 |
+| zcls2 | mobilenetv2  | fashionmnist  | 93.860 | 99.960 |
 
 I don't set `cudnn.deterministic = True` and `cudnn.benchmark = False`, so each time the `best_prec@1/best_prec@5` is different, may be big diff. For example, 
 
 ### CIFAR10
 
-1. Apex
-   1. `92.910 | 99.800`
-   2. `92.390 | 99.780`
-2. ZCls2
-   1. `92.410 | 99.770`
-   2. `92.490 | 99.800`
+1. ResNet18
+   1. Apex
+      1. `92.910 | 99.800`
+      2. `92.390 | 99.780`
+   2. ZCls2
+      1. `92.410 | 99.770`
+      2. `92.490 | 99.800`
+2. MobileNetV2
+   1. Apex
+      1. `92.800 | 99.850` 
+   2. ZCls2
+      1. `92.830 | 99.800`
 
 ### CIFAR100
 
-1. Apex
-   1. `73.250 | 92.890`
-   2. `73.400 | 93.000`
-2. ZCls2
-   1. `73.190 | 93.080`
-   2. `73.260 | 92.910`
+1. ResNet18
+   1. Apex
+      1. `73.250 | 92.890`
+      2. `73.400 | 93.000`
+   2. ZCls2
+      1. `73.190 | 93.080`
+      2. `73.260 | 92.910`
+2. MobileNetV2
+   1. Apex
+      1. `73.560 | 93.140`
+   2. ZCls2
+      1. `73.610 | 93.320`
 
 ### FashionMNIST
 
-1. Apex
-   1. `94.230 | 99.950`
-   2. `94.060 | 99.950`
-2. ZCls2
-   1. `93.920 | 99.930`
-   2. `94.250 | 99.940`
+1. ResNet18
+   1. Apex
+      1. `94.230 | 99.950`
+      2. `94.060 | 99.950`
+   2. ZCls2
+      1. `93.920 | 99.930`
+      2. `94.250 | 99.940`
+2. MobileNetV2
+   1. Apex
+      1. `93.870 | 99.980`
+   2. ZCls2
+      1. `93.860 | 99.960`
