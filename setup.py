@@ -14,10 +14,9 @@ PYTHON_REQUIRES = ">=3.8"
 INSTALL_REQUIRES = [
     "Pillow >= 8.1.0",
     "numpy >= 1.20.1",
-    "opencv_contrib_python >= 4.5.3.56",
     "tabulate >= 0.8.7",
-    "torch >= 1.8.2",
-    "torchvision >= 0.9.2",
+    "torch >= 1.10.0",
+    "torchvision >= 0.11.1",
     "yacs >= 0.1.8",
     "timm >= 0.5.4",
 ]
