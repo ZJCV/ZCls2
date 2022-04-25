@@ -58,3 +58,6 @@ _C.TRAIN.EVAL_EPOCH = 1
 
 # number of total epochs to run
 _C.TRAIN.MAX_EPOCH = 90
+
+# Specify values of k for the precision@k
+_C.TRAIN.TOP_K = (1, 5)

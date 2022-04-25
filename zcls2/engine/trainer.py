@@ -42,8 +42,10 @@ def train(cfg: CfgNode, train_loader: DataLoader, model: nn.Module, criterion: n
           epoch: Optional[int] = 1) -> None:
     batch_time = AverageMeter()
     losses = AverageMeter()
-    top1 = AverageMeter()
-    top5 = AverageMeter()
+    # top1 = AverageMeter()
+    # top5 = AverageMeter()
+    top_k = cfg.TRAIN.TOP_K
+    top_list = [AverageMeter() for _ in top_k]
 
     # switch to train mode
     model.train()
@@ -93,39 +95,44 @@ def train(cfg: CfgNode, train_loader: DataLoader, model: nn.Module, criterion: n
             # iteration, since they incur an allreduce and some host<->device syncs.
 
             # Measure accuracy
-            prec1, prec5 = accuracy(output[KEY_OUTPUT].data, target, topk=(1, 5))
+            # prec1, prec5 = accuracy(output[KEY_OUTPUT].data, target, topk=(1, 5))
+            prec_list = accuracy(output[KEY_OUTPUT].data, target, topk=top_k)
 
             # Average loss and accuracy across processes for logging
             if cfg.DISTRIBUTED:
                 reduced_loss = reduce_tensor(cfg.NUM_GPUS, loss.data)
-                prec1 = reduce_tensor(cfg.NUM_GPUS, prec1)
-                prec5 = reduce_tensor(cfg.NUM_GPUS, prec5)
+                # prec1 = reduce_tensor(cfg.NUM_GPUS, prec1)
+                # prec5 = reduce_tensor(cfg.NUM_GPUS, prec5)
+                prec_list = [reduce_tensor(cfg.NUM_GPUS, prec) for prec in prec_list]
             else:
                 reduced_loss = loss.data
 
             # to_python_float incurs a host<->device sync
             losses.update(to_python_float(reduced_loss), input.size(0))
-            top1.update(to_python_float(prec1), input.size(0))
-            top5.update(to_python_float(prec5), input.size(0))
+            # top1.update(to_python_float(prec1), input.size(0))
+            # top5.update(to_python_float(prec5), input.size(0))
+            for i, prec in enumerate(prec_list):
+                top_list[i].update(to_python_float(prec), input.size(0))
 
             torch.cuda.synchronize()
             batch_time.update((time.time() - end) / cfg.PRINT_FREQ)
             end = time.time()
 
             if cfg.RANK_ID == 0:
-                logger.info('Epoch: [{0}/{1}][{2}/{3}] '
-                            'Time {batch_time.val:.3f} ({batch_time.avg:.3f}) '
-                            'Speed {4:.3f} ({5:.3f}) '
-                            'Lr {lr:.10f} '
-                            'Loss {loss.val:.10f} ({loss.avg:.4f}) '
-                            'Prec@1 {top1.val:.3f} ({top1.avg:.3f}) '
-                            'Prec@5 {top5.val:.3f} ({top5.avg:.3f})'.format(
+                logger_str = 'Epoch: [{0}/{1}][{2}/{3}] ' \
+                             'Time {batch_time.val:.3f} ({batch_time.avg:.3f}) ' \
+                             'Speed {4:.3f} ({5:.3f}) ' \
+                             'Lr {lr:.10f} ' \
+                             'Loss {loss.val:.10f} ({loss.avg:.4f}) '.format(
                     epoch, cfg.TRAIN.MAX_EPOCH, i, len(train_loader),
                     cfg.NUM_GPUS * cfg.DATALOADER.TRAIN_BATCH_SIZE / batch_time.val,
                     cfg.NUM_GPUS * cfg.DATALOADER.TRAIN_BATCH_SIZE / batch_time.avg,
                     batch_time=batch_time,
                     lr=optimizer.param_groups[0]['lr'],
-                    loss=losses, top1=top1, top5=top5))
+                    loss=losses)
+                for k, top in zip(top_k, top_list):
+                    logger_str += f'Prec@{k} {top.val:.3f} ({top.avg:.3f}) '
+                logger.info(logger_str)
         if cfg.PROF >= 0: torch.cuda.nvtx.range_push("prefetcher.next()")
         input, target = prefetcher.next()
         if cfg.PROF >= 0: torch.cuda.nvtx.range_pop()
