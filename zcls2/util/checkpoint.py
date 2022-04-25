@@ -21,4 +21,6 @@ def save_checkpoint(state, is_best, output_dir='outputs', filename='checkpoint.p
     logger.info(f"Save to {save_path}")
     torch.save(state, save_path)
     if is_best:
-        shutil.copyfile(save_path, os.path.join(output_dir, 'model_best.pth.tar'))
+        best_path = os.path.join(output_dir, 'model_best.pth.tar')
+        logger.info(f"Copy to {best_path}")
+        shutil.copyfile(save_path, best_path)
