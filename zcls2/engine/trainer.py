@@ -42,8 +42,6 @@ def train(cfg: CfgNode, train_loader: DataLoader, model: nn.Module, criterion: n
           epoch: Optional[int] = 1) -> None:
     batch_time = AverageMeter()
     losses = AverageMeter()
-    # top1 = AverageMeter()
-    # top5 = AverageMeter()
     top_k = cfg.TRAIN.TOP_K
     top_list = [AverageMeter() for _ in top_k]
 
@@ -95,22 +93,17 @@ def train(cfg: CfgNode, train_loader: DataLoader, model: nn.Module, criterion: n
             # iteration, since they incur an allreduce and some host<->device syncs.
 
             # Measure accuracy
-            # prec1, prec5 = accuracy(output[KEY_OUTPUT].data, target, topk=(1, 5))
             prec_list = accuracy(output[KEY_OUTPUT].data, target, topk=top_k)
 
             # Average loss and accuracy across processes for logging
             if cfg.DISTRIBUTED:
                 reduced_loss = reduce_tensor(cfg.NUM_GPUS, loss.data)
-                # prec1 = reduce_tensor(cfg.NUM_GPUS, prec1)
-                # prec5 = reduce_tensor(cfg.NUM_GPUS, prec5)
                 prec_list = [reduce_tensor(cfg.NUM_GPUS, prec) for prec in prec_list]
             else:
                 reduced_loss = loss.data
 
             # to_python_float incurs a host<->device sync
             losses.update(to_python_float(reduced_loss), input.size(0))
-            # top1.update(to_python_float(prec1), input.size(0))
-            # top5.update(to_python_float(prec5), input.size(0))
             for i, prec in enumerate(prec_list):
                 top_list[i].update(to_python_float(prec), input.size(0))
 
