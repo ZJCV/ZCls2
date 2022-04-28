@@ -6,7 +6,7 @@
 @author: zj
 @description: CCCF is a custom mixed classification dataset
 """
-from typing import Optional, Tuple, Any, Callable
+from typing import Optional, Tuple, Any, Callable, List
 
 import os
 import numpy as np
@@ -16,6 +16,18 @@ from torch.utils.data import Dataset
 from zcls2.config.key_word import KEY_SEP
 
 __all__ = ['CCCF']
+
+
+def load_txt(txt_path: str, delimiter: str = ',,') -> List:
+    assert os.path.isfile(txt_path), txt_path
+
+    data_list = list()
+    with open(txt_path, 'r') as f:
+        for line in f:
+            tmp_list = line.strip().split(delimiter)
+            data_list.append(tmp_list)
+
+    return data_list
 
 
 class CCCF(Dataset):
@@ -42,12 +54,12 @@ class CCCF(Dataset):
         test_path = os.path.join(root, 'test.txt')
         assert os.path.isfile(test_path), test_path
 
-        classes = np.loadtxt(class_path, dtype=str, delimiter=' ')
-        data_list = np.loadtxt(train_path, dtype=str, delimiter=KEY_SEP) if train else \
-            np.loadtxt(test_path, dtype=str, delimiter=KEY_SEP)
+        classes = load_txt(class_path, delimiter=' ')
+        data_list = load_txt(train_path, delimiter=KEY_SEP) if train else \
+            load_txt(test_path, delimiter=KEY_SEP)
 
         self.classes = classes
-        self.data = [img_path for img_path, target in data_list]
+        self.data = [os.path.join(root, str(img_path)) for img_path, target in data_list]
         self.targets = [int(target) for img_path, target in data_list]
 
         self.root = root
@@ -62,11 +74,11 @@ class CCCF(Dataset):
         Returns:
             tuple: (image, target) where target is index of the target class.
         """
-        img, target = self.data[index], self.targets[index]
+        img_path, target = self.data[index], self.targets[index]
 
         # doing this so that it is consistent with all other datasets
         # to return a PIL Image
-        img = Image.fromarray(img)
+        img = Image.open(img_path)
 
         if self.transform is not None:
             img = self.transform(img)
