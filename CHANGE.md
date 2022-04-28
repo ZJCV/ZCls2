@@ -1,5 +1,16 @@
 # CHANGE
 
+## v0.2.1
+
+* New features
+  1. feat(dataset): new Dataset CCCF. [d02b2f66](https://github.com/ZJCV/ZCls2/tree/d02b2f66ec56c57dcf2345639d7ca423ef4abe8a)
+     1. The CCCF is a custom mixed classification dataset
+     2. Including CIFAR100/CUB-200-2011/Caltech-101/Food-101
+  2. feat(configs): add cfg.TRAIN.TOP_K supports and reformat prec@k log. [7877607f](https://github.com/ZJCV/ZCls2/tree/7877607fe3d274bd014edfb9a6b56b96ccb70de3)
+  3. chore(benchmarks): add mobilenetv2 for cifar10/cifar100/fashionmnist. [ef753ed5](https://github.com/ZJCV/ZCls2/tree/ef753ed538dd353a7a6472f8d8fe1e8ec5929b25)
+* Bug fixes
+* Breaking changes
+
 ## v0.2.0
 
 * New features
