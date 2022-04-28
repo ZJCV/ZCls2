@@ -1,7 +1,7 @@
 PRINT_FREQ: 10
 DIST_BACKEND: "nccl"
 INIT_METHOD: "env://"
-OUTPUT_DIR: 'outputs/mbv3_mix_224_b256_e90_g4'
+OUTPUT_DIR: 'outputs/mbv3_large_cccf_224_b256_e90_g4'
 TRAIN:
   EVAL_EPOCH: 1
   START_EPOCH: 1
@@ -12,9 +12,9 @@ DATALOADER:
   NUM_WORKERS: 4
   RANDOM_SAMPLE: True
 DATASET:
-  NAME: 'MixDataset'
-  TRAIN_ROOT: './data/'
-  TEST_ROOT: './data/'
+  NAME: 'CCCF'
+  TRAIN_ROOT: './data/cccf'
+  TEST_ROOT: './data/cccf'
 TRANSFORM:
   TRAIN_METHODS: ('RandomResizedCrop', 'RandomHorizontalFlip')
   TEST_METHODS: ('Resize', 'CenterCrop')

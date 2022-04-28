@@ -13,12 +13,12 @@ from yacs.config import CfgNode
 from torch.utils.data import Dataset
 import torchvision.transforms.transforms as transforms
 
-from . import general_dataset, general_dataset_v2, mp_dataset, mix_dataset
+from . import general_dataset, general_dataset_v2, mp_dataset, cccf
 
 __all__ = general_dataset.__all__ \
           + general_dataset_v2.__all__ \
           + mp_dataset.__all__ \
-          + mix_dataset.__all__
+          + cccf.__all__
 
 
 def build_dataset(cfg: CfgNode,
@@ -48,8 +48,8 @@ def build_dataset(cfg: CfgNode,
             data_root, transform=transform, target_transform=target_transform,
             shuffle=is_train, num_gpus=num_gpus, rank_id=rank_id, epoch=epoch
         )
-    elif dataset_name in mix_dataset.__all__:
-        dataset = mix_dataset.__dict__[dataset_name](
+    elif dataset_name in cccf.__all__:
+        dataset = cccf.__dict__[dataset_name](
             data_root, transform=transform, target_transform=target_transform, train=is_train
         )
     else:
