@@ -9,7 +9,6 @@
 from typing import Optional, Tuple, Any, Callable, List
 
 import os
-import numpy as np
 from PIL import Image
 
 from torch.utils.data import Dataset
@@ -79,6 +78,8 @@ class CCCF(Dataset):
         # doing this so that it is consistent with all other datasets
         # to return a PIL Image
         img = Image.open(img_path)
+        if img.mode != 'RGB':
+            img = img.convert('RGB')
 
         if self.transform is not None:
             img = self.transform(img)
