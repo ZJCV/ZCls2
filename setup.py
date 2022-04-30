@@ -18,7 +18,7 @@ INSTALL_REQUIRES = [
     "torch >= 1.10.0",
     "torchvision >= 0.11.1",
     "yacs >= 0.1.8",
-    "timm >= 0.5.4",
+    "timm ~= 0.4.9",
 ]
 CLASSIFIERS = [
     "Programming Language :: Python :: 3",
