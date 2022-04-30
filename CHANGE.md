@@ -1,5 +1,17 @@
 # CHANGE
 
+## v0.2.3
+
+* New features
+  1. feat(model): add EfficientNetLite support. [84172a15](https://github.com/ZJCV/ZCls2/tree/84172a15102c3698a951c7c32accab3f263f38c7)
+  2. feat(transform): add Mixup + Cutmix support. [902a102e](https://github.com/ZJCV/ZCls2/tree/902a102e28371b459473fb0eb4a078f53fdd69b3)
+  3. feat(criterion): add label_smoothing support. [6b4eb4eb](https://github.com/ZJCV/ZCls2/tree/6b4eb4ebdbd534d2b0b35c82b96ca21590174a98)
+  4. feat(model): add EfficientNet. [aaebc5b6](https://github.com/ZJCV/ZCls2/tree/aaebc5b6c46f08fed8f27847e51411d317f25f3f)
+  5. perf(multi_step_lr.py): add cfg.LR_SCHEDULER.MULTISTEP_LR.STEP_SIZE. [2494defb](https://github.com/ZJCV/ZCls2/tree/2494defb2799a72752bf1e29bc6a0a9fb8bbe851)
+  6. feat(optimizer): add RMSPRop optimizer. [b3669030](https://github.com/ZJCV/ZCls2/tree/b3669030159d85cdeb34e9d90bf2c3fb0fa27c38)
+* Bug fixes
+* Breaking changes
+
 ## v0.2.2
 
 * New features
