@@ -1,9 +1,23 @@
 
 # LeaderBoard (Based on CCCF)
 
+## About CCCF
+
+    CCCF is a custom mixed classification dataset, including
+
+    1. CIFAR100: https://paperswithcode.com/dataset/cifar-100
+    2. CUB-200-2011: https://paperswithcode.com/dataset/cub-200-2011
+    3. Caltech-101: https://paperswithcode.com/dataset/caltech-101
+    4. Food-101: https://paperswithcode.com/dataset/food-101
+
+    The classes num = 100 + 200 + 101 + 101 = 502
+
+### SCORES
+
 | cfg |    model   |   top1/top5   |       loss       | optimizer | lr-scheduler | epoch | pretrained |
 |:---:|:----------:|:-------------:|:----------------:|:---------:|:------------:|:-----:|:-----:|
 |  [efficientnet_b0_cccf_224_b256_e90_g4](../configs/cccf/efficientnet_b0_cccf_224_b256_e90_g4.yaml)   |  efficientnet_b0  | 82.034 / 96.010 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   True  |
+|  [efficientnet_b0_cccf_224_b256_e90_g4_calr](../configs/cccf/efficientnet_b0_cccf_224_b256_e90_g4_calr.yaml)   |  efficientnet_b0  | 81.938 / 95.865 | CrossEntropyLoss |    SGD    |  CosineAnnealingLR |   90  |   True  |
 |  [r50_cccf_224_b256_e90_g4_calr](../configs/cccf/r50_cccf_224_b256_e90_g4_calr.yaml)   |  resnet50  | 80.101 / 95.979 | CrossEntropyLoss |    SGD    |  CosineAnnealingLR |   90  |   True  |
 |  [ghostnet_100_cccf_224_b256_e90_g4](../configs/cccf/ghostnet_100_cccf_224_b256_e90_g4.yaml)   | ghostnet_100 | 79.801 / 95.00 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   True  |
 |  [mbv3_large_cccf_224_b256_e90_g4](../configs/cccf/mbv3_large_cccf_224_b256_e90_g4.yaml)   | mbv3_large | 79.56 / 94.90 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   True  |

@@ -34,10 +34,10 @@ MODEL:
     REDUCTION: 'mean'
 OPTIMIZER:
   NAME: 'RMSProp'
-  LR: 0.001
+  LR: 0.00064
   MOMENTUM: 0.9
   WEIGHT_DECAY:
-    DECAY: 4e-5
+    DECAY: 1e-5
     NO_BIAS: True
     NO_NORM: True
 LR_SCHEDULER:
