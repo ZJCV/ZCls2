@@ -10,10 +10,16 @@
 from typing import Tuple
 from yacs.config import CfgNode
 
+from timm.data import Mixup
+
 import torch
 import torchvision.transforms.functional as F
 from torchvision.transforms import autoaugment
 from torchvision.transforms import transforms
+
+from zcls2.util import logging
+
+logger = logging.get_logger(__name__)
 
 from .resize import Resize
 from .square_pad import SquarePad
@@ -139,3 +145,35 @@ def parse_target_transform() -> transforms.Compose:
 
 def build_transform(cfg: CfgNode, is_train=True) -> Tuple[transforms.Compose, transforms.Compose]:
     return parse_transform(cfg, is_train), parse_target_transform()
+
+
+def create_mixup_fn(cfg: CfgNode) -> Mixup:
+    """
+    Derived from ConvNeXt
+    Args:
+        cfg: CfgNode
+
+    Returns:
+        Mixup (from timm.data)
+    """
+    mixup_active = cfg.TRANSFORM.MIXUP.MIXUP_ENABLED
+    mixup_alpha = cfg.TRANSFORM.MIXUP.MIXUP_ALPHA
+    cutmix_alpha = cfg.TRANSFORM.MIXUP.CUTMIX_ALPHA
+    cutmix_minmax = cfg.TRANSFORM.MIXUP.CUTMIX_MINMAX
+    mixup_prob = cfg.TRANSFORM.MIXUP.MIXUP_PROB
+    mixup_switch_prob = cfg.TRANSFORM.MIXUP.MIXUP_SWITCH_PROB
+    mixup_mode = cfg.TRANSFORM.MIXUP.MIXUP_MODE
+
+    smoothing = cfg.MODEL.CRITERION.LABEL_SMOOTHING
+    nb_classes = cfg.MODEL.NUM_CLASSES
+
+    mixup_fn = None
+    # mixup_active = mixup_alpha > 0 or cutmix_alpha > 0. or cutmix_minmax is not None
+    if mixup_active:
+        logger.info("Mixup is activated!")
+        mixup_fn = Mixup(
+            mixup_alpha=mixup_alpha, cutmix_alpha=cutmix_alpha, cutmix_minmax=cutmix_minmax,
+            prob=mixup_prob, switch_prob=mixup_switch_prob, mode=mixup_mode,
+            label_smoothing=smoothing, num_classes=nb_classes)
+
+    return mixup_fn

@@ -133,3 +133,21 @@ def add_config(_C: CN) -> None:
     #     bits (int): number of bits to keep for each channel (0-8)
     #     p (float): probability of the image being color inverted. Default value is 0.5
     _C.TRANSFORM.RandomPosterize = (8, 0.5)
+
+    # Mixup + Cutmix
+    _C.TRANSFORM.MIXUP = CN()
+    # Enable Mixup and Cutmix (default: False)
+    _C.TRANSFORM.MIXUP.MIXUP_ENABLED = False
+    # Mixup alpha, mixup enabled if > 0.
+    _C.TRANSFORM.MIXUP.MIXUP_ALPHA = 0.8
+    # Cutmix alpha, cutmix enabled if > 0.
+    _C.TRANSFORM.MIXUP.CUTMIX_ALPHA = 1.0
+    # Cutmix min/max ratio, overrides alpha and enables cutmix if set (default: None)
+    _C.TRANSFORM.MIXUP.CUTMIX_MINMAX = None
+    # Probability of performing mixup or cutmix when either/both is enabled
+    _C.TRANSFORM.MIXUP.MIXUP_PROB = 1.0
+    # Probability of switching to cutmix when both mixup and cutmix enabled
+    _C.TRANSFORM.MIXUP.MIXUP_SWITCH_PROB = 0.5
+    # How to apply mixup/cutmix params. Per "batch", "pair", or "elem"
+    _C.TRANSFORM.MIXUP.MIXUP_MODE = 'batch'
+

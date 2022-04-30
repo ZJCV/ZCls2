@@ -1,6 +1,8 @@
 import os
 import time
 
+from timm.data import Mixup
+
 import torch
 import torch.nn.parallel
 import torch.backends.cudnn as cudnn
@@ -13,6 +15,7 @@ from argparse import Namespace
 
 from zcls2.config import get_cfg_defaults
 from zcls2.data.build import build_data
+from zcls2.data.transform.build import create_mixup_fn
 from zcls2.data.dataset.mp_dataset import MPDataset
 from zcls2.optim.optimizer.build import build_optimizer
 from zcls2.optim.lr_scheduler.build import build_lr_scheduler
@@ -136,6 +139,7 @@ def main():
 
     # # Data loading code
     train_sampler, train_loader, val_loader = build_data(cfg)
+    mixup_fn = create_mixup_fn(cfg)
 
     if cfg.EVALUATE:
         validate(cfg, val_loader, model, criterion)
