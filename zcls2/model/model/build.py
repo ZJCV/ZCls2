@@ -12,13 +12,14 @@ import torch.nn as nn
 
 from yacs.config import CfgNode
 
-from . import resnet, ghostnet, mobilenet, efficientnet
+from . import resnet, ghostnet, mobilenet, efficientnet, efficientnet_lite
 
 from zcls2.util import logging
 
 logger = logging.get_logger(__name__)
 
-__supported_model__ = resnet.__all__ + ghostnet.__all__ + mobilenet.__all__ + efficientnet.__all__
+__supported_model__ = resnet.__all__ + ghostnet.__all__ + mobilenet.__all__ + \
+                      efficientnet.__all__ + efficientnet_lite.__all__
 
 
 def build_model(cfg: CfgNode, device: torch.device = torch.device('cpu')) -> nn.Module:
@@ -43,6 +44,8 @@ def build_model(cfg: CfgNode, device: torch.device = torch.device('cpu')) -> nn.
         model = mobilenet.__dict__[model_arch](pretrained=is_pretrained, num_classes=num_classes)
     elif model_arch in efficientnet.__all__:
         model = efficientnet.__dict__[model_arch](pretrained=is_pretrained, num_classes=num_classes)
+    elif model_arch in efficientnet_lite.__all__:
+        model = efficientnet_lite.__dict__[model_arch](num_classes=num_classes)
     else:
         raise ValueError(f"{model_arch} does not support")
 
