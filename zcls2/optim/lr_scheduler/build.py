@@ -36,17 +36,24 @@ def build_lr_scheduler(cfg: CfgNode, optimizer: Optimizer):
     lr_scheduler_name = cfg.LR_SCHEDULER.NAME
     assert lr_scheduler_name in __supported_lr_scheduler__
 
+    warmup = cfg.LR_SCHEDULER.IS_WARMUP
+    warmup_epoch = cfg.LR_SCHEDULER.WARMUP_EPOCH
+    max_epoch = cfg.TRAIN.MAX_EPOCH
+
+    if warmup:
+        max_epoch = max_epoch - warmup_epoch
+
     if lr_scheduler_name == 'MultiStepLR':
         milestones = cfg.LR_SCHEDULER.MULTISTEP_LR.MILESTONES
         gamma = cfg.LR_SCHEDULER.MULTISTEP_LR.GAMMA
+        step_size = cfg.LR_SCHEDULER.MULTISTEP_LR.STEP_SIZE
+        if step_size != 0:
+            milestones = list(range(0, max_epoch, step_size))
+
         return build_multistep_lr(optimizer, milestones=milestones, gamma=gamma)
     elif lr_scheduler_name == 'CosineAnnealingLR':
-        warmup = cfg.LR_SCHEDULER.IS_WARMUP
-        warmup_epoch = cfg.LR_SCHEDULER.WARMUP_EPOCH
-        max_epoch = cfg.TRAIN.MAX_EPOCH
-
         return build_cosine_annearling_lr(optimizer,
-                                          warmup=warmup, warmup_epoch=warmup_epoch, max_epoch=max_epoch,
+                                          max_epoch=max_epoch,
                                           minimal_lr=1e-6)
     else:
         raise ValueError(f"{lr_scheduler_name} does not support")

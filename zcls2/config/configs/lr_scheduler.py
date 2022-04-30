@@ -28,6 +28,8 @@ def add_config(_C: CN) -> None:
     _C.LR_SCHEDULER.MULTISTEP_LR = CN()
     _C.LR_SCHEDULER.MULTISTEP_LR.MILESTONES = [30, 60, 80]
     _C.LR_SCHEDULER.MULTISTEP_LR.GAMMA = 0.1
+    # If set STEP_SIZE != 0, then omit MILESTONES.
+    _C.LR_SCHEDULER.MULTISTEP_LR.STEP_SIZE = 0
 
     # ---------------------------------------------------------------------------- #
     # CosineAnnealingLR

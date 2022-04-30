@@ -15,7 +15,8 @@ from torch.optim.lr_scheduler import MultiStepLR
 
 def build_multistep_lr(optimizer: Optimizer,
                        milestones: Optional[list] = None,
-                       gamma: Optional[float] = 0.1) -> MultiStepLR:
+                       gamma: Optional[float] = 0.1,
+                       ) -> MultiStepLR:
     assert isinstance(optimizer, Optimizer)
     if milestones is None:
         milestones = [30, 60, 80]
