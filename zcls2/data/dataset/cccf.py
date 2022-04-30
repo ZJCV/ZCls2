@@ -32,6 +32,7 @@ def load_txt(txt_path: str, delimiter: str = ',,') -> List:
 class CCCF(Dataset):
     """
     CCCF is a custom mixed classification dataset, including
+
     1. CIFAR100: https://paperswithcode.com/dataset/cifar-100
     2. CUB-200-2011: https://paperswithcode.com/dataset/cub-200-2011
     3. Caltech-101: https://paperswithcode.com/dataset/caltech-101
