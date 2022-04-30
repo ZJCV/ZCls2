@@ -24,5 +24,5 @@ class CrossEntropyLoss(nn.CrossEntropyLoss):
         return super().forward(inputs, target)
 
 
-def build_cross_entropy_loss(reduction: str = 'mean') -> nn.Module:
-    return CrossEntropyLoss(reduction=reduction)
+def build_cross_entropy_loss(reduction: str = 'mean', label_smoothing=0.0) -> nn.Module:
+    return CrossEntropyLoss(reduction=reduction, label_smoothing=label_smoothing)

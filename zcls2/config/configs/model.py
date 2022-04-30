@@ -31,3 +31,5 @@ def add_config(_C: CN) -> None:
     _C.MODEL.CRITERION.NAME = 'CrossEntropyLoss'
     # mean or sum
     _C.MODEL.CRITERION.REDUCTION = 'mean'
+    # Label smoothing (default: 0.)
+    _C.MODEL.CRITERION.LABEL_SMOOTHING = 0.

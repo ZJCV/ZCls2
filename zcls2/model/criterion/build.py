@@ -26,7 +26,8 @@ def build_criterion(cfg: CfgNode) -> nn.Module:
     assert loss_name in __supported_criterion__
 
     if loss_name == 'CrossEntropyLoss':
-        return build_cross_entropy_loss(reduction=reduction)
+        label_smoothing = cfg.MODEL.CRITERION.LABEL_SMOOTHING
+        return build_cross_entropy_loss(reduction=reduction, label_smoothing=label_smoothing)
     elif loss_name == 'LargeMarginSoftmaxV1':
         return build_large_margin_softmax_loss(reduction=reduction)
     else:
