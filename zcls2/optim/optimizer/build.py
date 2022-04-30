@@ -14,9 +14,11 @@ import torch.nn as nn
 from torch.optim.optimizer import Optimizer
 
 from .sgd import build_sgd
+from .rmsprop import build_rmsprop
 
 __supported__ = [
-    'SGD'
+    'SGD',
+    'RMSProp'
 ]
 
 
@@ -38,6 +40,11 @@ def build_optimizer(cfg: CfgNode, model: nn.Module) -> Optimizer:
                          lr=lr,
                          momentum=momentum,
                          weight_decay=weight_decay)
+    elif optimizer_name == 'RMSProp':
+        return build_rmsprop(groups,
+                             lr=lr,
+                             momentum=momentum,
+                             weight_decay=weight_decay)
     else:
         raise ValueError(f"{optimizer_name} does not support")
 
