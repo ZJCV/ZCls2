@@ -1,7 +1,7 @@
 PRINT_FREQ: 10
 DIST_BACKEND: "nccl"
 INIT_METHOD: "env://"
-OUTPUT_DIR: 'outputs/mbv3_large_cccf_224_b256_e90_g4'
+OUTPUT_DIR: 'outputs/mbv3_large_cccf_224_b256_e90_g4_calr'
 TRAIN:
   EVAL_EPOCH: 1
   START_EPOCH: 1
@@ -37,13 +37,12 @@ OPTIMIZER:
   LR: 1e-1
   MOMENTUM: 0.9
   WEIGHT_DECAY:
-    DECAY: 1e-4
+    DECAY: 4e-5
     NO_BIAS: True
     NO_NORM: True
 LR_SCHEDULER:
-  NAME: 'MultiStepLR'
+  NAME: 'CosineAnnealingLR'
   IS_WARMUP: True
   WARMUP_EPOCH: 5
-  MULTISTEP_LR:
-    MILESTONES: [ 30, 60, 80 ]
-    GAMMA: 0.1
+  COSINE_ANNEALING_LR:
+    MINIMAL_LR: 1e-6
