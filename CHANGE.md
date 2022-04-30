@@ -1,5 +1,17 @@
 # CHANGE
 
+## v0.2.2
+
+* New features
+  1. build(python): update timm version and change >= to ~=. [80cd4a38](https://github.com/ZJCV/ZCls2/tree/80cd4a38f2a83e9223cebe7a3b890c8e4a44ea3e)
+  2. perf(train.sh): make CUDA_VISIBLE_DEVICES and master_port configurable. [c5385bf7](https://github.com/ZJCV/ZCls2/tree/c5385bf7f7c6b9406989231ce53584c781adb53a)
+* Bug fixes
+  1. fix(model): fix ghostnet replacing the forward function failed. [48794a1d](https://github.com/ZJCV/ZCls2/tree/48794a1de822ac48d58d41213d04eebdf6111d5d)
+  2. fix(cccf): convert gray img to three-channel. [96fb0fe3](https://github.com/ZJCV/ZCls2/tree/96fb0fe36cbbf168201c5623a784aa99d722a00e)
+  3. fix(infer): fix wrong use param i. [820b4e2d](https://github.com/ZJCV/ZCls2/tree/820b4e2d01be88e81053cbbe177f6dde9802618f)
+  4. fix(trainer): fix wrong use param i. [d503e227](https://github.com/ZJCV/ZCls2/tree/d503e2276b912105a50df70feaf6dd0c46556dde)
+* Breaking changes
+
 ## v0.2.1
 
 * New features
