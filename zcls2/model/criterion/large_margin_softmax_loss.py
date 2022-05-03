@@ -15,6 +15,8 @@ proposed in the BMVC2019 paper: [Large Margin in Softmax Cross-Entropy Loss
 link to paper](https://staff.aist.go.jp/takumi.kobayashi/publication/2019/BMVC2019.pdf)
 '''
 
+__all__ = ['LargeMarginSoftmaxV1']
+
 
 ##
 # version 1: use torch.autograd
@@ -70,7 +72,3 @@ class LargeMarginSoftmaxV1(nn.Module):
             loss = loss.sum()
 
         return loss
-
-
-def build_large_margin_softmax_loss(reduction: str = 'mean') -> nn.Module:
-    return LargeMarginSoftmaxV1(reduction=reduction)
