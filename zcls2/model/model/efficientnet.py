@@ -22,7 +22,8 @@ from functools import partial
 from torch import nn, Tensor
 from typing import Any, Callable, List, Optional, Dict
 
-from torchvision.models import efficientnet, EfficientNet
+from torchvision.models import efficientnet
+from torchvision.models import EfficientNet as TEfficientNet
 from torchvision.models.efficientnet import MBConvConfig
 
 try:
@@ -32,11 +33,12 @@ except ImportError:
 
 from zcls2.config.key_word import KEY_OUTPUT
 
-__all__ = ["efficientnet_b0", "efficientnet_b1", "efficientnet_b2", "efficientnet_b3",
+__all__ = ["EfficientNet",
+           "efficientnet_b0", "efficientnet_b1", "efficientnet_b2", "efficientnet_b3",
            "efficientnet_b4", "efficientnet_b5", "efficientnet_b6", "efficientnet_b7"]
 
 
-class ZEfficientNet(EfficientNet):
+class EfficientNet(TEfficientNet):
 
     def __init__(self, inverted_residual_setting: List[MBConvConfig], dropout: float,
                  stochastic_depth_prob: float = 0.2, num_classes: int = 1000,
@@ -75,7 +77,7 @@ def _efficientnet_model(
         progress: bool,
         **kwargs: Any
 ) -> EfficientNet:
-    model = ZEfficientNet(inverted_residual_setting, dropout, **kwargs)
+    model = EfficientNet(inverted_residual_setting, dropout, **kwargs)
     if pretrained:
         state_dict = load_state_dict_from_url(efficientnet.model_urls[arch],
                                               progress=progress)

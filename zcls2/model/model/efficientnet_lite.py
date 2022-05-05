@@ -10,13 +10,14 @@ from typing import Dict
 
 from zcls2.config.key_word import KEY_OUTPUT
 
-from .effnet_lite.efficientnet_lite import EfficientNetLite, efficientnet_lite_params
+from .effnet_lite.efficientnet_lite import efficientnet_lite_params
+from .effnet_lite.efficientnet_lite import EfficientNetLite as TEfficientNetLite
 
-__all__ = ['ZEfficientNetLite', 'efficientnet_lite0', 'efficientnet_lite1', 'efficientnet_lite2', 'efficientnet_lite3',
+__all__ = ['EfficientNetLite', 'efficientnet_lite0', 'efficientnet_lite1', 'efficientnet_lite2', 'efficientnet_lite3',
            'efficientnet_lite4']
 
 
-class ZEfficientNetLite(EfficientNetLite):
+class EfficientNetLite(TEfficientNetLite):
 
     def __init__(self, widthi_multiplier, depth_multiplier, num_classes, drop_connect_rate, dropout_rate):
         super().__init__(widthi_multiplier, depth_multiplier, num_classes, drop_connect_rate, dropout_rate)
@@ -30,29 +31,29 @@ class ZEfficientNetLite(EfficientNetLite):
 
 def efficientnet_lite0(num_classes):
     width_coefficient, depth_coefficient, _, dropout_rate = efficientnet_lite_params["efficientnet_lite0"]
-    model = ZEfficientNetLite(width_coefficient, depth_coefficient, num_classes, 0.2, dropout_rate)
+    model = EfficientNetLite(width_coefficient, depth_coefficient, num_classes, 0.2, dropout_rate)
     return model
 
 
 def efficientnet_lite1(num_classes):
     width_coefficient, depth_coefficient, _, dropout_rate = efficientnet_lite_params["efficientnet_lite1"]
-    model = ZEfficientNetLite(width_coefficient, depth_coefficient, num_classes, 0.2, dropout_rate)
+    model = EfficientNetLite(width_coefficient, depth_coefficient, num_classes, 0.2, dropout_rate)
     return model
 
 
 def efficientnet_lite2(num_classes):
     width_coefficient, depth_coefficient, _, dropout_rate = efficientnet_lite_params["efficientnet_lite2"]
-    model = ZEfficientNetLite(width_coefficient, depth_coefficient, num_classes, 0.2, dropout_rate)
+    model = EfficientNetLite(width_coefficient, depth_coefficient, num_classes, 0.2, dropout_rate)
     return model
 
 
 def efficientnet_lite3(num_classes):
     width_coefficient, depth_coefficient, _, dropout_rate = efficientnet_lite_params["efficientnet_lite3"]
-    model = ZEfficientNetLite(width_coefficient, depth_coefficient, num_classes, 0.2, dropout_rate)
+    model = EfficientNetLite(width_coefficient, depth_coefficient, num_classes, 0.2, dropout_rate)
     return model
 
 
 def efficientnet_lite4(num_classes):
     width_coefficient, depth_coefficient, _, dropout_rate = efficientnet_lite_params["efficientnet_lite4"]
-    model = ZEfficientNetLite(width_coefficient, depth_coefficient, num_classes, 0.2, dropout_rate)
+    model = EfficientNetLite(width_coefficient, depth_coefficient, num_classes, 0.2, dropout_rate)
     return model
