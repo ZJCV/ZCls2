@@ -18,8 +18,7 @@ from zcls2.util import logging
 
 logger = logging.get_logger(__name__)
 
-__supported_model__ = resnet.__all__ + ghostnet.__all__ + mobilenet.__all__ + \
-                      efficientnet.__all__ + efficientnet_lite.__all__
+__all__ = ["build_model"]
 
 
 def build_model(cfg: CfgNode, device: torch.device = torch.device('cpu')) -> nn.Module:
@@ -27,8 +26,6 @@ def build_model(cfg: CfgNode, device: torch.device = torch.device('cpu')) -> nn.
     is_pretrained = cfg.MODEL.PRETRAINED
     num_classes = cfg.MODEL.NUM_CLASSES
     sync_bn = cfg.MODEL.SYNC_BN
-
-    assert model_arch in __supported_model__
 
     # create model
     if is_pretrained:

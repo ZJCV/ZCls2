@@ -13,7 +13,8 @@ from zcls2.config.key_word import KEY_OUTPUT
 from .effnet_lite.efficientnet_lite import efficientnet_lite_params
 from .effnet_lite.efficientnet_lite import EfficientNetLite as TEfficientNetLite
 
-__all__ = ['EfficientNetLite', 'efficientnet_lite0', 'efficientnet_lite1', 'efficientnet_lite2', 'efficientnet_lite3',
+__all__ = ['EfficientNetLite',
+           'efficientnet_lite0', 'efficientnet_lite1', 'efficientnet_lite2', 'efficientnet_lite3',
            'efficientnet_lite4']
 
 

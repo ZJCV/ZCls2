@@ -9,7 +9,8 @@
 from typing import Any, List, Optional, Callable, Dict
 
 from torch import nn, Tensor
-from torchvision.models.mobilenet import MobileNetV2, MobileNetV3
+from torchvision.models.mobilenet import MobileNetV2 as TMobileNetV2
+from torchvision.models.mobilenet import MobileNetV3 as TMobileNetV3
 from torchvision.models import mobilenetv2
 from torchvision.models import mobilenetv3
 
@@ -25,11 +26,12 @@ except ImportError:
 from zcls2.config.key_word import KEY_OUTPUT
 
 __all__ = [
+    "MobileNetV2", "MobileNetV3",
     'mobilenet_v2', 'mobilenet_v3_large', 'mobilenet_v3_small'
 ]
 
 
-class ZMobileNetV2(MobileNetV2):
+class MobileNetV2(TMobileNetV2):
 
     def __init__(self, num_classes: int = 1000, width_mult: float = 1.0,
                  inverted_residual_setting: Optional[List[List[int]]] = None, round_nearest: int = 8,
@@ -53,7 +55,7 @@ def mobilenet_v2(pretrained: bool = False, progress: bool = True, **kwargs: Any)
         pretrained (bool): If True, returns a model pre-trained on ImageNet
         progress (bool): If True, displays a progress bar of the download to stderr
     """
-    model = ZMobileNetV2(**kwargs)
+    model = MobileNetV2(**kwargs)
     if pretrained:
         state_dict = load_state_dict_from_url(mobilenetv2.model_urls['mobilenet_v2'],
                                               progress=progress)
@@ -71,7 +73,7 @@ def mobilenet_v2(pretrained: bool = False, progress: bool = True, **kwargs: Any)
     return model
 
 
-class ZMobileNetV3(MobileNetV3):
+class MobileNetV3(TMobileNetV3):
 
     def __init__(self, inverted_residual_setting: List[InvertedResidualConfig], last_channel: int,
                  num_classes: int = 1000, block: Optional[Callable[..., nn.Module]] = None,
@@ -93,7 +95,7 @@ def _mobilenet_v3_model(
         progress: bool,
         **kwargs: Any
 ):
-    model = ZMobileNetV3(inverted_residual_setting, last_channel, **kwargs)
+    model = MobileNetV3(inverted_residual_setting, last_channel, **kwargs)
     if pretrained:
         if mobilenetv3.model_urls.get(arch, None) is None:
             raise ValueError("No checkpoint is available for model type {}".format(arch))
