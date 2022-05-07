@@ -15,8 +15,8 @@ def add_config(_C: CN) -> None:
     # LR_Scheduler
     # ---------------------------------------------------------------------------- #
     _C.LR_SCHEDULER = CN()
-    # LR scheduler type (default: MultiStepLR)
-    _C.LR_SCHEDULER.NAME = 'MultiStepLR'
+    # LR scheduler type (default: multi_step_lr)
+    _C.LR_SCHEDULER.NAME = 'multi_step_lr'
     # Is warmup (default: True)
     _C.LR_SCHEDULER.IS_WARMUP = True
     # Warmup epochs (default: 5)

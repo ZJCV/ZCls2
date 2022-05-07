@@ -10,16 +10,10 @@
 from typing import Optional
 from yacs.config import CfgNode
 
-import torch.nn as nn
+from torch import nn
 from torch.optim.optimizer import Optimizer
 
-from .sgd import build_sgd
-from .rmsprop import build_rmsprop
-
-__supported__ = [
-    'SGD',
-    'RMSProp'
-]
+from . import rmsprop, sgd
 
 
 def build_optimizer(cfg: CfgNode, model: nn.Module) -> Optimizer:
@@ -31,22 +25,23 @@ def build_optimizer(cfg: CfgNode, model: nn.Module) -> Optimizer:
     no_bias = cfg.OPTIMIZER.WEIGHT_DECAY.NO_BIAS
     no_norm = cfg.OPTIMIZER.WEIGHT_DECAY.NO_NORM
 
-    assert optimizer_name in __supported__
     assert isinstance(model, nn.Module)
     groups = filter_weight(model, no_bias, no_norm)
 
-    if optimizer_name == 'SGD':
-        return build_sgd(groups,
-                         lr=lr,
-                         momentum=momentum,
-                         weight_decay=weight_decay)
-    elif optimizer_name == 'RMSProp':
-        return build_rmsprop(groups,
-                             lr=lr,
-                             momentum=momentum,
-                             weight_decay=weight_decay)
+    if optimizer_name in sgd.__all__:
+        optimizer = sgd.__dict__[optimizer_name](groups,
+                                                 lr=lr,
+                                                 momentum=momentum,
+                                                 weight_decay=weight_decay)
+    elif optimizer_name in rmsprop.__all__:
+        optimizer = rmsprop.__dict__[optimizer_name](groups,
+                                                     lr=lr,
+                                                     momentum=momentum,
+                                                     weight_decay=weight_decay)
     else:
         raise ValueError(f"{optimizer_name} does not support")
+
+    return optimizer
 
 
 def filter_weight(module: nn.Module,

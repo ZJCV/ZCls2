@@ -16,7 +16,7 @@ import torch.nn.functional as F
 
 from zcls2.config.key_word import KEY_OUTPUT
 
-__all__ = ['SoftTargetCrossEntropy']
+__all__ = ['SoftTargetCrossEntropy', "soft_target_cross_entropy_loss"]
 
 
 class SoftTargetCrossEntropy(nn.Module):
@@ -30,3 +30,6 @@ class SoftTargetCrossEntropy(nn.Module):
 
         loss = torch.sum(-target * F.log_softmax(x, dim=-1), dim=-1)
         return loss.mean()
+
+
+soft_target_cross_entropy_loss = SoftTargetCrossEntropy

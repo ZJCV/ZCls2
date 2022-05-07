@@ -16,7 +16,7 @@ def add_config(_C: CN) -> None:
     # ---------------------------------------------------------------------------- #
     _C.OPTIMIZER = CN()
     # Optimizer type (default: sgd)
-    _C.OPTIMIZER.NAME = 'SGD'
+    _C.OPTIMIZER.NAME = 'sgd'
     # Initial learning rate.
     # Will be scaled by <global batch size>/256: lr = lr * float(train_batch_size * args.world_size) / 256.
     _C.OPTIMIZER.LR = 1e-1

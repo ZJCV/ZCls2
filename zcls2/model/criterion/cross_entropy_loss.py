@@ -11,7 +11,7 @@ from typing import Optional, Dict
 from torch import nn, Tensor
 from zcls2.config.key_word import KEY_OUTPUT
 
-__all__ = ['CrossEntropyLoss']
+__all__ = ['CrossEntropyLoss', 'cross_entropy_loss']
 
 
 class CrossEntropyLoss(nn.CrossEntropyLoss):
@@ -24,3 +24,6 @@ class CrossEntropyLoss(nn.CrossEntropyLoss):
         inputs = input_dict[KEY_OUTPUT]
 
         return super().forward(inputs, target)
+
+
+cross_entropy_loss = CrossEntropyLoss
