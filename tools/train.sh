@@ -1,12 +1,13 @@
 #!/bin/bash
 
-set -eux
+#set -eux
 
 # Usage: bash tools/train.sh <config-file> <master-port>
 
 if [ $# == 0 ]; then
   echo "USAGE: CUDA_VISIBLE_DEVICES=0,1,2,3 bash tools/train.sh <config-file> <master-port>"
-  echo " e.g.: CUDA_VISIBLE_DEVICES=0,1,2,3 bash tools/train.sh configs/cfg.yaml or CUDA_VISIBLE_DEVICES=0,1,2,3 bash tools/train.sh configs/cfg.yaml 16233"
+  echo " E.g.1: CUDA_VISIBLE_DEVICES=0,1,2,3 bash tools/train.sh configs/cfg.yaml"
+  echo " E.g.2: CUDA_VISIBLE_DEVICES=0,1,2,3 bash tools/train.sh configs/cfg.yaml 16233"
   exit 1
 fi
 
