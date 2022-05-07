@@ -16,6 +16,7 @@
 
 | cfg |    model   |   top1/top5   |       loss       | optimizer | lr-scheduler | epoch | pretrained |
 |:---:|:----------:|:-------------:|:----------------:|:---------:|:------------:|:-----:|:-----:|
+|  [efficientnet_b7_cccf_600_b256_e90_g4](../configs/cccf/efficientnet_b7_cccf_600_b256_e90_g4.yaml)   |  efficientnet_b7  | 88.118 / 97.676 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   True  |
 |  [efficientnet_b6_cccf_528_b256_e90_g4](../configs/cccf/efficientnet_b6_cccf_528_b256_e90_g4.yaml)   |  efficientnet_b6  | 87.992 / 97.611 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   True  |
 |  [efficientnet_b4_cccf_380_b256_e90_g4](../configs/cccf/efficientnet_b4_cccf_380_b256_e90_g4.yaml)   |  efficientnet_b4  | 87.693 / 97.716 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   True  |
 |  [efficientnet_b5_cccf_456_b256_e90_g4](../configs/cccf/efficientnet_b5_cccf_456_b256_e90_g4.yaml)   |  efficientnet_b5  | 87.557 / 97.606 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   True  |
