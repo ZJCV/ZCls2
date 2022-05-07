@@ -1,5 +1,14 @@
 # CHANGE
 
+## v0.3.0
+
+* New features
+  1. style(models): update __all__ use. [0467e383](https://github.com/ZJCV/ZCls2/tree/0467e3837013dd4ba030e58210e7a4fc88828df3)
+* Bug fixes
+  1. fix(soft_target_cross_entropy_loss.py): set targets to one-hot code. [08352474](https://github.com/ZJCV/ZCls2/tree/08352474c2ad5c7922bfe647a5db2143bd995add)
+* Breaking changes
+  1. refactor(zcls2): refactor criterion/optimizer/lr_scheduler use. [c740025](https://github.com/ZJCV/ZCls2/tree/c740025f468331ce7423eb108a6e8230165ee4c1)
+
 ## v0.2.3
 
 * New features
