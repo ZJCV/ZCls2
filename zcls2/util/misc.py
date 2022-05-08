@@ -7,10 +7,12 @@
 @description: 
 """
 
+import os
 import torch
-import random
 
-import numpy as np
+from zcls2.util import logging
+
+logger = logging.get_logger(__name__)
 
 
 def to_python_float(t):
@@ -20,15 +22,27 @@ def to_python_float(t):
         return t[0]
 
 
-def init_seed(seed=0):
-    """
-    Same as Apex settings
-    See
-    1. [REPRODUCIBILITY](https://pytorch.org/docs/stable/notes/randomness.html)
-    2. [PyTorch设置随机种子](https://blog.csdn.net/weixin_41978699/article/details/121312297)
-    """
-    # random.seed(seed)
-    # np.random.seed(seed)
-    torch.manual_seed(seed)
-    # torch.cuda.manual_seed(seed)
-    # torch.cuda.manual_seed_all(seed)
+# Use a local scope to avoid dangling references
+def resume(cfg, model, optimizer=None, lr_scheduler=None, device=torch.device('cpu')):
+    if os.path.isfile(cfg.RESUME):
+        logger.info("=> loading checkpoint '{}'".format(cfg.RESUME))
+        # checkpoint = torch.load(cfg.RESUME, map_location=lambda storage, loc: storage.to(device))
+        checkpoint = torch.load(cfg.RESUME, map_location=device)
+        cfg.TRAIN.START_EPOCH = checkpoint['epoch']
+        model.load_state_dict(checkpoint['state_dict'])
+
+        if hasattr(checkpoint, 'best_prec_list'):
+            global best_prec_list
+            best_prec_list = checkpoint['best_prec_list']
+        if hasattr(checkpoint, 'epoch'):
+            global best_epoch
+            best_epoch = checkpoint['epoch']
+        if hasattr(checkpoint, 'optimizer'):
+            optimizer.load_state_dict(checkpoint['optimizer'])
+        if hasattr(checkpoint, 'lr_scheduler'):
+            lr_scheduler.load_state_dict(checkpoint['lr_scheduler'])
+
+        logger.info("=> loaded checkpoint '{}' (epoch {})"
+                    .format(cfg.RESUME, checkpoint['epoch']))
+    else:
+        logger.info("=> no checkpoint found at '{}'".format(cfg.RESUME))

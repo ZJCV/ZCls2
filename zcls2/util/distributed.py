@@ -16,7 +16,19 @@ import torch.backends.cudnn as cudnn
 from yacs.config import CfgNode
 from argparse import Namespace
 
-from .misc import init_seed
+
+def init_seed(seed=0):
+    """
+    Same as Apex settings
+    See
+    1. [REPRODUCIBILITY](https://pytorch.org/docs/stable/notes/randomness.html)
+    2. [PyTorch设置随机种子](https://blog.csdn.net/weixin_41978699/article/details/121312297)
+    """
+    # random.seed(seed)
+    # np.random.seed(seed)
+    torch.manual_seed(seed)
+    # torch.cuda.manual_seed(seed)
+    # torch.cuda.manual_seed_all(seed)
 
 
 def init_dist(args: Namespace, cfg: CfgNode) -> None:
