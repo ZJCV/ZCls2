@@ -1,14 +1,14 @@
 PRINT_FREQ: 10
 DIST_BACKEND: "nccl"
 INIT_METHOD: "env://"
-OUTPUT_DIR: 'outputs/efficientnet_b5_cccf_456_b256_e90_g4'
+OUTPUT_DIR: 'outputs/efficientnet_b4_cccf_380_b64_e90_g4'
 TRAIN:
   EVAL_EPOCH: 1
   START_EPOCH: 1
   MAX_EPOCH: 90
 DATALOADER:
-  TRAIN_BATCH_SIZE: 32
-  TEST_BATCH_SIZE: 32
+  TRAIN_BATCH_SIZE: 64
+  TEST_BATCH_SIZE: 64
   NUM_WORKERS: 4
   RANDOM_SAMPLE: True
   COLLATE_FN: 'default'
@@ -19,16 +19,16 @@ DATASET:
 TRANSFORM:
   TRAIN_METHODS: ('RandomResizedCrop', 'RandomHorizontalFlip', 'RandAugment', 'ToTensor', 'RandomErasing')
   TEST_METHODS: ('Resize', 'CenterCrop', 'ToTensor')
-  TRAIN_RESIZE_CROP: (456,)
+  TRAIN_RESIZE_CROP: (380,)
   RandomErasing: (0.5, (0.02, 0.33), (0.3, 3.3), 0, False)
-  TEST_RESIZE: (480,)
-  TEST_CROP: (456,)
+  TEST_RESIZE: (384,)
+  TEST_CROP: (380,)
   NORMALIZE: ((0.485, 0.456, 0.406), (0.229, 0.224, 0.225), False)
 MODEL:
-  ARCH: 'efficientnet_b5'
+  ARCH: 'efficientnet_b4'
   PRETRAINED: True
   NUM_CLASSES: 502
-  SYNC_BN: False
+  SYNC_BN: True
   CRITERION:
     NAME: 'cross_entropy_loss'
     REDUCTION: 'mean'
