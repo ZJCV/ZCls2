@@ -1,5 +1,16 @@
 # CHANGE
 
+## v0.4.0
+
+* New features
+  1. perf(misc.py): update resume() to misc.py. [4f417e194](https://github.com/ZJCV/ZCls2/tree/4f417e1941092c8d08c22edf13053e7c231b9790)
+  2. perf(parser.py): remove --resume settings. [710791e](https://github.com/ZJCV/ZCls2/tree/710791e63a80c72ea74a742c29d2ef5401c2431d)
+  3. feat(tools): add eval.sh. [545e4e4](https://github.com/ZJCV/ZCls2/tree/545e4e41912a6ac0fca33923817d56b0d8a1da0f)
+  4. feat(optimizer): add Adam. [7cd0a3a2](https://github.com/ZJCV/ZCls2/tree/7cd0a3a2b8b86351b22680b235ca08ba46a2c0aa)
+* Bug fixes
+  1. fix(train.py): make mixup_fn to train() and update resume() usage. [b5be2ed3](https://github.com/ZJCV/ZCls2/tree/b5be2ed3526eb3cb3235c9882a604c8931b01059)
+* Breaking changes.
+
 ## v0.3.0
 
 * New features
