@@ -26,8 +26,6 @@ def parse() -> Namespace:
                         metavar="CONFIG",
                         help="path to config file")
 
-    parser.add_argument('--resume', default='', type=str, metavar='PATH',
-                        help='path to latest checkpoint (default: none)')
     parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true',
                         help='evaluate model on validation set')
 
@@ -52,7 +50,6 @@ def load_cfg(args: Namespace, cfg: CfgNode):
     cfg.DETERMINISTIC = args.deterministic
     cfg.RNG_SEED = args.local_rank
 
-    cfg.RESUME = args.resume
     cfg.EVALUATE = args.evaluate
 
     cfg.CHANNELS_LAST = args.channels_last
