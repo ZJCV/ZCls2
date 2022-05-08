@@ -39,6 +39,7 @@
 |  [efficientnet_b0_cccf_224_b256_e90_g4_calr](../configs/cccf/efficientnet_b0_cccf_224_b256_e90_g4_calr.yaml)   |  efficientnet_b0  | 81.938 / 95.865 | CrossEntropyLoss |    SGD    |  CosineAnnealingLR |   90  |   True  |
 |  [efficientnet_b0_cccf_224_b256_e90_g4_v2](../configs/cccf/efficientnet_b0_cccf_224_b256_e90_g4_v2.yaml)   |  efficientnet_b0  | 81.599 / 95.710 | LabelSmoothing |    SGD    |  MultiStepLR |   90  |   True  |
 |  [efficientnet_b0_cccf_224_b256_e90_g4_ft](../configs/cccf/efficientnet_b0_cccf_224_b256_e90_g4_ft.yaml)   |  efficientnet_b0  | 81.403 / 95.914 | CrossEntropyLoss |    SGD    |  CosineAnnealingLR |   90  |   True  |
+|  [ghostnet_100_cccf_300_b256_e90_g4](../configs/cccf/ghostnet_100_cccf_300_b256_e90_g4.yaml)   | ghostnet_100 | 80.972 / 95.460 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   True  |
 |  [r50_cccf_224_b256_e90_g4_calr](../configs/cccf/r50_cccf_224_b256_e90_g4_calr.yaml)   |  resnet50  | 80.101 / 95.979 | CrossEntropyLoss |    SGD    |  CosineAnnealingLR |   90  |   True  |
 |  [ghostnet_100_cccf_224_b256_e90_g4](../configs/cccf/ghostnet_100_cccf_224_b256_e90_g4.yaml)   | ghostnet_100 | 79.801 / 95.00 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   True  |
 |  [mbv3_large_cccf_224_b256_e90_g4_mixup_v2](../configs/cccf/mbv3_large_cccf_224_b256_e90_g4_mixup_v2.yaml)   | mbv3_large | 79.598 / 94.864 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   True  |
@@ -53,6 +54,7 @@
 |  [ghostnet_130_cccf_224_b256_e90_g4](../configs/cccf/ghostnet_130_cccf_224_b256_e90_g4.yaml)   |  ghostnet_130  | 72.151 / 91.706 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   False  |
 |  [ghostnet_130_cccf_224_b256_e90_g4_v2](../configs/cccf/ghostnet_130_cccf_224_b256_e90_g4_v2.yaml)   |  ghostnet_130  | 70.089 / 90.507 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   False  |
 |  [mbv3_small_cccf_224_b256_e90_g4_calr_rmsprop](../configs/cccf/mbv3_small_cccf_224_b256_e90_g4_calr_rmsprop.yaml)   |  mbv3_small  | 69.081 / 89.949 | CrossEntropyLoss |    RMSProp    |  CosineAnnealingLR |   90  |   True  |
+|  [efficientnet_lite0_cccf_300_b256_e90_g4](../configs/cccf/efficientnet_lite0_cccf_300_b256_e90_g4.yaml)   |  efficientnet_lite0  | 69.196 / 89.928 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   False  |
 |  [efficientnet_lite0_cccf_224_b256_e90_g4](../configs/cccf/efficientnet_lite0_cccf_224_b256_e90_g4.yaml)   |  efficientnet_lite0  | 68.230 / 89.423 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   False  |
 |  [efficientnet_lite0_cccf_224_b256_e90_g4_mixup](../configs/cccf/efficientnet_lite0_cccf_224_b256_e90_g4_mixup.yaml)   |  efficientnet_lite0  | 67.749 / 89.140 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   False  |
 |  [efficientnet_lite2_cccf_260_b256_e90_g4](../configs/cccf/efficientnet_lite2_cccf_260_b256_e90_g4.yaml)   |  efficientnet_lite2  | 66.999 / 88.597 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   False  |
