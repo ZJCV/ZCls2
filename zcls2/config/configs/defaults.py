@@ -61,3 +61,7 @@ _C.TRAIN.MAX_EPOCH = 90
 
 # Specify values of k for the precision@k
 _C.TRAIN.TOP_K = (1, 5)
+
+# Perform accuracy calculation in the training phase
+# Applicable to classification model
+_C.TRAIN.CALCULATE_ACCURACY = True

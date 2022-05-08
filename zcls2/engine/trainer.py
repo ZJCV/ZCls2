@@ -102,7 +102,7 @@ def train(cfg: CfgNode, train_loader: DataLoader,
             # iteration, since they incur an allreduce and some host<->device syncs.
 
             # Measure accuracy
-            if mixup_fn is None:
+            if mixup_fn is None and cfg.TRAIN.CALCULATE_ACCURACY:
                 prec_list = accuracy(output[KEY_OUTPUT].data, targets, topk=top_k)
             else:
                 prec_list = None
