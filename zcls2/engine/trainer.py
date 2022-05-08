@@ -102,19 +102,24 @@ def train(cfg: CfgNode, train_loader: DataLoader,
             # iteration, since they incur an allreduce and some host<->device syncs.
 
             # Measure accuracy
-            prec_list = accuracy(output[KEY_OUTPUT].data, targets, topk=top_k)
+            if mixup_fn is None:
+                prec_list = accuracy(output[KEY_OUTPUT].data, targets, topk=top_k)
+            else:
+                prec_list = None
 
             # Average loss and accuracy across processes for logging
             if cfg.DISTRIBUTED:
                 reduced_loss = reduce_tensor(cfg.NUM_GPUS, loss.data)
-                prec_list = [reduce_tensor(cfg.NUM_GPUS, prec) for prec in prec_list]
+                if prec_list is not None:
+                    prec_list = [reduce_tensor(cfg.NUM_GPUS, prec) for prec in prec_list]
             else:
                 reduced_loss = loss.data
 
             # to_python_float incurs a host<->device sync
             losses.update(to_python_float(reduced_loss), samples.size(0))
-            for idx, prec in enumerate(prec_list):
-                top_list[idx].update(to_python_float(prec), samples.size(0))
+            if prec_list is not None:
+                for idx, prec in enumerate(prec_list):
+                    top_list[idx].update(to_python_float(prec), samples.size(0))
 
             torch.cuda.synchronize()
             batch_time.update((time.time() - end) / cfg.PRINT_FREQ)
