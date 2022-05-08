@@ -1,8 +1,6 @@
 import os
 import time
 
-from timm.data import Mixup
-
 import torch
 import torch.nn.parallel
 import torch.backends.cudnn as cudnn
@@ -27,6 +25,7 @@ from zcls2.util.distributed import init_dist
 from zcls2.util.parser import parse, load_cfg
 from zcls2.util.collect_env import collect_env_info
 from zcls2.util.checkpoint import save_checkpoint
+from zcls2.util.misc import resume
 
 from zcls2.util import logging
 
@@ -73,7 +72,6 @@ def init_cfg(args: Namespace) -> CfgNode:
     cfg.OPTIMIZER.LR = cfg.OPTIMIZER.LR * float(cfg.DATALOADER.TRAIN_BATCH_SIZE * cfg.NUM_GPUS) / 256.
 
     logger.info("Running with config:\n{}".format(cfg))
-    cfg.freeze()
 
     return cfg
 
@@ -117,31 +115,15 @@ def main():
 
     # Optionally resume from a checkpoint
     if cfg.RESUME:
-        # Use a local scope to avoid dangling references
-        def resume():
-            if os.path.isfile(cfg.RESUME):
-                logger.info("=> loading checkpoint '{}'".format(cfg.RESUME))
-                checkpoint = torch.load(cfg.RESUME, map_location=lambda storage, loc: storage.to(device))
-                cfg.TRAIN.START_EPOCH = checkpoint['epoch']
-                global best_prec_list
-                global best_epoch
-                best_prec_list = checkpoint['best_prec_list']
-                best_epoch = checkpoint['epoch']
-                model.load_state_dict(checkpoint['state_dict'])
-                optimizer.load_state_dict(checkpoint['optimizer'])
-                lr_scheduler.load_state_dict(checkpoint['lr_scheduler'])
-                logger.info("=> loaded checkpoint '{}' (epoch {})"
-                            .format(cfg.RESUME, checkpoint['epoch']))
-            else:
-                logger.info("=> no checkpoint found at '{}'".format(cfg.RESUME))
-
-        resume()
+        logger.info("=> Resume now")
+        resume(cfg, model, optimizer=optimizer, lr_scheduler=lr_scheduler, device=device)
 
     # # Data loading code
     train_sampler, train_loader, val_loader = build_data(cfg)
     mixup_fn = create_mixup_fn(cfg)
 
     if cfg.EVALUATE:
+        logger.info("=> Evaluate now")
         validate(cfg, val_loader, model, criterion)
         return
 
@@ -149,6 +131,7 @@ def main():
     warmup_epoch = cfg.LR_SCHEDULER.WARMUP_EPOCH
 
     assert cfg.TRAIN.START_EPOCH > 0
+    logger.info("=> Train now")
     for epoch in range(cfg.TRAIN.START_EPOCH, cfg.TRAIN.MAX_EPOCH + 1):
         # train for one epoch
         start = time.time()
@@ -159,7 +142,7 @@ def main():
             assert isinstance(train_sampler, torch.utils.data.DistributedSampler)
             train_sampler.set_epoch(epoch)
 
-        train(cfg, train_loader, model, criterion, optimizer, epoch)
+        train(cfg, train_loader, model, criterion, optimizer, epoch=epoch, mixup_fn=mixup_fn)
         torch.cuda.empty_cache()
         if warmup and epoch < (warmup_epoch + 1):
             pass
