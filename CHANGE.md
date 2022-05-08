@@ -1,5 +1,13 @@
 # CHANGE
 
+## v0.4.1
+
+* New features
+  1. feat(config): add _C.TRAIN.CALCULATE_ACCURACY. [97f3c791](https://github.com/ZJCV/ZCls2/tree/97f3c79181bc766fa4d6d5330c2c1c1cf709bfa9)
+* Bug fixes
+  1. fix(trainer.py): fix mixup usage. [1140fe47(https://github.com/ZJCV/ZCls2/tree/1140fe477f25bf0c523d01f060e20b1dac8a2938)
+* Breaking changes.
+
 ## v0.4.0
 
 * New features
