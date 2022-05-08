@@ -13,7 +13,7 @@ from yacs.config import CfgNode
 from torch import nn
 from torch.optim.optimizer import Optimizer
 
-from . import rmsprop, sgd
+from . import rmsprop, sgd, adam
 
 
 def build_optimizer(cfg: CfgNode, model: nn.Module) -> Optimizer:
@@ -38,6 +38,10 @@ def build_optimizer(cfg: CfgNode, model: nn.Module) -> Optimizer:
                                                      lr=lr,
                                                      momentum=momentum,
                                                      weight_decay=weight_decay)
+    elif optimizer_name in adam.__all__:
+        optimizer = adam.__dict__[optimizer_name](groups,
+                                                  lr=lr,
+                                                  weight_decay=weight_decay)
     else:
         raise ValueError(f"{optimizer_name} does not support")
 
