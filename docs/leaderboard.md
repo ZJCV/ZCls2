@@ -34,4 +34,3 @@
 |  [efficientnet_lite1_cccf_240_b256_e90_g4](../configs/cccf/efficientnet_lite1_cccf_240_b256_e90_g4.yaml)   |  efficientnet_lite1  | 66.755 / 88.228 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   False  |
 |  [efficientnet_lite3_cccf_280_b256_e90_g4](../configs/cccf/efficientnet_lite3_cccf_280_b256_e90_g4.yaml)   |  efficientnet_lite3  | 66.108 / 87.999 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   False  |
 |  [efficientnet_lite4_cccf_300_b256_e90_g4](../configs/cccf/efficientnet_lite4_cccf_300_b256_e90_g4.yaml)   |  efficientnet_lite4  | 62.422 / 85.358 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   False  |
-`
