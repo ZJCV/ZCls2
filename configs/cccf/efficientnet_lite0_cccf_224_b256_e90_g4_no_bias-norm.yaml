@@ -1,7 +1,7 @@
 PRINT_FREQ: 10
 DIST_BACKEND: "nccl"
 INIT_METHOD: "env://"
-OUTPUT_DIR: 'outputs/efficientnet_lite0_cccf_224_b256_e90_g4_ls'
+OUTPUT_DIR: 'outputs/efficientnet_lite0_cccf_224_b256_e90_g4_no_bias-norm'
 TRAIN:
   EVAL_EPOCH: 1
   START_EPOCH: 1
@@ -32,15 +32,14 @@ MODEL:
   CRITERION:
     NAME: 'cross_entropy_loss'
     REDUCTION: 'mean'
-    LABEL_SMOOTHING: 0.1
 OPTIMIZER:
   NAME: 'sgd'
   LR: 1e-1
   MOMENTUM: 0.9
   WEIGHT_DECAY:
     DECAY: 4e-5
-    NO_BIAS: False
-    NO_NORM: False
+    NO_BIAS: True
+    NO_NORM: True
 LR_SCHEDULER:
   NAME: 'multi_step_lr'
   IS_WARMUP: True

@@ -3,9 +3,11 @@
 
 | cfg |    model   |   top1/top5   |       loss       | optimizer | lr-scheduler | epoch | pretrained |
 |:---:|:----------:|:-------------:|:----------------:|:---------:|:------------:|:-----:|:-----:|
+|  [efficientnet_lite0_cccf_224_b256_e90_g4](../../configs/cccf/efficientnet_lite0_cccf_224_b256_e90_g4.yaml)   |  efficientnet_lite0  | 69.423 / 90.026 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   False  |
 |  [efficientnet_lite0_cccf_300_b256_e90_g4](../../configs/cccf/efficientnet_lite0_cccf_300_b256_e90_g4.yaml)   |  efficientnet_lite0  | 69.196 / 89.928 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   False  |
-|  [efficientnet_lite0_cccf_224_b256_e90_g4_ls](../../configs/cccf/efficientnet_lite0_cccf_224_b256_e90_g4_ls.yaml)   |  efficientnet_lite0  | 68.357 / 89.345 | LabelSmoothingLoss |    SGD    |  MultiStepLR |   90  |   False  |
-|  [efficientnet_lite0_cccf_224_b256_e90_g4](../../configs/cccf/efficientnet_lite0_cccf_224_b256_e90_g4.yaml)   |  efficientnet_lite0  | 68.822 / 89.970 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   False  |
+|  [efficientnet_lite0_cccf_224_b256_e90_g4_no_bias-norm](../../configs/cccf/efficientnet_lite0_cccf_224_b256_e90_g4_no_bias-norm.yaml)   |  efficientnet_lite0  | 68.822 / 89.970 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   False  |
+|  [efficientnet_lite0_cccf_224_b256_e90_g4_ls](../../configs/cccf/efficientnet_lite0_cccf_224_b256_e90_g4_ls.yaml)   |  efficientnet_lite0  | 68.495 / 89.722 | LabelSmoothingLoss |    SGD    |  MultiStepLR |   90  |   False  |
+|  [efficientnet_lite0_cccf_224_b256_e90_g4_ls_no_bias-norm](../../configs/cccf/efficientnet_lite0_cccf_224_b256_e90_g4_ls_no_bias-norm.yaml)   |  efficientnet_lite0  | 68.357 / 89.345 | LabelSmoothingLoss |    SGD    |  MultiStepLR |   90  |   False  |
 |  [efficientnet_lite0_cccf_224_b256_e90_g4_mixup](../../configs/cccf/efficientnet_lite0_cccf_224_b256_e90_g4_mixup.yaml)   |  efficientnet_lite0  | 67.835 / 89.338 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   False  |
 |  [efficientnet_lite2_cccf_260_b256_e90_g4](../../configs/cccf/efficientnet_lite2_cccf_260_b256_e90_g4.yaml)   |  efficientnet_lite2  | 66.999 / 88.597 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   False  |
 |  [efficientnet_lite1_cccf_240_b256_e90_g4](../../configs/cccf/efficientnet_lite1_cccf_240_b256_e90_g4.yaml)   |  efficientnet_lite1  | 66.755 / 88.228 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   False  |
