@@ -38,8 +38,8 @@ OPTIMIZER:
   MOMENTUM: 0.9
   WEIGHT_DECAY:
     DECAY: 4e-5
-    NO_BIAS: True
-    NO_NORM: True
+    NO_BIAS: False
+    NO_NORM: False
 LR_SCHEDULER:
   NAME: 'multi_step_lr'
   IS_WARMUP: True
