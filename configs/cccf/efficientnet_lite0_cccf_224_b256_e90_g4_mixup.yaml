@@ -17,7 +17,7 @@ DATASET:
   TRAIN_ROOT: './data/cccf'
   TEST_ROOT: './data/cccf'
 TRANSFORM:
-  TRAIN_METHODS: ('RandomResizedCrop', 'RandomHorizontalFlip', 'RandAugment', 'ToTensor', 'RandomErasing')
+  TRAIN_METHODS: ('RandomResizedCrop', 'RandomHorizontalFlip', 'ToTensor', 'RandomErasing')
   TEST_METHODS: ('Resize', 'CenterCrop', 'ToTensor')
   TRAIN_RESIZE_CROP: (224,)
   RandomErasing: (0.5, (0.02, 0.33), (0.3, 3.3), 0, False)
@@ -29,7 +29,7 @@ TRANSFORM:
     MIXUP_ALPHA: 0.8
     CUTMIX_ALPHA: 1.0
     CUTMIX_MINMAX: None
-    MIXUP_PROB: 1.0
+    MIXUP_PROB: 0.5
     MIXUP_SWITCH_PROB: 0.5
     MIXUP_MODE: 'batch'
 MODEL:
