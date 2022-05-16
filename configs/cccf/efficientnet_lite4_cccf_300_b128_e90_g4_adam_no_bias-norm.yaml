@@ -1,7 +1,7 @@
 PRINT_FREQ: 10
 DIST_BACKEND: "nccl"
 INIT_METHOD: "env://"
-OUTPUT_DIR: 'outputs/efficientnet_lite4_cccf_300_b256_e90_g4'
+OUTPUT_DIR: 'outputs/efficientnet_lite4_cccf_300_b128_e90_g4_adam_no_bias-norm'
 TRAIN:
   EVAL_EPOCH: 1
   START_EPOCH: 1
@@ -33,8 +33,8 @@ MODEL:
     NAME: 'cross_entropy_loss'
     REDUCTION: 'mean'
 OPTIMIZER:
-  NAME: 'sgd'
-  LR: 1e-1
+  NAME: 'adam'
+  LR: 3e-4
   MOMENTUM: 0.9
   WEIGHT_DECAY:
     DECAY: 4e-5
