@@ -6,7 +6,7 @@ TRANSFORM:
     'CenterCrop', 'RandomCrop', 'RandomHorizontalFlip', 'RandomVerticalFlip', 'RandomRotation', 'RandomResizedCrop', 'Resize',
     'AutoAugment', 'RandAugment')
   ConvertImageDtype: 'uint8'
-  NORMALIZE: ((0.485, 0.456, 0.406), (0.229, 0.224, 0.225), False)
+  NORMALIZE: ((0.485, 0.456, 0.406), (0.229, 0.224, 0.225), False, 1.0)
   AutoAugment: ("IMAGENET", "NEAREST")
   TRAIN_CROP: (224,)
   TEST_CROP: (224,)

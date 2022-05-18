@@ -24,13 +24,14 @@ def add_config(_C: CN) -> None:
     # dtype: ['uint8', 'float32']
     _C.TRANSFORM.ConvertImageDtype = 'uint8'
 
-    # Normalize(mean, std, inplace=False)
+    # Normalize(mean / max_value, std / max_value, inplace=False)
     # Default using Mean and STD calculated using Imagenet
     # Args:
     #     mean (sequence): Sequence of means for each channel.
     #     std (sequence): Sequence of standard deviations for each channel.
     #     inplace(bool,optional): Bool to make this operation in-place.
-    _C.TRANSFORM.NORMALIZE = ((0.485, 0.456, 0.406), (0.229, 0.224, 0.225), False)
+    #     max_value (int): Max value in pixel value
+    _C.TRANSFORM.NORMALIZE = ((0.485, 0.456, 0.406), (0.229, 0.224, 0.225), False, 1.0)
 
     # ---------------------------------------------------------------------------- #
     # Augment transform

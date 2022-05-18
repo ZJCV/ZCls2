@@ -15,14 +15,14 @@ class data_prefetcher():
         self.loader = iter(loader)
         self.stream = torch.cuda.Stream()
 
-        mean, std, _ = cfg.TRANSFORM.NORMALIZE
+        mean, std, _, max_value = cfg.TRANSFORM.NORMALIZE
         assert len(mean) == len(std)
 
         mean_list = list()
         std_list = list()
         for m, s in zip(mean, std):
-            mean_list.append(m * 255)
-            std_list.append(s * 255)
+            mean_list.append(m * max_value)
+            std_list.append(s * max_value)
         n = len(mean_list)
         self.mean = torch.tensor(mean_list).cuda().view(1, n, 1, 1)
         self.std = torch.tensor(std_list).cuda().view(1, n, 1, 1)

@@ -68,9 +68,9 @@ def parse_transform(cfg: CfgNode, is_train=True) -> transforms.Compose:
             dtype = torch.uint8 if cfg.TRANSFORM.ConvertImageDtype == 'uint8' else torch.float32
             tf = transforms.ConvertImageDtype(dtype)
         elif method == 'Normalize':
-            mean, std, inplace = cfg.TRANSFORM.NORMALIZE
+            mean, std, inplace, max_value = cfg.TRANSFORM.NORMALIZE
             assert len(mean) == len(std)
-            tf = transforms.Normalize(mean, std, inplace=inplace)
+            tf = transforms.Normalize(mean / max_value, std / max_value, inplace=inplace)
         elif method == 'ToPILImage':
             tf = transforms.ToPILImage()
         elif method == 'ToTensor':
