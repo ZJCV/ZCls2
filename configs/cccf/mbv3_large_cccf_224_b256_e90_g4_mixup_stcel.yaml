@@ -1,7 +1,7 @@
 PRINT_FREQ: 10
 DIST_BACKEND: "nccl"
 INIT_METHOD: "env://"
-OUTPUT_DIR: 'outputs/mbv3_large_cccf_224_b256_e90_g4_mixup'
+OUTPUT_DIR: 'outputs/mbv3_large_cccf_224_b256_e90_g4_mixup_stcel'
 TRAIN:
   EVAL_EPOCH: 1
   START_EPOCH: 1
@@ -38,8 +38,7 @@ MODEL:
   NUM_CLASSES: 502
   SYNC_BN: False
   CRITERION:
-    NAME: 'cross_entropy_loss'
-    REDUCTION: 'mean'
+    NAME: 'soft_target_cross_entropy_loss'
 OPTIMIZER:
   NAME: 'sgd'
   LR: 1e-1
