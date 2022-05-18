@@ -1,5 +1,13 @@
 # CHANGE
 
+## v0.4.2
+
+* New features
+  1. feat(transform): add max_value param in _C.TRANSFORM.NORMALIZE. f51f304
+* Bug fixes
+  1. fix(criterion): fix SoftTargetCrossEntropy use. 04cd13c
+* Breaking changes.
+
 ## v0.4.1
 
 * New features
