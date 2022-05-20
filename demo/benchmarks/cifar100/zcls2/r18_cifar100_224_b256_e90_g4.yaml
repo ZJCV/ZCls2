@@ -12,7 +12,7 @@ DATALOADER:
   NUM_WORKERS: 4
   RANDOM_SAMPLE: True
 DATASET:
-  NAME: 'GeneralDataset'
+  NAME: 'ImageFolder'
   TRAIN_ROOT: './data/cifar100/train'
   TEST_ROOT: './data/cifar100/val'
 TRANSFORM:
