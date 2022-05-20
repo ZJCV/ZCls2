@@ -4,21 +4,19 @@
 @date: 2022/4/3 下午4:46
 @file: build.py
 @author: zj
-@description: 
+@description: Dataset builder
 """
 
 from typing import Optional
 from yacs.config import CfgNode
 
 from torch.utils.data import Dataset
-import torchvision.transforms.transforms as transforms
+from torchvision.transforms import transforms
+from torchvision.datasets import ImageFolder
 
-from . import general_dataset, general_dataset_v2, mp_dataset, cccf
+from . import general_dataset, mp_dataset, cccf
 
-__all__ = general_dataset.__all__ \
-          + general_dataset_v2.__all__ \
-          + mp_dataset.__all__ \
-          + cccf.__all__
+__all__ = ['build_dataset']
 
 
 def build_dataset(cfg: CfgNode,
@@ -26,17 +24,15 @@ def build_dataset(cfg: CfgNode,
                   target_transform: Optional[transforms.Compose] = None,
                   is_train: Optional[bool] = True) -> Dataset:
     dataset_name = cfg.DATASET.NAME
-    assert dataset_name in __all__, f"{dataset_name} do not support"
-
     data_root = cfg.DATASET.TRAIN_ROOT if is_train else cfg.DATASET.TEST_ROOT
 
     # Data loading code
-    if dataset_name in general_dataset.__all__:
-        dataset = general_dataset.__dict__[dataset_name](
+    if dataset_name == "ImageFolder":
+        dataset = ImageFolder(
             data_root, transform=transform, target_transform=target_transform
         )
-    elif dataset_name in general_dataset_v2.__all__:
-        dataset = general_dataset_v2.__dict__[dataset_name](
+    elif dataset_name in general_dataset.__all__:
+        dataset = general_dataset.__dict__[dataset_name](
             data_root, transform=transform, target_transform=target_transform
         )
     elif dataset_name in mp_dataset.__all__:
