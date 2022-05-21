@@ -4,6 +4,8 @@
 | cfg |    model   |   top1/top5   |       loss       | optimizer | lr-scheduler | epoch | pretrained |
 |:---:|:----------:|:-------------:|:----------------:|:---------:|:------------:|:-----:|:-----:|
 |  [mbv3_large_cccf_224_b256_e90_g4_mixup](../../configs/cccf/mbv3_large_cccf_224_b256_e90_g4_mixup.yaml)   | mbv3_large | 82.735 / 96.131 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   True  |
+|  [mbv3_large_cccf_224_b256_e90_g4_mixup_stcel](../../configs/cccf/mbv3_large_cccf_224_b256_e90_g4_mixup_stcel.yaml)   | mbv3_large | 82.667 / 96.225 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   True  |
+|  [mbv3_large_cccf_224_b256_e90_g4_ra_mixup_nbn](../../configs/cccf/mbv3_large_cccf_224_b256_e90_g4_ra_mixup_nbn.yaml)   | mbv3_large | 82.293 / 96.187 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   True  |
 |  [mbv3_large_cccf_224_b256_e90_g4_ra](../../configs/cccf/mbv3_large_cccf_224_b256_e90_g4_ra.yaml)   | mbv3_large | 81.772 / 95.615 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   True  |
 |  [mbv3_large_cccf_224_b256_e90_g4](../../configs/cccf/mbv3_large_cccf_224_b256_e90_g4.yaml)   | mbv3_large | 81.117 / 95.437 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   True  |
 |  [mbv3_large_cccf_224_b256_e90_g4_ra](../../configs/cccf/mbv3_large_cccf_224_b256_e90_g4_ra.yaml)   | mbv3_large | 79.689 / 94.979 | CrossEntropyLoss |    SGD    |  MultiStepLR |   90  |   True  |
