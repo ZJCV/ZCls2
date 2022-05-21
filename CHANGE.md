@@ -1,11 +1,18 @@
 # CHANGE
 
+## v0.4.3
+
+* New features
+  1. perf(dataset): update torchvision.dataset.ImageFolder and build.py use. [e95f4991](https://github.com/ZJCV/ZCls2/tree/e95f49911cc0d6aea24aba86b1ace8795326eea5)
+* Bug fixes
+* Breaking changes.
+
 ## v0.4.2
 
 * New features
-  1. feat(transform): add max_value param in _C.TRANSFORM.NORMALIZE. f51f304
+  1. feat(transform): add max_value param in _C.TRANSFORM.NORMALIZE. [f51f304](https://github.com/ZJCV/ZCls2/tree/f51f304dadeea33156d7238c32c80146bec051b7)
 * Bug fixes
-  1. fix(criterion): fix SoftTargetCrossEntropy use. 04cd13c
+  1. fix(criterion): fix SoftTargetCrossEntropy use. [04cd13c](https://github.com/ZJCV/ZCls2/tree/04cd13cad0ebb7aac34e30b635e56c449f46b54d)
 * Breaking changes.
 
 ## v0.4.1
@@ -13,7 +20,7 @@
 * New features
   1. feat(config): add _C.TRAIN.CALCULATE_ACCURACY. [97f3c791](https://github.com/ZJCV/ZCls2/tree/97f3c79181bc766fa4d6d5330c2c1c1cf709bfa9)
 * Bug fixes
-  1. fix(trainer.py): fix mixup usage. [1140fe47(https://github.com/ZJCV/ZCls2/tree/1140fe477f25bf0c523d01f060e20b1dac8a2938)
+  1. fix(trainer.py): fix mixup usage. [1140fe47](https://github.com/ZJCV/ZCls2/tree/1140fe477f25bf0c523d01f060e20b1dac8a2938)
 * Breaking changes.
 
 ## v0.4.0
