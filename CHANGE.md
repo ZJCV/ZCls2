@@ -1,5 +1,12 @@
 # CHANGE
 
+## v0.4.4
+
+* New features
+  1. fix(cccf.py): fix class_path load. [3ef83e8a7f](https://github.com/ZJCV/ZCls2/tree/3ef83e8a7fafdb3486d1e50d3b287832c66a7b98)
+* Bug fixes
+* Breaking changes.
+
 ## v0.4.3
 
 * New features
