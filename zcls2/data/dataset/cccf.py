@@ -20,13 +20,25 @@ __all__ = ['CCCF']
 def load_txt(txt_path: str, delimiter: str = ',,') -> List:
     assert os.path.isfile(txt_path), txt_path
 
-    data_list = list()
-    with open(txt_path, 'r') as f:
+    data_list = []
+    with open(txt_path, 'r', encoding='utf-8') as f:
         for line in f:
             tmp_list = line.strip().split(delimiter)
             data_list.append(tmp_list)
 
     return data_list
+
+
+def load_classes(class_path: str, delimiter=' ') -> List:
+    assert os.path.isfile(class_path), class_path
+
+    class_list = []
+    with open(class_path, 'r', encoding='utf-8') as f:
+        for line in f:
+            class_name = line.strip().split(delimiter)[0]
+            class_list.append(class_name)
+
+    return class_list
 
 
 class CCCF(Dataset):
@@ -54,7 +66,7 @@ class CCCF(Dataset):
         test_path = os.path.join(root, 'test.txt')
         assert os.path.isfile(test_path), test_path
 
-        classes = load_txt(class_path, delimiter=' ')
+        classes = load_classes(class_path, delimiter=' ')
         data_list = load_txt(train_path, delimiter=KEY_SEP) if train else \
             load_txt(test_path, delimiter=KEY_SEP)
 
