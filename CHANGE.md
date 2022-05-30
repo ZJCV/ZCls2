@@ -1,5 +1,12 @@
 # CHANGE
 
+## v0.4.5
+
+* New features
+  1. fix(transform): fix Normalize mean/std with max_value use. [51fc80d2](https://github.com/ZJCV/ZCls2/tree/51fc80d2a4346ae4a027a117fd5186eaf64df61f)
+* Bug fixes
+* Breaking changes.
+
 ## v0.4.4
 
 * New features
