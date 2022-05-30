@@ -70,7 +70,13 @@ def parse_transform(cfg: CfgNode, is_train=True) -> transforms.Compose:
         elif method == 'Normalize':
             mean, std, inplace, max_value = cfg.TRANSFORM.NORMALIZE
             assert len(mean) == len(std)
-            tf = transforms.Normalize(mean / max_value, std / max_value, inplace=inplace)
+            if isinstance(mean, (tuple, list)):
+                mean = tuple(x * max_value for x in mean)
+                std = tuple(x * max_value for x in std)
+            else:
+                mean = mean * max_value
+                std = std * max_value
+            tf = transforms.Normalize(mean, std, inplace=inplace)
         elif method == 'ToPILImage':
             tf = transforms.ToPILImage()
         elif method == 'ToTensor':
