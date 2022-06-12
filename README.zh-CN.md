@@ -16,6 +16,7 @@
   <a href="https://libraries.io/pypi/zcls2"><img src="https://img.shields.io/librariesio/github/ZJCV/ZCls2"></a>
 <br>
   <a href="https://pypi.org/project/zcls2/"><img src="https://img.shields.io/badge/PYPI-zcls2-brightgreen"></a>
+  <a href="https://pypi.org/project/zcls2/"><img src="https://img.shields.io/pypi/pyversions/zcls2"></a>
   <a href="https://pypi.org/project/zcls2/"><img src="https://img.shields.io/pypi/v/zcls2"></a>
   <a href="https://pypi.org/project/zcls2/"><img src="https://img.shields.io/pypi/l/zcls2"></a>
   <a href="https://pypi.org/project/zcls2/"><img src="https://img.shields.io/pypi/dd/zcls2?style=plastic"></a>
