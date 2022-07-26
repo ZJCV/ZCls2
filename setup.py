@@ -17,8 +17,8 @@ INSTALL_REQUIRES = [
     "opencv_contrib_python >= 4.5.5.64",
     "tabulate >= 0.8.9",
     "timm >= 0.4.9",
-    "torch >= 1.12.0a02c916ef",
-    "torchvision >= 0.13.0a0",
+    "torch >= 1.12.0",
+    "torchvision >= 0.13.0",
     "yacs >= 0.1.8",
 ]
 CLASSIFIERS = [
