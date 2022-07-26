@@ -5,9 +5,9 @@
 # Usage: bash tools/train.sh <config-file> <master-port>
 
 if [ $# == 0 ]; then
-  echo "USAGE: CUDA_VISIBLE_DEVICES=0,1,2,3 bash tools/train.sh <config-file> <master-port>"
-  echo " E.g.1: CUDA_VISIBLE_DEVICES=0,1,2,3 bash tools/train.sh configs/cfg.yaml"
-  echo " E.g.2: CUDA_VISIBLE_DEVICES=0,1,2,3 bash tools/train.sh configs/cfg.yaml 16233"
+  echo "USAGE: CUDA_VISIBLE_DEVICES=0,1,2,3 bash tools/eval.sh <config-file> <master-port>"
+  echo " E.g.1: CUDA_VISIBLE_DEVICES=0,1,2,3 bash tools/eval.sh configs/cfg.yaml"
+  echo " E.g.2: CUDA_VISIBLE_DEVICES=0,1,2,3 bash tools/eval.sh configs/cfg.yaml 16233"
   exit 1
 fi
 
@@ -24,5 +24,4 @@ export PYTHONPATH=.
 
 python -m torch.distributed.launch --nproc_per_node=4 --master_port="${master_port}" \
   tools/train.py -cfg "${cfg_file}" \
-  --opt-level O1 \
   --evaluate
