@@ -5,8 +5,6 @@
 @file: parser.py
 @author: zj
 @description:
-args仅保留apex特有的训练配置，其他的训练参数均包含在cfg文件中
-cfg负责数据/模型/损失函数/优化器/学习率调度器以及其他组件配置
 """
 
 import os
@@ -33,9 +31,6 @@ def parse() -> Namespace:
 
     parser.add_argument("--local_rank", default=os.getenv('LOCAL_RANK', 0), type=int)
 
-    parser.add_argument('--opt-level', type=str)
-    parser.add_argument('--keep-batchnorm-fp32', type=str, default=None)
-    parser.add_argument('--loss-scale', type=str, default=None)
     parser.add_argument('--channels-last', type=bool, default=False)
     args = parser.parse_args()
 

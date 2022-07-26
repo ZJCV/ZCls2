@@ -18,14 +18,7 @@ import torch
 import torch.nn as nn
 from torch.optim.optimizer import Optimizer
 from torch.utils.data import DataLoader
-
-try:
-    from apex.parallel import DistributedDataParallel as DDP
-    from apex.fp16_utils import *
-    from apex import amp, optimizers
-    from apex.multi_tensor_apply import multi_tensor_applier
-except ImportError:
-    raise ImportError("Please install apex from https://www.github.com/nvidia/apex to run this example.")
+from torch.cuda.amp import GradScaler, autocast
 
 from ..config.key_word import KEY_OUTPUT
 from ..util.meter import AverageMeter
@@ -55,6 +48,10 @@ def train(cfg: CfgNode, train_loader: DataLoader,
     model.train()
     end = time.time()
 
+    # See https://pytorch.org/docs/stable/amp.html#gradient-scaling
+    # Creates a GradScaler once at the beginning of training.
+    scaler = GradScaler()
+
     warmup = cfg.LR_SCHEDULER.IS_WARMUP
     warmup_epoch = cfg.LR_SCHEDULER.WARMUP_EPOCH
 
@@ -63,11 +60,6 @@ def train(cfg: CfgNode, train_loader: DataLoader,
     i = 0
     while samples is not None:
         i += 1
-        if cfg.PROF >= 0 and i == cfg.PROF:
-            logger.info("Profiling begun at iteration {}".format(i))
-            torch.cuda.cudart().cudaProfilerStart()
-
-        if cfg.PROF >= 0: torch.cuda.nvtx.range_push("Body of iteration {}".format(i))
 
         if warmup and epoch < warmup_epoch + 1:
             adjust_learning_rate(cfg, optimizer, epoch, i, len(train_loader))
@@ -75,26 +67,28 @@ def train(cfg: CfgNode, train_loader: DataLoader,
         if mixup_fn is not None:
             samples, targets = mixup_fn(samples, targets)
 
-        # compute output
-        if cfg.PROF >= 0: torch.cuda.nvtx.range_push("forward")
-        output = model(samples)
-        if cfg.PROF >= 0: torch.cuda.nvtx.range_pop()
-        loss = criterion(output, targets)
+        # See https://pytorch.org/docs/stable/notes/amp_examples.html#typical-mixed-precision-training
+        # Runs the forward pass with autocasting.
+        with autocast():
+            # compute output
+            output = model(samples)
+            loss = criterion(output, targets)
 
         # compute gradient and do SGD step
         optimizer.zero_grad()
 
-        if cfg.PROF >= 0: torch.cuda.nvtx.range_push("backward")
-        with amp.scale_loss(loss, optimizer) as scaled_loss:
-            scaled_loss.backward()
-        if cfg.PROF >= 0: torch.cuda.nvtx.range_pop()
+        # Scales loss.  Calls backward() on scaled loss to create scaled gradients.
+        # Backward passes under autocast are not recommended.
+        # Backward ops run in the same dtype autocast chose for corresponding forward ops.
+        scaler.scale(loss).backward()
 
-        # for param in model.parameters():
-        #     print(param.data.double().sum().item(), param.grad.data.double().sum().item())
+        # scaler.step() first unscales the gradients of the optimizer's assigned params.
+        # If these gradients do not contain infs or NaNs, optimizer.step() is then called,
+        # otherwise, optimizer.step() is skipped.
+        scaler.step(optimizer)
 
-        if cfg.PROF >= 0: torch.cuda.nvtx.range_push("optimizer.step()")
-        optimizer.step()
-        if cfg.PROF >= 0: torch.cuda.nvtx.range_pop()
+        # Updates the scale for next iteration.
+        scaler.update()
 
         if i % cfg.PRINT_FREQ == 0:
             # Every print_freq iterations, check the loss, accuracy, and speed.
@@ -140,14 +134,4 @@ def train(cfg: CfgNode, train_loader: DataLoader,
                 for k, top in zip(top_k, top_list):
                     logger_str += f'Prec@{k} {top.val:.3f} ({top.avg:.3f}) '
                 logger.info(logger_str)
-        if cfg.PROF >= 0: torch.cuda.nvtx.range_push("prefetcher.next()")
         samples, targets = prefetcher.next()
-        if cfg.PROF >= 0: torch.cuda.nvtx.range_pop()
-
-        # Pop range "Body of iteration {}".format(i)
-        if cfg.PROF >= 0: torch.cuda.nvtx.range_pop()
-
-        if cfg.PROF >= 0 and i == cfg.PROF + 10:
-            logger.info("Profiling ended at iteration {}".format(i))
-            torch.cuda.cudart().cudaProfilerStop()
-            quit()
