@@ -1,5 +1,13 @@
 # CHANGE
 
+## v0.5.1
+
+* New features
+  1. build(python): update setup.py INSTALL_REQUIRES. [3ce08a61b1](https://github.com/ZJCV/ZCls2/tree/3ce08a61b1a0f2c0cc2199a25dde902e671ac018)
+  2. fix(setup.py): fix INSTALL_REQUIRES settings. [03050ebc](https://github.com/ZJCV/ZCls2/tree/03050ebcde1ba62724bc162d0ad624d070194dc2)
+* Bug fixes
+* Breaking changes.
+
 ## v0.5.0
 
 * New features
