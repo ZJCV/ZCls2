@@ -1,5 +1,13 @@
 # CHANGE
 
+## v0.5.0
+
+* New features
+  1. perf(train): convert nvidia/apex to torch.cuda.apex. [d165dbc23ad](https://github.com/ZJCV/ZCls2/tree/d165dbc23adb3b659198bc3e6178175973c8def9)
+* Bug fixes
+  1. fix(tools): update train.sh and eval.sh. [7ca74fc5d86](https://github.com/ZJCV/ZCls2/tree/7ca74fc5d865a203e03301a4230fa42ff1157567)
+* Breaking changes.
+
 ## v0.4.5
 
 * New features
