@@ -1,5 +1,12 @@
 # CHANGE
 
+## v0.5.2
+
+* New features
+  1. build(python): update requirements.txt. [aa196099a](https://github.com/ZJCV/ZCls2/tree/aa196099aa1067a7f31dffdecb63c3a7b98962e6)
+* Bug fixes
+* Breaking changes.
+
 ## v0.5.1
 
 * New features
