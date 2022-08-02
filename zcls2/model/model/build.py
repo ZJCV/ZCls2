@@ -60,6 +60,6 @@ def build_model(cfg: CfgNode, device: torch.device = torch.device('cpu')) -> nn.
     model = model.to(device, memory_format=memory_format)
 
     if cfg.DISTRIBUTED:
-        model = DDP(model)
+        model = DDP(model, device_ids=[device], output_device=device, find_unused_parameters=False)
 
     return model
