@@ -1,12 +1,12 @@
-<div style="text-align: right; display:inline-block">
+<div align="right">
   Language:
     🇺🇸
   <a title="Chinese" href="./README.zh-CN.md">🇨🇳</a>
 </div>
 
-<div style="text-align: center; display:inline-block"><a title="" href="https://github.com/ZJCV/ZCls2"><img align="center" src="./imgs/ZCls2.png" alt=""></a></div>
+<div align="center"><a title="" href="https://github.com/ZJCV/ZCls2"><img align="center" src="./imgs/ZCls2.png" alt=""></a></div>
 
-<p style="text-align: center;">
+<p align="center">
   «ZCls2» is a more faster classification model training framework
 <br>
 <br>
