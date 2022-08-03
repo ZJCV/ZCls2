@@ -1,35 +1,35 @@
-<div align="right">
+<div style="text-align: right;">
   语言:
     🇨🇳
   <a title="英语" href="./README.md">🇺🇸</a>
 </div>
 
- <div align="center"><a title="" href="https://github.com/ZJCV/ZCls2"><img align="center" src="./imgs/ZCls2.png"></a></div>
+<div style="text-align: center;"><a title="" href="https://github.com/ZJCV/ZCls2"><img align="center" src="./imgs/ZCls2.png" alt=""></a></div>
 
-<p align="center">
+<p style="text-align: center;">
   «ZCls2»是一款更快速的分类模型训练框架
 <br>
 <br>
-  <a href="https://github.com/RichardLitt/standard-readme"><img src="https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square"></a>
-  <a href="https://conventionalcommits.org"><img src="https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg"></a>
-  <a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg"></a>
-  <a href="https://libraries.io/pypi/zcls2"><img src="https://img.shields.io/librariesio/github/ZJCV/ZCls2"></a>
+  <a href="https://github.com/RichardLitt/standard-readme"><img src="https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square" alt=""></a>
+  <a href="https://conventionalcommits.org"><img src="https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg" alt=""></a>
+  <a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg" alt=""></a>
+  <a href="https://libraries.io/pypi/zcls2"><img src="https://img.shields.io/librariesio/github/ZJCV/ZCls2" alt=""></a>
 <br>
-  <a href="https://pypi.org/project/zcls2/"><img src="https://img.shields.io/badge/PYPI-zcls2-brightgreen"></a>
-  <a href="https://pypi.org/project/zcls2/"><img src="https://img.shields.io/pypi/pyversions/zcls2"></a>
-  <a href="https://pypi.org/project/zcls2/"><img src="https://img.shields.io/pypi/v/zcls2"></a>
-  <a href="https://pypi.org/project/zcls2/"><img src="https://img.shields.io/pypi/l/zcls2"></a>
-  <a href="https://pypi.org/project/zcls2/"><img src="https://img.shields.io/pypi/dd/zcls2?style=plastic"></a>
+  <a href="https://pypi.org/project/zcls2/"><img src="https://img.shields.io/badge/PYPI-zcls2-brightgreen" alt=""></a>
+  <a href="https://pypi.org/project/zcls2/"><img src="https://img.shields.io/pypi/pyversions/zcls2" alt=""></a>
+  <a href="https://pypi.org/project/zcls2/"><img src="https://img.shields.io/pypi/v/zcls2" alt=""></a>
+  <a href="https://pypi.org/project/zcls2/"><img src="https://img.shields.io/pypi/l/zcls2" alt=""></a>
+  <a href="https://pypi.org/project/zcls2/"><img src="https://img.shields.io/pypi/dd/zcls2?style=plastic" alt=""></a>
 <br>
   <a href='https://zcls2.readthedocs.io/en/latest/?badge=latest'>
       <img src='https://readthedocs.org/projects/zcls2/badge/?version=latest' alt='Documentation Status' />
   </a>
-  <a href="https://github.com/ZJCV/ZCls2"><img src="https://img.shields.io/github/v/tag/ZJCV/ZCls2"></a>
-  <a href="https://github.com/ZJCV/ZCls2"><img src="https://img.shields.io/github/repo-size/ZJCV/ZCls2"></a>
-  <a href="https://github.com/ZJCV/ZCls2"><img src="https://img.shields.io/github/forks/ZJCV/ZCls2?style=social"></a>
-  <a href="https://github.com/ZJCV/ZCls2"><img src="https://img.shields.io/github/stars/ZJCV/ZCls2?style=social"></a>
-  <a href="https://github.com/ZJCV/ZCls2"><img src="https://img.shields.io/github/downloads/ZJCV/ZCls2/total"></a>
-  <a href="https://github.comZJCV/ZCls2"><img src="https://img.shields.io/github/commit-activity/y/ZJCV/ZCls2"></a>
+  <a href="https://github.com/ZJCV/ZCls2"><img src="https://img.shields.io/github/v/tag/ZJCV/ZCls2" alt=""></a>
+  <a href="https://github.com/ZJCV/ZCls2"><img src="https://img.shields.io/github/repo-size/ZJCV/ZCls2" alt=""></a>
+  <a href="https://github.com/ZJCV/ZCls2"><img src="https://img.shields.io/github/forks/ZJCV/ZCls2?style=social" alt=""></a>
+  <a href="https://github.com/ZJCV/ZCls2"><img src="https://img.shields.io/github/stars/ZJCV/ZCls2?style=social" alt=""></a>
+  <a href="https://github.com/ZJCV/ZCls2"><img src="https://img.shields.io/github/downloads/ZJCV/ZCls2/total" alt=""></a>
+  <a href="https://github.comZJCV/ZCls2"><img src="https://img.shields.io/github/commit-activity/y/ZJCV/ZCls2" alt=""></a>
 </p>
 
 ## 内容列表
