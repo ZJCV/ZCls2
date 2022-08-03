@@ -17,7 +17,7 @@ def build_sampler(cfg: CfgNode, train_dataset, val_dataset) -> Tuple[Any, Any]:
     train_sampler = None
     val_sampler = None
     if cfg.DISTRIBUTED:
-        train_sampler = DistributedSampler(train_dataset)
-        val_sampler = DistributedSampler(val_dataset)
+        train_sampler = DistributedSampler(train_dataset, shuffle=True)
+        val_sampler = DistributedSampler(val_dataset, shuffle=False)
 
     return train_sampler, val_sampler
