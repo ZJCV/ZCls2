@@ -1,5 +1,14 @@
 # CHANGE
 
+## v0.5.3
+
+* New features
+  1. perf(sampler): when in distribued, set train_sampler be shuffle=True. [80f35daee50e78b](https://github.com/ZJCV/ZCls2/tree/80f35daee50e78bb8e1aac5d41e7eaf6a90dd104)
+  2. perf(train.py): add device setting for single GPU training. [932e466f5](https://github.com/ZJCV/ZCls2/tree/932e466f514903a60bb03d66edca9487ecac2671)
+  3. perf(model): update DDP(model) use. [c25110795c](https://github.com/ZJCV/ZCls2/tree/c25110795c61ec2ea2346c48f59c8e8242778019)
+* Bug fixes
+* Breaking changes.
+
 ## v0.5.2
 
 * New features
