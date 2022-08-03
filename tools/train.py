@@ -75,7 +75,12 @@ def main():
     best_prec_list = [0 for _ in top_k]
     best_epoch = 0
 
-    device = torch.device(f'cuda:{cfg.RANK_ID}') if cfg.DISTRIBUTED else torch.device('cpu')
+    if cfg.DISTRIBUTED:
+        device = torch.device(f'cuda:{cfg.RANK_ID}')
+    elif torch.cuda.is_available():
+        device = torch.device('cuda:0')
+    else:
+        device = torch.device('cpu')
     model = build_model(cfg, device)
     optimizer = build_optimizer(cfg, model)
 
