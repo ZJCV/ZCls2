@@ -1,10 +1,10 @@
-<div style="text-align: right;">
+<div style="text-align: right; display:inline-block">
   语言:
     🇨🇳
   <a title="英语" href="./README.md">🇺🇸</a>
 </div>
 
-<div style="text-align: center;"><a title="" href="https://github.com/ZJCV/ZCls2"><img align="center" src="./imgs/ZCls2.png" alt=""></a></div>
+<div style="text-align: center; display:inline-block"><a title="" href="https://github.com/ZJCV/ZCls2"><img align="center" src="./imgs/ZCls2.png" alt=""></a></div>
 
 <p style="text-align: center;">
   «ZCls2»是一款更快速的分类模型训练框架
