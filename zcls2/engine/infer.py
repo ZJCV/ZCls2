@@ -28,6 +28,7 @@ from zcls2.util import logging
 logger = logging.get_logger(__name__)
 
 
+@torch.inference_mode()
 def validate(cfg: CfgNode, val_loader: DataLoader, model: nn.Module, criterion: nn.Module) -> List:
     batch_time = AverageMeter()
     losses = AverageMeter()
