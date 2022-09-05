@@ -152,7 +152,7 @@ def main():
                 save_checkpoint({
                     'epoch': epoch,
                     'arch': cfg.MODEL.ARCH,
-                    'state_dict': model.state_dict(),
+                    'state_dict': model.module.state_dict() if cfg.DISTRIBUTED else model.state_dict(),
                     'prec_list': prec_list,
                     'best_prec_list': best_prec_list,
                     'best_epoch': epoch,
@@ -162,6 +162,8 @@ def main():
 
             end = time.time()
             logger.info("One epoch validate need: {:.3f}".format((end - start)))
+        if cfg.DISTRIBUTED:
+            torch.distributed.barrier()
 
 
 if __name__ == '__main__':
