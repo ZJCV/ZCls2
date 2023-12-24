@@ -53,7 +53,7 @@ def get_files(data_root):
 
     p = Path(data_root)
     files = p.rglob('*.pth')
-    files_list = [x for x in files]
+    files_list = list(files)
 
     return files_list
 
